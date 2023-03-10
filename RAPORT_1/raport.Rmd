@@ -27,7 +27,7 @@ library("kableExtra")
 
 # Część I
 
-## Tablice liczności dla zmiennej A1:
+## Tablice liczności dla zmiennej A1
 
 ```{r}
 personel <- read.csv2(file = "personel.csv", header=FALSE)
@@ -174,7 +174,7 @@ cat(c("\\begin{table}[H]
 ```
 
 
-## Tablice liczności dla zmiennnej W1:
+## Tablice liczności dla zmiennnej W1
 
 ```{r}
 tabW1 <- personel %>% count(A1) %>% mutate(prop=n/sum(n))
@@ -311,4 +311,29 @@ cat(c("\\begin{table}[H]
 \\end{table}"
 )) 
 ```
+
+
+## Tabele wielodzielcze
+
+```{r, echo=TRUE, results='asis'}
+kable(structable(W1~P, personel) %>% addmargins(),
+      caption="Tablica wielodzielcza uzwlgędniająca zmienną W1 i P.") %>% 
+      column_spec(1, border_left = TRUE) %>%
+      column_spec(6, border_right = TRUE) %>%
+      kable_styling(latex_options = "HOLD_position")
+```
+
+```{r, results='asis'}
+kable(structable(W1~S, personel) %>% addmargins(), caption="Tablica wielodzielcza uzwlgędniająca zmienną W1 i S.") %>% 
+    column_spec(1, border_left = TRUE) %>%
+    column_spec(6, border_right = TRUE)
+```
+
+```{r, results='asis'}
+kable(structable(A1~D, personel) %>% addmargins(), caption="Tablica wielodzielcza uzwlgędniająca zmienną A1 i D.") %>% 
+    column_spec(1, border_left = TRUE) %>%
+    column_spec(7, border_right = TRUE)
+```
+
+
 
