@@ -13,7 +13,7 @@ header-includes:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, warning=FALSE, message=FALSE)
-
+knitr::opts_chunk$set(fig.width=8, fig.height=5) 
 
 library("tidyverse")
 library("vcd")
@@ -22,6 +22,7 @@ library("knitr")
 library("dplyr")
 library("xtable")
 library("kableExtra")
+library("ggplot2")
 ```
 
 
@@ -317,23 +318,79 @@ cat(c("\\begin{table}[H]
 
 ```{r, echo=TRUE, results='asis'}
 kable(structable(W1~P, personel) %>% addmargins(),
-      caption="Tablica wielodzielcza uzwlgędniająca zmienną W1 i P.") %>% 
+      caption="Tabela wielodzielcza uzwlgędniająca zmienną W1 i P.") %>% 
       column_spec(1, border_left = TRUE) %>%
       column_spec(6, border_right = TRUE) %>%
       kable_styling(latex_options = "HOLD_position")
 ```
 
 ```{r, results='asis'}
-kable(structable(W1~S, personel) %>% addmargins(), caption="Tablica wielodzielcza uzwlgędniająca zmienną W1 i S.") %>% 
+kable(structable(W1~S, personel) %>% addmargins(), caption="Tabela wielodzielcza uzwlgędniająca zmienną W1 i S.") %>% 
     column_spec(1, border_left = TRUE) %>%
-    column_spec(6, border_right = TRUE)
+    column_spec(6, border_right = TRUE) %>%
+    kable_styling(latex_options = "HOLD_position")
 ```
 
 ```{r, results='asis'}
-kable(structable(A1~D, personel) %>% addmargins(), caption="Tablica wielodzielcza uzwlgędniająca zmienną A1 i D.") %>% 
+kable(structable(A1~D, personel) %>% addmargins(), caption="Tabela wielodzielcza uzwlgędniająca zmienną A1 i D.") %>% 
     column_spec(1, border_left = TRUE) %>%
-    column_spec(7, border_right = TRUE)
+    column_spec(7, border_right = TRUE) %>%
+    kable_styling(latex_options = "HOLD_position")
 ```
 
 
+## Wykres słupkowy
+
+```{r, echo=TRUE}
+daneW1 <- personel %>% count(W1) %>% data.frame()
+
+ggplot(daneW1, aes(x=W1, y=n)) + 
+    geom_bar(stat = "identity", fill="hotpink") + 
+    ggtitle("Wykres słupkowy dla W1")
+```
+
+```{r}
+daneW2 <- personel %>% count(W2) %>% data.frame()
+
+ggplot(daneW2, aes(x=W2, y=n)) + 
+    geom_bar(stat = "identity", fill="hotpink") + 
+    ggtitle("Wykres słupkowy dla W2")
+```
+
+Jakieś dwa zdanie tak jak mówiła, ale jej nie słuchałam, więc nie wiem.
+
+## Wykres kołowy
+
+```{r, echo=TRUE}
+ggplot(daneW1, aes(x="", y=n, fill=W1)) + 
+    geom_bar(stat="identity", width=1) + 
+    coord_polar("y", start=0) +
+    theme_void() +
+    scale_fill_brewer(palette="RdPu") + 
+    ggtitle("Wykres kołowy dla W1")
+```
+
+```{r}
+ ggplot(daneW2, aes(x="", y=n, fill=W2)) + 
+    geom_bar(stat="identity", width=1) + 
+    coord_polar("y", start=0) +
+    scale_fill_brewer(palette="RdPu") + 
+    theme_void() +
+    ggtitle("Wykres kołowy dla W2")
+```
+
+## Wykresy mozaikowe
+
+```{r, echo=TRUE}
+mosaic(~D+A1, personel)
+```
+```{r}
+mosaic(~D+W1, personel)
+```
+```{r}
+mosaic(~S+P, personel)
+```
+```{r}
+mosaic(~P+W1, personel)
+```
 
