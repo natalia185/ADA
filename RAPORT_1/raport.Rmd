@@ -24,6 +24,7 @@ library("xtable")
 library("kableExtra")
 library("ggplot2")
 library('likert')
+library("binom")
 ```
 
 
@@ -448,3 +449,51 @@ likert.bar.plot(likt_atmo_gr_P) + scale_fill_discrete(labels=c('Zdecydowanie si�
 
 plot(likt_atmo_gr_P,type='density')
 ```
+
+
+## Przedział ufności Cloppera-Pearsona
+
+```{r, echo=TRUE}
+p.lower <- function(x, n, a){
+  if(x == 0){
+    return(0)
+  }
+  else{
+    return(qbeta(a/2,x,n-x+1))
+  }
+}
+
+
+p.upper <- function(x, n, a){
+  if(x == n){
+    return(1)
+  }
+  else{
+    return(qbeta(1-a/2, x+1, n-x))
+  }
+}
+
+
+clopper_pearson_ci <- function(x, n=NULL, a=0.05){
+  if(is.null(n)){
+    n <- length(x)
+    x <- sum(x==1)
+    return(c(p.lower(x, n, a), p.upper(x, n, a)))
+  }
+  else{
+    return(c(p.lower(x, n, a), p.upper(x, n, a)))
+  }
+}
+```
+
+### Funkcja wbudowana
+```{r}
+x <- rbinom(1, 20, 0.4)
+binom.confint(x, 20, methods='exact')
+```
+
+### Funkcja `clopper_pearcon_ci`
+```{r}
+clopper_pearson_ci(x, 20)
+```
+
