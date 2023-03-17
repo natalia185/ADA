@@ -484,16 +484,94 @@ clopper_pearson_ci <- function(x, n=NULL, a=0.05){
     return(c(p.lower(x, n, a), p.upper(x, n, a)))
   }
 }
-```
 
-### Funkcja wbudowana
+clopper_pearson_ci2 <- function(x, n=NULL, a=0.05){
+  if(is.null(n)){
+    n <- length(x)
+    x <- sum(x==1)
+    return(data.frame(x=x, n=n, lower=p.lower(x, n, a), upper=p.upper(x, n, a)))
+  }
+  else{
+    return(data.frame(x=x, n=n, lower=p.lower(x, n, a), upper=p.upper(x, n, a)))
+  }
+}
+```
+### Przykład użycia
+
+- funkcja wbudowana
 ```{r}
 x <- rbinom(1, 20, 0.4)
 binom.confint(x, 20, methods='exact')
 ```
 
-### Funkcja `clopper_pearcon_ci`
+- funkcja `clopper_pearcon_ci`
 ```{r}
-clopper_pearson_ci(x, 20)
+clopper_pearson_ci2(x, 20)
 ```
+### Zadowolenie z wynagrodzenia w całej badanej grupie
+```{r}
+n <- length(personel$W1)
+Y <- sum(personel$W1 == 2, personel$W1 == 1)
+```
+
+- funkcja `clopper_pearson_ci`
+```{r}
+clopper_pearson_ci2(Y, n)
+```
+
+- funkcja wbudowana
+```{r}
+binom.confint(Y, n, method="exact")
+```
+
+
+### Zadowolenie z wynagrodzenia ze względu na dział
+```{r}
+D <- personel %>% group_by(D) %>% 
+      summarise(x = sum(W1 == 1, W1 == 2),
+                all = sum(W1 == 1, W1 == 2, W1 == -1, W1 == -2))
+```
+
+- funkcja `clopper_pearson_ci`
+```{r}
+dfD <- setNames(data.frame(matrix(ncol = 4, nrow = 0)), c("x", "n", "lower", "upper"))
+
+for(i in 1:length(D$x)){
+  dfD <- rbind(dfD, clopper_pearson_ci2(D$x[i], D$all[i]))
+}
+
+dfD
+```
+
+
+- funkcja wbudowana
+```{r}
+binom.confint(D$x, D$all, method="exact")
+```
+
+
+### Zadowolenie z wynagrodzenia ze względu na stanowisko
+```{r}
+S <- personel %>% group_by(S) %>% 
+      summarise(x = sum(W1 == 1, W1 == 2),
+                all = sum(W1 == 1, W1 == 2, W1 == -1, W1 == -2))
+```
+
+- funkcja `clopper_pearson_ci`
+```{r}
+dfS <- setNames(data.frame(matrix(ncol = 4, nrow = 0)), c("x", "n", "lower", "upper"))
+
+for(i in 1:length(S$x)){
+  dfS <- rbind(dfS, clopper_pearson_ci2(S$x[i], S$all[i]))
+}
+
+dfS
+```
+
+- funkcja wbudowana
+```{r}
+binom.confint(S$x, S$all, method="exact")
+```
+
+
 
