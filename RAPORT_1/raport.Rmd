@@ -23,6 +23,7 @@ library("dplyr")
 library("xtable")
 library("kableExtra")
 library("ggplot2")
+library('likert')
 ```
 
 
@@ -33,6 +34,7 @@ library("ggplot2")
 ```{r}
 personel <- read.csv2(file = "personel.csv", header=FALSE)
 names(personel) <- c("D", "S", "A1", "A2", "W1", "W2", "P", "Wiek", "Wyk")
+personel$A2[personel$A2 == '11'] = '1'
 personel <- personel %>% mutate(across(D:Wyk, as.factor))
 ```
 
@@ -394,3 +396,55 @@ mosaic(~S+P, personel)
 mosaic(~P+W1, personel)
 ```
 
+# Część II
+
+## Funkcja losująca ze zwracaniem i bez
+
+```{r, echo=TRUE}
+f <- function(x='bez'){
+  if (x=='zwracanie'){
+    s <- sample(1:nrow(mtcars),3,replace=TRUE)
+  } else{
+    s <- sample(1:nrow(mtcars),3)
+  }
+  mtcars[s, ]
+}
+
+f('zwracanie')
+```
+## Funkcja likert
+
+```{r, echo=TRUE}
+df <- data.frame(personel$A1,personel$A2)
+colnames(df) <- c('Atmosfera przed wyjazdem', 'Atmosfera po wyjeździe')
+likt_atmo <- likert(df)
+summary(likt_atmo)
+likert.bar.plot(likt_atmo) + scale_fill_discrete(labels=c('Zdecydowanie się nie zgadzam', 'Nie zgadzam się','Trudno powiedzieć','Zgadzam się','Zdecydowanie się zgadzam')) + guides(fill=guide_legend(nrow=2,byrow=TRUE,title='Odpowiedź')) + theme(axis.text.y=element_text(angle=45,hjust=1))
+
+plot(likt_atmo,type='heat') + scale_y_discrete(
+    labels = c('Zdecydowanie się nie zgadzam', 'Nie zgadzam się','Trudno powiedzieć','Zgadzam się','Zdecydowanie się zgadzam',
+               'Średnia (odch.stand.)')) + theme(axis.text.x=element_text(angle=90,hjust=1),axis.text.y=element_text(angle=45,hjust=1)) + guides(fill=guide_legend(title='Odpowiedź'))
+
+plot(likt_atmo,type='density') 
+```
+
+## Podgrupa ze względu na dział
+
+```{r, echo=FALSE}
+likt_atmo_gr_D <- likert(data.frame(personel$A1,personel$A2),grouping=personel$D)
+summary(likt_atmo_gr_D)
+likert.bar.plot(likt_atmo_gr_D) + scale_fill_discrete(labels=c('Zdecydowanie się nie zgadzam', 'Nie zgadzam się','Trudno powiedzieć','Zgadzam się','Zdecydowanie się zgadzam')) + guides(fill=guide_legend(nrow=2,byrow=TRUE,title='Odpowiedź')) + theme(axis.text.y=element_text(angle=45,hjust=1))
+
+plot(likt_atmo_gr_D,type='density')
+```
+
+## Podgrupa ze względu na płeć
+
+```{r, echo=FALSE}
+likt_atmo_gr_P <- likert(data.frame(personel$A1,personel$A2),grouping=personel$P)
+summary(likt_atmo_gr_P)
+
+likert.bar.plot(likt_atmo_gr_P) + scale_fill_discrete(labels=c('Zdecydowanie się nie zgadzam', 'Nie zgadzam się','Trudno powiedzieć','Zgadzam się','Zdecydowanie się zgadzam')) + guides(fill=guide_legend(nrow=2,byrow=TRUE,title='Odpowiedź')) + theme(axis.text.y=element_text(angle=45,hjust=1))
+
+plot(likt_atmo_gr_P,type='density')
+```
