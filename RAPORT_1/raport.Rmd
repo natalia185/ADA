@@ -344,12 +344,54 @@ kable(structable(A1~D, personel) %>% addmargins(), caption="Tabela wielodzielcza
 
 ## Wykres słupkowy
 
+```{r,echo=FALSE}
+personel <- read.csv2('personel.csv',header=FALSE)
+names(personel) <- c('D','S','A1','A2','W1','W2','P','Wiek','Wyk')
+personel$A2[personel$A2 == '11'] = '1'
+personel$D[personel$D == 'O'] = 'Obsługa kadrowo-płacowa'
+personel$D[personel$D == 'P'] = 'Produkcja'
+personel$D[personel$D == 'Z'] = 'Zaopatrzenia'
+personel$D[personel$D == 'S'] = 'Sprzedaż'
+
+personel$S[personel$S == 1] = 'Tak'
+personel$S[personel$S == 0] = 'Nie'
+
+personel$A1[personel$A1 == -2] = 'Zdecydowanie się nie zgadzam'
+personel$A1[personel$A1 == -1] = 'Nie zgadzam się'
+personel$A1[personel$A1 == 0] = 'Trudno powiedzieć'
+personel$A1[personel$A1 == 1] = 'Zgadzam się'
+personel$A1[personel$A1 == 2] = 'Zdecydowanie się zgadzam'
+
+personel$A2[personel$A2 == -2] = 'Zdecydowanie się nie zgadzam'
+personel$A2[personel$A2 == -1] = 'Nie zgadzam się'
+personel$A2[personel$A2 == 0] = 'Trudno powiedzieć'
+personel$A2[personel$A2 == 1] = 'Zgadzam się'
+personel$A2[personel$A2 == 2] = 'Zdecydowanie się zgadzam'
+
+personel$W1[personel$W1 == -2] = 'Zdecydowanie się nie zgadzam'
+personel$W1[personel$W1 == -1] = 'Nie zgadzam się'
+personel$W1[personel$W1 == 0] = 'Trudno powiedzieć'
+personel$W1[personel$W1 == 1] = 'Zgadzam się'
+personel$W1[personel$W1 == 2] = 'Zdecydowanie się zgadzam'
+
+personel$W2[personel$W2 == -2] = 'Zdecydowanie się nie zgadzam'
+personel$W2[personel$W2 == -1] = 'Nie zgadzam się'
+personel$W2[personel$W2 == 0] = 'Trudno powiedzieć'
+personel$W2[personel$W2 == 1] = 'Zgadzam się'
+personel$W2[personel$W2 == 2] = 'Zdecydowanie się zgadzam'
+
+personel$P[personel$P == 'K'] = 'Kobieta'
+personel$P[personel$P == 'M'] = 'Mężczyzna'
+names(personel) <- c('D','S','A1','A2','W1','W2','P','Wiek','Wyk')
+personel <- personel %>% mutate(across(D:Wyk,as.factor))
+```
+
 ```{r, echo=TRUE}
 daneW1 <- personel %>% count(W1) %>% data.frame()
 
 ggplot(daneW1, aes(x=W1, y=n)) + 
     geom_bar(stat = "identity", fill="hotpink") + 
-    ggtitle("Wykres słupkowy dla W1")
+    ggtitle("Wykres słupkowy dla oceny wykształcenia przed wyjazdem") + xlab('Ocena wynagrodzenia przed wyjazdem') + ylab('ilość')
 ```
 
 ```{r}
@@ -357,7 +399,7 @@ daneW2 <- personel %>% count(W2) %>% data.frame()
 
 ggplot(daneW2, aes(x=W2, y=n)) + 
     geom_bar(stat = "identity", fill="hotpink") + 
-    ggtitle("Wykres słupkowy dla W2")
+    ggtitle("Wykres słupkowy dla oceny wykształcenia po wyjeździe")+ xlab('Ocena wynagrodzenia po wyjeździe') + ylab('ilość')
 ```
 
 Jakieś dwa zdanie tak jak mówiła, ale jej nie słuchałam, więc nie wiem.
@@ -370,7 +412,7 @@ ggplot(daneW1, aes(x="", y=n, fill=W1)) +
     coord_polar("y", start=0) +
     theme_void() +
     scale_fill_brewer(palette="RdPu") + 
-    ggtitle("Wykres kołowy dla W1")
+    ggtitle("Wykres kołowy dla oceny wynagrodzenia przed wyjazdem")
 ```
 
 ```{r}
@@ -379,13 +421,14 @@ ggplot(daneW1, aes(x="", y=n, fill=W1)) +
     coord_polar("y", start=0) +
     scale_fill_brewer(palette="RdPu") + 
     theme_void() +
-    ggtitle("Wykres kołowy dla W2")
+    ggtitle("Wykres kołowy dla oceny wynagrodzenia po wyjeździe")
 ```
 
 ## Wykresy mozaikowe
 
 ```{r, echo=TRUE}
-mosaic(~D+A1, personel)
+mosaic(~D+A1, personel,labeling = vcd::labeling_border(rot_labels = c(90, 90)))
+# Na razie zostawiam bo pierdolca dostaję
 ```
 ```{r}
 mosaic(~D+W1, personel)
@@ -415,43 +458,97 @@ f('zwracanie')
 ```
 ## Funkcja likert
 
+```{r,echo=FALSE}
+personel <- read.csv2('personel.csv',header=FALSE)
+names(personel) <- c('D','S','A1','A2','W1','W2','P','Wiek','Wyk')
+personel$A2[personel$A2 == '11'] = '1'
+personel$D[personel$D == 'O'] = 'Obsługa kadrowo-płacowa'
+personel$D[personel$D == 'P'] = 'Produkcja'
+personel$D[personel$D == 'Z'] = 'Zaopatrzenia'
+personel$D[personel$D == 'S'] = 'Sprzedaż'
+
+personel$S[personel$S == 1] = 'Tak'
+personel$S[personel$S == 0] = 'Nie'
+
+personel$A1[personel$A1 == -2] = 'Zdecydowanie się nie zgadzam'
+personel$A1[personel$A1 == -1] = 'Nie zgadzam się'
+personel$A1[personel$A1 == 0] = 'Trudno powiedzieć'
+personel$A1[personel$A1 == 1] = 'Zgadzam się'
+personel$A1[personel$A1 == 2] = 'Zdecydowanie się zgadzam'
+
+personel$A2[personel$A2 == -2] = 'Zdecydowanie się nie zgadzam'
+personel$A2[personel$A2 == -1] = 'Nie zgadzam się'
+personel$A2[personel$A2 == 0] = 'Trudno powiedzieć'
+personel$A2[personel$A2 == 1] = 'Zgadzam się'
+personel$A2[personel$A2 == 2] = 'Zdecydowanie się zgadzam'
+
+personel$W1[personel$W1 == -2] = 'Zdecydowanie się nie zgadzam'
+personel$W1[personel$W1 == -1] = 'Nie zgadzam się'
+personel$W1[personel$W1 == 0] = 'Trudno powiedzieć'
+personel$W1[personel$W1 == 1] = 'Zgadzam się'
+personel$W1[personel$W1 == 2] = 'Zdecydowanie się zgadzam'
+
+personel$W2[personel$W2 == -2] = 'Zdecydowanie się nie zgadzam'
+personel$W2[personel$W2 == -1] = 'Nie zgadzam się'
+personel$W2[personel$W2 == 0] = 'Trudno powiedzieć'
+personel$W2[personel$W2 == 1] = 'Zgadzam się'
+personel$W2[personel$W2 == 2] = 'Zdecydowanie się zgadzam'
+
+personel$P[personel$P == 'K'] = 'Kobieta'
+personel$P[personel$P == 'M'] = 'Mężczyzna'
+names(personel) <- c('Dział','S','Atmosfera przed wyjazdem','Atmosfera po wyjeździe','W1','W2','Płeć','Wiek','Wykształcenie')
+personel <- personel %>% mutate(across(Dział:Wykształcenie,as.factor))
+```
+
 ```{r, echo=TRUE}
-df <- data.frame(personel$A1,personel$A2)
-colnames(df) <- c('Atmosfera przed wyjazdem', 'Atmosfera po wyjeździe')
+df <- data.frame(personel$`Atmosfera przed wyjazdem`,personel$`Atmosfera po wyjeździe`)
+colnames(df) <- c('Atmosfera przed wyjazdem', 'Atmosfera po wyjeździe') 
 likt_atmo <- likert(df)
 summary(likt_atmo)
-likert.bar.plot(likt_atmo) + scale_fill_discrete(labels=c('Zdecydowanie się nie zgadzam', 'Nie zgadzam się','Trudno powiedzieć','Zgadzam się','Zdecydowanie się zgadzam')) + guides(fill=guide_legend(nrow=2,byrow=TRUE,title='Odpowiedź')) + theme(axis.text.y=element_text(angle=45,hjust=1))
+likert.bar.plot(likt_atmo) + guides(fill=guide_legend(nrow=2,byrow=TRUE,title='Odpowiedź')) + theme(axis.text.y=element_text(angle=45,hjust=1)) + 
+  ylab("Procent") 
 
-plot(likt_atmo,type='heat') + scale_y_discrete(
-    labels = c('Zdecydowanie się nie zgadzam', 'Nie zgadzam się','Trudno powiedzieć','Zgadzam się','Zdecydowanie się zgadzam',
-               'Średnia (odch.stand.)')) + theme(axis.text.x=element_text(angle=90,hjust=1),axis.text.y=element_text(angle=45,hjust=1)) + guides(fill=guide_legend(title='Odpowiedź'))
+plot(likt_atmo,type='heat') + theme(axis.text.x=element_text(angle=90,hjust=1),axis.text.y=element_text(angle=45,hjust=1)) + guides(fill=guide_legend(title='Odpowiedź'))
 
-plot(likt_atmo,type='density') 
+likert.density.plot(likt_atmo)
 ```
 
 ## Podgrupa ze względu na dział
 
 ```{r, echo=FALSE}
-likt_atmo_gr_D <- likert(data.frame(personel$A1,personel$A2),grouping=personel$D)
+df <- data.frame(personel$`Atmosfera przed wyjazdem`,personel$`Atmosfera po wyjeździe`)
+colnames(df) <- c('Atmosfera przed wyjazdem', 'Atmosfera po wyjeździe') 
+likt_atmo_gr_D <- likert(df,grouping=personel$Dział)
 summary(likt_atmo_gr_D)
-likert.bar.plot(likt_atmo_gr_D) + scale_fill_discrete(labels=c('Zdecydowanie się nie zgadzam', 'Nie zgadzam się','Trudno powiedzieć','Zgadzam się','Zdecydowanie się zgadzam')) + guides(fill=guide_legend(nrow=2,byrow=TRUE,title='Odpowiedź')) + theme(axis.text.y=element_text(angle=45,hjust=1))
+likert.bar.plot(likt_atmo_gr_D) + guides(fill=guide_legend(nrow=2,byrow=TRUE,title='Odpowiedź'))+ 
+  ylab("Procent") + xlab('Dział')
 
-plot(likt_atmo_gr_D,type='density')
+likert.density.plot(likt_atmo_gr_D,legend='Dział')
 ```
 
 ## Podgrupa ze względu na płeć
 
 ```{r, echo=FALSE}
-likt_atmo_gr_P <- likert(data.frame(personel$A1,personel$A2),grouping=personel$P)
+df <- data.frame(personel$`Atmosfera przed wyjazdem`,personel$`Atmosfera po wyjeździe`)
+colnames(df) <- c('Atmosfera przed wyjazdem', 'Atmosfera po wyjeździe') 
+likt_atmo_gr_P <- likert(df,grouping=personel$Płeć)
 summary(likt_atmo_gr_P)
 
-likert.bar.plot(likt_atmo_gr_P) + scale_fill_discrete(labels=c('Zdecydowanie się nie zgadzam', 'Nie zgadzam się','Trudno powiedzieć','Zgadzam się','Zdecydowanie się zgadzam')) + guides(fill=guide_legend(nrow=2,byrow=TRUE,title='Odpowiedź')) + theme(axis.text.y=element_text(angle=45,hjust=1))
+likert.bar.plot(likt_atmo_gr_P) + guides(fill=guide_legend(nrow=2,byrow=TRUE,title='Odpowiedź'))+ 
+  ylab("Procent") + xlab('Płeć')
 
-plot(likt_atmo_gr_P,type='density')
+likert.density.plot(likt_atmo_gr_P,legend='Płeć')
 ```
 
 
 ## Przedział ufności Cloppera-Pearsona
+
+```{r, echo=FALSE}
+personel <- read.csv2('personel.csv',header=FALSE)
+names(personel) <- c('D','S','A1','A2','W1','W2','P','Wiek','Wyk')
+personel$A2[personel$A2 == '11'] = '1'
+personel <- personel %>% mutate(across(D:Wyk,as.factor))
+```
 
 ```{r, echo=TRUE}
 p.lower <- function(x, n, a){
