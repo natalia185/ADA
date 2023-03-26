@@ -391,7 +391,9 @@ daneW1 <- personel %>% count(W1) %>% data.frame()
 
 ggplot(daneW1, aes(x=W1, y=n)) + 
     geom_bar(stat = "identity", fill="hotpink") + 
-    ggtitle("Wykres słupkowy dla oceny wykształcenia przed wyjazdem") + xlab('Ocena wynagrodzenia przed wyjazdem') + ylab('ilość')
+    ggtitle("Wykres słupkowy dla oceny wykształcenia przed wyjazdem") + 
+    xlab('Ocena wynagrodzenia przed wyjazdem') + 
+    ylab('ilość')
 ```
 
 ```{r}
@@ -399,7 +401,9 @@ daneW2 <- personel %>% count(W2) %>% data.frame()
 
 ggplot(daneW2, aes(x=W2, y=n)) + 
     geom_bar(stat = "identity", fill="hotpink") + 
-    ggtitle("Wykres słupkowy dla oceny wykształcenia po wyjeździe")+ xlab('Ocena wynagrodzenia po wyjeździe') + ylab('ilość')
+    ggtitle("Wykres słupkowy dla oceny wykształcenia po wyjeździe") + 
+    xlab('Ocena wynagrodzenia po wyjeździe') + 
+    ylab('ilość')
 ```
 
 Jakieś dwa zdanie tak jak mówiła, ale jej nie słuchałam, więc nie wiem.
@@ -671,4 +675,139 @@ binom.confint(S$x, S$all, method="exact")
 ```
 
 
+# Część III
+
+## Generowanie rozkładu dwumianowego
+
+### Algorytm
+1. Ustal $n$ i $p$.
+2. Generuj $Y_i$ z rozkładu $P(Y_i=1) = p = 1 - P(Y_i=0)$.
+3. Powtórz krok 2. $n$ razy.
+4. Wstaw $X=\sum_{i=1}^{n}{Y_i}$.
+5. Powtórz kroki 2-4 $N$ razy.
+
+```{r, echo=TRUE}
+generuj_dwumianowy <- function(n, p, N){
+  X <- rep(NA, N)
+  for(i in 1:N){
+    Y <- rep(NA, n)
+    for(j in 1:n){
+      Y[j] <- sample(c(0,1), size=1, prob=c(1-p,p))
+    }
+    X[i] <- sum(Y)
+  }
+  return(X)
+}
+```
+
+### Porównanie funkcji
+
+```{r, results = 'asis'}
+x1 <- rbinom(1000, 20, 0.6)
+x2 <- generuj_dwumianowy(20, 0.6, 1000)
+
+df <- data.frame('funkcja'=c('rbinom', 'generuj_dwumianowy'),
+      'średnia'= c(mean(x1), mean(x2)),
+      'wariancja'=c(var(x1), var(x2)))
+
+kable(df, caption = 'Wartości statystyk', format='markdown')
+```
+```{r}
+df_x1 <- data.frame('x'=x1)
+df_x2 <- data.frame('x'=x2)
+
+ggplot(data = df_x1, aes(x = x)) + 
+  geom_histogram(aes(y = ..density..), fill='hotpink', binwidth=1) + 
+  labs(title = 'Histogram dla próby otrzymanej przy pomocy funkcji wbudowanej')
+```
+```{r}
+ggplot(data = df_x2, aes(x = x)) + 
+  geom_histogram(aes(y = ..density..), fill='hotpink', binwidth=1) + 
+  labs(title = 'Histogram dla próby otrzymanej przy pomocy funkcji generuj_dwumianowy')
+```
+
+## Prawdopodobieństwo pokrycia
+
+### Opis symulacji
+
+Coś, że Monte Carlo itp.
+
+### Algorytm
+1. Ustal $n$ i $p$.
+2. Generuj realizację zmiennej losowej z rozkładu $\mathcal{B}(n,p)$.
+3. Wyznacz przedział ufności dla parametru $p$ wybraną metodą.
+4. Sprzwdź czy $p \in$ przedziału ufności. Wyznacz długość przedziału.
+5. Powtórz 2-4 $N$ razy.
+6. Wyznacz procent pokrycia i średnią długość przedziału.
+
+
+```{r, echo=TRUE}
+simulation <- function(n, method, name){
+  N <- 1000
+  p <- seq(0, 1, 0.01)
+  for(j in 1:length(p)){
+    len <- rep(NA, N)
+    counter <- 0
+      for(i in 1:N){
+        x <- rbinom(1, n, p[j])
+        interval <- binom.confint(x, n, conf.level = 0.95, methods = method)
+        TL <- interval$lower
+        TU <- interval$upper
+        if(between(p[j], TL, TU)){
+          counter <- counter + 1
+        }
+        len[i] <- TU - TL
+      }
+      p.cover <- counter/N
+      p.len <- mean(len)
+      df <- data.frame('p' = p[j], 'pokrycie' = p.cover, 'dlugosc' = p.len)
+      write.table(df, name, 
+          append = TRUE,
+          sep = ",",
+          col.names = FALSE,
+          row.names = FALSE,
+          quote = FALSE)
+  }
+  }
+```
+
+```{r}
+cp30 <- read.csv('cpn30.csv', col.names = c('p', 'pokrycie', 'len'))
+w30 <- read.csv('wald_n30.csv', col.names = c('p', 'pokrycie', 'len'))
+b30 <- read.csv('bayes_n30.csv', col.names = c('p', 'pokrycie', 'len'))
+
+cp100 <- read.csv('cpn100.csv', col.names = c('p', 'pokrycie', 'len'))
+w100 <- read.csv('wald_n100.csv', col.names = c('p', 'pokrycie', 'len'))
+b100 <- read.csv('bayes_n100.csv', col.names = c('p', 'pokrycie', 'len'))
+
+cp1000 <- read.csv('cpn1000.csv', col.names = c('p', 'pokrycie', 'len'))
+w1000 <- read.csv('wald_n1000.csv', col.names = c('p', 'pokrycie', 'len'))
+b1000 <- read.csv('bayes_n1000.csv', col.names = c('p', 'pokrycie', 'len'))
+
+```
+
+```{r}
+ggplot() + geom_line(aes(x=cp30$p, y=cp30$pokrycie), color='purple') + 
+  geom_line(aes(x=w30$p, y=w30$pokrycie), color='hotpink') +
+  geom_line(aes(x=b30$p, y=b30$pokrycie), color='darkblue') +
+  labs(title = 'Procent pokrycia dla n = 30', y ='% pokrycia', x = 'p') + 
+  geom_hline(yintercept = 0.95, linetype = 'dashed')
+```
+
+```{r}
+ggplot() + geom_line(aes(x=cp100$p, y=cp100$pokrycie), color='purple') + 
+  geom_line(aes(x=w100$p, y=w100$pokrycie), color='hotpink') +
+  geom_line(aes(x=b100$p, y=b100$pokrycie), color='darkblue') +
+  labs(title = 'Procent pokrycia dla n = 100', y ='% pokrycia', x = 'p') + 
+  geom_hline(yintercept = 0.95, linetype = 'dashed')
+```
+
+```{r}
+ggplot() + geom_line(aes(x=cp1000$p, y=cp1000$pokrycie), color='purple') + 
+  geom_line(aes(x=w1000$p, y=w1000$pokrycie), color='hotpink') +
+  geom_line(aes(x=b1000$p, y=b1000$pokrycie), color='darkblue') +
+  labs(title = 'Procent pokrycia dla n = 1000', y ='% pokrycia', x = 'p') + 
+  geom_hline(yintercept = 0.95, linetype = 'dashed') 
+
+```
 
