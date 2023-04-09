@@ -430,9 +430,15 @@ ggplot(daneW1, aes(x="", y=n, fill=W1)) +
 
 ## Wykresy mozaikowe
 
+```{r, echo=FALSE}
+personel <- read.csv2(file = "personel.csv", header=FALSE)
+names(personel) <- c("D", "S", "A1", "A2", "W1", "W2", "P", "Wiek", "Wyk")
+personel$A2[personel$A2 == '11'] = '1'
+personel <- personel %>% mutate(across(D:Wyk, as.factor))
+```
+
 ```{r, echo=TRUE}
 mosaic(~D+A1, personel,labeling = vcd::labeling_border(rot_labels = c(90, 90)))
-# Na razie zostawiam bo pierdolca dostaję
 ```
 ```{r}
 mosaic(~D+W1, personel)
@@ -716,9 +722,14 @@ kable(df, caption = 'Wartości statystyk', format='markdown')
 df_x1 <- data.frame('x'=x1)
 df_x2 <- data.frame('x'=x2)
 
-ggplot(data = df_x1, aes(x = x)) + 
-  geom_histogram(aes(y = ..density..), fill='hotpink', binwidth=1) + 
-  labs(title = 'Histogram dla próby otrzymanej przy pomocy funkcji wbudowanej')
+x<- 1:20
+df <- data.frame('x'= x, 'fun'= dbinom(x,20,0.6))
+
+ggplot() + 
+  geom_histogram(data = df_x1, aes(x = x, y = ..density..), fill='hotpink', binwidth=1) + 
+  labs(title = 'Histogram dla próby otrzymanej przy pomocy funkcji wbudowanej')+
+  geom_point(data=df, mapping=aes(x,fun))
+
 ```
 ```{r}
 ggplot(data = df_x2, aes(x = x)) + 
@@ -787,27 +798,64 @@ b1000 <- read.csv('bayes_n1000.csv', col.names = c('p', 'pokrycie', 'len'))
 ```
 
 ```{r}
-ggplot() + geom_line(aes(x=cp30$p, y=cp30$pokrycie), color='purple') + 
-  geom_line(aes(x=w30$p, y=w30$pokrycie), color='hotpink') +
-  geom_line(aes(x=b30$p, y=b30$pokrycie), color='darkblue') +
+ggplot() + geom_line(aes(x=cp30$p, y=cp30$pokrycie, color='Cloppera-Pearsona')) + 
+  geom_line(aes(x=w30$p, y=w30$pokrycie, color='Walda')) +
+  geom_line(aes(x=b30$p, y=b30$pokrycie,color='Bayesa')) +
   labs(title = 'Procent pokrycia dla n = 30', y ='% pokrycia', x = 'p') + 
-  geom_hline(yintercept = 0.95, linetype = 'dashed')
+  geom_hline(yintercept = 0.95, linetype = 'dashed')+
+  scale_colour_manual("Przedział ufności", 
+                      breaks = c("Cloppera-Pearsona", "Walda", "Bayesa"),
+                      values = c("purple", "hotpink", "darkblue"))
+```
+```{r}
+ggplot() + geom_line(aes(x=cp30$p, y=cp30$len, color='Cloppera-Pearsona')) + 
+  geom_line(aes(x=w30$p, y=w30$len, color='Walda')) +
+  geom_line(aes(x=b30$p, y=b30$len, color='Bayesa')) +
+  labs(title = 'Procent pokrycia dla n = 30', y ='Średnia długość przedziału', x = 'p') + 
+  geom_hline(yintercept = 0.95, linetype = 'dashed')+
+  scale_colour_manual("Przedział ufności", 
+                      breaks = c("Cloppera-Pearsona", "Walda", "Bayesa"),
+                      values = c("purple", "hotpink", "darkblue"))
 ```
 
 ```{r}
-ggplot() + geom_line(aes(x=cp100$p, y=cp100$pokrycie), color='purple') + 
-  geom_line(aes(x=w100$p, y=w100$pokrycie), color='hotpink') +
-  geom_line(aes(x=b100$p, y=b100$pokrycie), color='darkblue') +
-  labs(title = 'Procent pokrycia dla n = 100', y ='% pokrycia', x = 'p') + 
-  geom_hline(yintercept = 0.95, linetype = 'dashed')
+ggplot() + geom_line(aes(x=cp100$p, y=cp100$pokrycie, color='Cloppera-Pearsona')) + 
+  geom_line(aes(x=w100$p, y=w100$pokrycie,color='Walda')) +
+  geom_line(aes(x=b100$p, y=b100$pokrycie, color='Bayesa')) +
+  labs(title = 'Procent pokrycia dla n = 100', y ='% pokrycia', x = 'p',color = "Przedział ufności") + 
+  geom_hline(yintercept = 0.95, linetype = 'dashed')+
+  scale_colour_manual("Przedział ufności", 
+                      breaks = c("Cloppera-Pearsona", "Walda", "Bayesa"),
+                      values = c("purple", "hotpink", "darkblue"))
+
+ggplot() + geom_line(aes(x=cp100$p, y=cp100$len, color='Cloppera-Pearsona')) + 
+  geom_line(aes(x=w100$p, y=w100$len, color='Walda')) +
+  geom_line(aes(x=b100$p, y=b100$len, color='Bayesa')) +
+  labs(title = 'Procent pokrycia dla n = 100', y ='Średnia długość przedziału', x = 'p') + 
+  geom_hline(yintercept = 0.95, linetype = 'dashed')+
+  scale_colour_manual("Przedział ufności", 
+                      breaks = c("Cloppera-Pearsona", "Walda", "Bayesa"),
+                      values = c("purple", "hotpink", "darkblue"))
 ```
 
 ```{r}
-ggplot() + geom_line(aes(x=cp1000$p, y=cp1000$pokrycie), color='purple') + 
-  geom_line(aes(x=w1000$p, y=w1000$pokrycie), color='hotpink') +
-  geom_line(aes(x=b1000$p, y=b1000$pokrycie), color='darkblue') +
+ggplot() + geom_line(aes(x=cp1000$p, y=cp1000$pokrycie, color='Cloppera-Pearsona')) + 
+  geom_line(aes(x=w1000$p, y=w1000$pokrycie, color='Walda')) +
+  geom_line(aes(x=b1000$p, y=b1000$pokrycie, color='Bayesa')) +
   labs(title = 'Procent pokrycia dla n = 1000', y ='% pokrycia', x = 'p') + 
-  geom_hline(yintercept = 0.95, linetype = 'dashed') 
+  geom_hline(yintercept = 0.95, linetype = 'dashed') +
+  scale_colour_manual("Przedział ufności", 
+                      breaks = c("Cloppera-Pearsona", "Walda", "Bayesa"),
+                      values = c("purple", "hotpink", "darkblue"))
 
+ggplot() + geom_line(aes(x=cp1000$p, y=cp1000$len, color='Cloppera-Pearsona')) + 
+  geom_line(aes(x=w1000$p, y=w1000$len, color='Walda')) +
+  geom_line(aes(x=b1000$p, y=b1000$len,color='Bayesa')) +
+  labs(title = 'Procent pokrycia dla n = 1000', y ='Średnia długość przedziału', x = 'p') + 
+  geom_hline(yintercept = 0.95, linetype = 'dashed')+
+  scale_colour_manual("Przedział ufności", 
+                      breaks = c("Cloppera-Pearsona", "Walda", "Bayesa"),
+                      values = c("purple", "hotpink", "darkblue"))
 ```
+
 
