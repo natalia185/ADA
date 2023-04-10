@@ -391,7 +391,7 @@ daneW1 <- personel %>% count(W1) %>% data.frame()
 
 ggplot(daneW1, aes(x=W1, y=n)) + 
     geom_bar(stat = "identity", fill="hotpink") + 
-    ggtitle("Wykres słupkowy dla oceny wykształcenia przed wyjazdem") + 
+    ggtitle("Wykres słupkowy dla oceny wynagrodzenia przed wyjazdem") + 
     xlab('Ocena wynagrodzenia przed wyjazdem') + 
     ylab('ilość')
 ```
@@ -401,7 +401,7 @@ daneW2 <- personel %>% count(W2) %>% data.frame()
 
 ggplot(daneW2, aes(x=W2, y=n)) + 
     geom_bar(stat = "identity", fill="hotpink") + 
-    ggtitle("Wykres słupkowy dla oceny wykształcenia po wyjeździe") + 
+    ggtitle("Wykres słupkowy dla oceny wynagrodzenia po wyjeździe") + 
     xlab('Ocena wynagrodzenia po wyjeździe') + 
     ylab('ilość')
 ```
@@ -416,7 +416,7 @@ ggplot(daneW1, aes(x="", y=n, fill=W1)) +
     coord_polar("y", start=0) +
     theme_void() +
     scale_fill_brewer(palette="RdPu") + 
-    ggtitle("Wykres kołowy dla oceny wynagrodzenia przed wyjazdem")
+    ggtitle("Wykres kołowy dla oceny wynagrodzenia przed wyjazdem") + guides(fill=guide_legend(title='Odpowiedź'))
 ```
 
 ```{r}
@@ -425,8 +425,10 @@ ggplot(daneW1, aes(x="", y=n, fill=W1)) +
     coord_polar("y", start=0) +
     scale_fill_brewer(palette="RdPu") + 
     theme_void() +
-    ggtitle("Wykres kołowy dla oceny wynagrodzenia po wyjeździe")
+    ggtitle("Wykres kołowy dla oceny wynagrodzenia po wyjeździe") + guides(fill=guide_legend(title='Odpowiedź'))
 ```
+
+Porównując oba wykresy kołowe i słupkowe, nie widzimy znaczącego wpływu wyjazdu integracyjnego na ocenę zadowolenia pracowników z wynagrodzenia. Można zauważyć, że większość pracowników jest co najmniej zadowolona ze swojego wynagrodzenia. NIE WIEM CO JESZCZE :(((((((((((
 
 ## Wykresy mozaikowe
 
@@ -440,15 +442,26 @@ personel <- personel %>% mutate(across(D:Wyk, as.factor))
 ```{r, echo=TRUE}
 mosaic(~D+A1, personel,labeling = vcd::labeling_border(rot_labels = c(90, 90)))
 ```
+
+Większość pracownicy każdego z działów jest co najmniej zadowolena z atmosfery panującej w miejscu pracy. W dziale sprzedaży obserwujemy sporą, w stosunku do liczby pracowników, liczbę osób, które nie potrafią określić, czy są zadowolone, czy też nie. 
+
 ```{r}
 mosaic(~D+W1, personel)
 ```
+
+Jeśli chodzi o ocenę zadowolenia ze swojego wynagrodzenia, liczby są bardziej wyrównane. W dziale zaopatrzenia przeważają pozytywne odpowiedzi, w pozostałych trudniej zauważyć, które stanowią większość. 
+
 ```{r}
 mosaic(~S+P, personel)
 ```
+
+W firmie większość na stanowiskach kierowniczych stanowią mężczyźni. Jednak widać też, że w firmie pracuje ich więcej, zatem stosunek kierowniczek do kobiet i kierowników do mężczyzn może być podobny. 
+
 ```{r}
 mosaic(~P+W1, personel)
 ```
+
+Kobiety w firmie mają podzielone zdania na temat swojego wynagrodzenia, jednak jeśli już są zadowolone, to zdecydowanie. Natomiast mężczyźni są minimalnie bardziej zadowoleni niż nie, jednak liczby te również nie są od siebie mocno odległe.
 
 # Część II
 
@@ -685,12 +698,32 @@ binom.confint(S$x, S$all, method="exact")
 
 ## Generowanie rozkładu dwumianowego
 
-### Algorytm
+Do wygenerowania liczb z rozkładu dwumianowego wykorzystamy poniższy algorytm: 
+
 1. Ustal $n$ i $p$.
 2. Generuj $Y_i$ z rozkładu $P(Y_i=1) = p = 1 - P(Y_i=0)$.
 3. Powtórz krok 2. $n$ razy.
 4. Wstaw $X=\sum_{i=1}^{n}{Y_i}$.
 5. Powtórz kroki 2-4 $N$ razy.
+
+Korzystamy z faktu, że suma zmiennych losowych z rozkładu Bernoulliego jest zmienną z rozkładu dwumianowego. 
+
+Aby to udowodnić, użyjemy funkcji charakterystycznych obu rozkładów. 
+
+Niech $X$ będzie zmienną losową z rozkładu dwumianowego z parametrami $n$ i $p$, a $Y_i$ zmienną z rozkładu Bernoulliego ($P(Y_i=1) = p = 1 - P(Y_i=0)$).
+
+Funkcja charakterystyczna rozkładu Bernoulliego dana jest wzorem $\phi_{Y_i}(t) = \mathbb{E}(e^{itY_i}) = 1-p+pe^{it}$.
+
+Możemy zapisać funkcję charakterystyczną jako: 
+$$
+\phi_{\sum\limits_{i}^nY_i}(t) = \mathbb{E}(e^{it\sum\limits_{i}^nY_i}) = \mathbb{E}(e^{it(Y_1+Y_2+\ldots+Y_n)}) = 
+\mathbb{E}(e^{itY_1}e^{itY_2}\ldots e^{itY_n}).
+$$
+Korzystając z niezależności zmiennych:
+$$
+\phi_{\sum\limits_{i}^nY_i}(t) = \mathbb{E}(e^{itY_1})\mathbb{E}(e^{itY_2})\ldots \mathbb{E}(e^{itY_n}) = \left(\mathbb{E}e^{itY_1}\right)^n = \left(1-p+pe^{it}\right)^n.
+$$
+Otrzymamy wynik jest funkcją charakterystyczną rozkładu dwumianowego, co kończy dowód. 
 
 ```{r, echo=TRUE}
 generuj_dwumianowy <- function(n, p, N){
