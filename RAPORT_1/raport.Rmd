@@ -443,7 +443,7 @@ personel <- personel %>% mutate(across(D:Wyk, as.factor))
 mosaic(~D+A1, personel,labeling = vcd::labeling_border(rot_labels = c(90, 90)))
 ```
 
-Większość pracownicy każdego z działów jest co najmniej zadowolena z atmosfery panującej w miejscu pracy. W dziale sprzedaży obserwujemy sporą, w stosunku do liczby pracowników, liczbę osób, które nie potrafią określić, czy są zadowolone, czy też nie. 
+Większość pracownicy każdego z działów jest co najmniej zadowolona z atmosfery panującej w miejscu pracy. W dziale sprzedaży obserwujemy sporą, w stosunku do liczby pracowników, liczbę osób, które nie potrafią określić, czy są zadowolone, czy też nie. 
 
 ```{r}
 mosaic(~D+W1, personel)
@@ -477,7 +477,7 @@ f <- function(x='bez'){
   mtcars[s, ]
 }
 
-f('zwracanie')
+f('zwracanie') %>% kable
 ```
 ## Funkcja likert
 
@@ -527,11 +527,16 @@ personel <- personel %>% mutate(across(Dział:Wykształcenie,as.factor))
 df <- data.frame(personel$`Atmosfera przed wyjazdem`,personel$`Atmosfera po wyjeździe`)
 colnames(df) <- c('Atmosfera przed wyjazdem', 'Atmosfera po wyjeździe') 
 likt_atmo <- likert(df)
-summary(likt_atmo)
-likert.bar.plot(likt_atmo) + guides(fill=guide_legend(nrow=2,byrow=TRUE,title='Odpowiedź')) + theme(axis.text.y=element_text(angle=45,hjust=1)) + 
+summary(likt_atmo) %>% kable
+
+likert.bar.plot(likt_atmo) + 
+  guides(fill=guide_legend(nrow=2,byrow=TRUE,title='Odpowiedź')) + 
+  theme(axis.text.y=element_text(angle=45,hjust=1)) + 
   ylab("Procent") 
 
-plot(likt_atmo,type='heat') + theme(axis.text.x=element_text(angle=90,hjust=1),axis.text.y=element_text(angle=45,hjust=1)) + guides(fill=guide_legend(title='Odpowiedź'))
+plot(likt_atmo,type='heat') +
+  theme(axis.text.x=element_text(angle=90,hjust=1),axis.text.y=element_text(angle=45,hjust=1)) + 
+  guides(fill=guide_legend(title='Odpowiedź'))
 
 likert.density.plot(likt_atmo)
 ```
@@ -542,7 +547,7 @@ likert.density.plot(likt_atmo)
 df <- data.frame(personel$`Atmosfera przed wyjazdem`,personel$`Atmosfera po wyjeździe`)
 colnames(df) <- c('Atmosfera przed wyjazdem', 'Atmosfera po wyjeździe') 
 likt_atmo_gr_D <- likert(df,grouping=personel$Dział)
-summary(likt_atmo_gr_D)
+kable(summary(likt_atmo_gr_D))
 likert.bar.plot(likt_atmo_gr_D) + guides(fill=guide_legend(nrow=2,byrow=TRUE,title='Odpowiedź'))+ 
   ylab("Procent") + xlab('Dział')
 
@@ -555,7 +560,7 @@ likert.density.plot(likt_atmo_gr_D,legend='Dział')
 df <- data.frame(personel$`Atmosfera przed wyjazdem`,personel$`Atmosfera po wyjeździe`)
 colnames(df) <- c('Atmosfera przed wyjazdem', 'Atmosfera po wyjeździe') 
 likt_atmo_gr_P <- likert(df,grouping=personel$Płeć)
-summary(likt_atmo_gr_P)
+kable(summary(likt_atmo_gr_P))
 
 likert.bar.plot(likt_atmo_gr_P) + guides(fill=guide_legend(nrow=2,byrow=TRUE,title='Odpowiedź'))+ 
   ylab("Procent") + xlab('Płeć')
@@ -621,12 +626,12 @@ clopper_pearson_ci2 <- function(x, n=NULL, a=0.05){
 - funkcja wbudowana
 ```{r}
 x <- rbinom(1, 20, 0.4)
-binom.confint(x, 20, methods='exact')
+kable(binom.confint(x, 20, methods='exact'))
 ```
 
 - funkcja `clopper_pearcon_ci`
 ```{r}
-clopper_pearson_ci2(x, 20)
+clopper_pearson_ci2(x, 20) %>% kable
 ```
 ### Zadowolenie z wynagrodzenia w całej badanej grupie
 ```{r}
@@ -636,12 +641,12 @@ Y <- sum(personel$W1 == 2, personel$W1 == 1)
 
 - funkcja `clopper_pearson_ci`
 ```{r}
-clopper_pearson_ci2(Y, n)
+clopper_pearson_ci2(Y, n) %>% kable
 ```
 
 - funkcja wbudowana
 ```{r}
-binom.confint(Y, n, method="exact")
+binom.confint(Y, n, method="exact") %>% kable
 ```
 
 
@@ -660,13 +665,13 @@ for(i in 1:length(D$x)){
   dfD <- rbind(dfD, clopper_pearson_ci2(D$x[i], D$all[i]))
 }
 
-dfD
+dfD %>% kable
 ```
 
 
 - funkcja wbudowana
 ```{r}
-binom.confint(D$x, D$all, method="exact")
+binom.confint(D$x, D$all, method="exact") %>% kable
 ```
 
 
@@ -685,12 +690,12 @@ for(i in 1:length(S$x)){
   dfS <- rbind(dfS, clopper_pearson_ci2(S$x[i], S$all[i]))
 }
 
-dfS
+kable(dfS)
 ```
 
 - funkcja wbudowana
 ```{r}
-binom.confint(S$x, S$all, method="exact")
+binom.confint(S$x, S$all, method="exact") %>% kable
 ```
 
 
@@ -844,8 +849,7 @@ ggplot() + geom_line(aes(x=cp30$p, y=cp30$pokrycie, color='Cloppera-Pearsona')) 
 ggplot() + geom_line(aes(x=cp30$p, y=cp30$len, color='Cloppera-Pearsona')) + 
   geom_line(aes(x=w30$p, y=w30$len, color='Walda')) +
   geom_line(aes(x=b30$p, y=b30$len, color='Bayesa')) +
-  labs(title = 'Procent pokrycia dla n = 30', y ='Średnia długość przedziału', x = 'p') + 
-  geom_hline(yintercept = 0.95, linetype = 'dashed')+
+  labs(title = 'Średnia długość przedziału dla n = 30', y ='Średnia długość przedziału', x = 'p') + 
   scale_colour_manual("Przedział ufności", 
                       breaks = c("Cloppera-Pearsona", "Walda", "Bayesa"),
                       values = c("purple", "hotpink", "darkblue"))
@@ -864,8 +868,7 @@ ggplot() + geom_line(aes(x=cp100$p, y=cp100$pokrycie, color='Cloppera-Pearsona')
 ggplot() + geom_line(aes(x=cp100$p, y=cp100$len, color='Cloppera-Pearsona')) + 
   geom_line(aes(x=w100$p, y=w100$len, color='Walda')) +
   geom_line(aes(x=b100$p, y=b100$len, color='Bayesa')) +
-  labs(title = 'Procent pokrycia dla n = 100', y ='Średnia długość przedziału', x = 'p') + 
-  geom_hline(yintercept = 0.95, linetype = 'dashed')+
+  labs(title = 'Średnia długość przedziału dla n = 100', y ='Średnia długość przedziału', x = 'p') + 
   scale_colour_manual("Przedział ufności", 
                       breaks = c("Cloppera-Pearsona", "Walda", "Bayesa"),
                       values = c("purple", "hotpink", "darkblue"))
@@ -884,11 +887,126 @@ ggplot() + geom_line(aes(x=cp1000$p, y=cp1000$pokrycie, color='Cloppera-Pearsona
 ggplot() + geom_line(aes(x=cp1000$p, y=cp1000$len, color='Cloppera-Pearsona')) + 
   geom_line(aes(x=w1000$p, y=w1000$len, color='Walda')) +
   geom_line(aes(x=b1000$p, y=b1000$len,color='Bayesa')) +
-  labs(title = 'Procent pokrycia dla n = 1000', y ='Średnia długość przedziału', x = 'p') + 
-  geom_hline(yintercept = 0.95, linetype = 'dashed')+
+  labs(title = 'Średnia długość przedziału dla n = 1000', y ='Średnia długość przedziału', x = 'p') + 
   scale_colour_manual("Przedział ufności", 
                       breaks = c("Cloppera-Pearsona", "Walda", "Bayesa"),
                       values = c("purple", "hotpink", "darkblue"))
 ```
 
+# Część IV
 
+## Weryfikacja hipotez
+Wszystkie poniższe hipotezy są weryfikowane na poziomie istotności $0.05$.
+
+```{r, echo=FALSE}
+#a)
+#xk <- sum(personel$Płeć == 'Kobieta')
+#nk <- sum(personel$Płeć == 'Kobieta', personel$Płeć =='Mężczyzna')
+#xz <- sum(personel$W1 == 'Zdecydowanie się zgadzam', personel$W1 == 'Zgadzam się')
+xk <- 71
+xz <- 106
+n <- 200
+
+t1 <- binom.test(xk, n, p = 0.5, alternative = 'two.sided')
+t2 <- prop.test(xk, n, p = 0.5, alternative = 'two.sided', correct = TRUE)
+t3 <- prop.test(xk, n, p = 0.5, alternative = 'two.sided', correct = FALSE) 
+
+t4 <- binom.test(xz, n, p = 0.8, alternative = 'l')
+t5 <- prop.test(xz, n, p = 0.8, alternative = 'l', correct = TRUE)
+t6 <- prop.test(xz, n, p = 0.8, alternative = 'l', correct = FALSE)
+
+```
+a) Testujemy hipotezę zerową $H_0:$ prawdopodobieństwo, że w korporacji pracuje kobieta wynosi 0.5, przeciwko hipotezie alternatywnej $H_1:$ prawdopodobieństwo, że w korporacji pracuje kobieta jest różne od 0.5.
+
+- Wyniki uzyskane przy pomocy funkcji `binom.test`
+```{r}
+df1 <- data.frame(value = unlist(t1))
+df1 <- data.frame(parametr=c('Liczba sukcesów', 'Liczba prób', 'p-wartość', 'Estymowane prawdopodobieństwo sukcesu'), wartość=df1[c(1,2,3,6),1])
+
+kable(df1) %>% 
+    column_spec(1, border_left = TRUE, border_right = FALSE) %>%
+    column_spec(2, border_left = FALSE, border_right = TRUE)
+```
+- Wyniki uzyskane przy pomocy funkcji `prop.test` z uzwględnieniem poprawki na ciągłość
+```{r}
+df2 <- data.frame(value = unlist(t2))
+df2 <- data.frame(parametr=c('Wartość statystyki', 'p-wartość', 'Estymowane prawdopodobieństwo sukcesu'), wartość=df2[c(1,3,4),1])
+
+kable(df2) %>% 
+    column_spec(1, border_left = TRUE, border_right = FALSE) %>%
+    column_spec(2, border_left = FALSE, border_right = TRUE)
+```
+- Wyniki uzyskane przy pomocy funkcji `prop.test` bezz uwzględnienia poprawki na ciągłość
+```{r}
+df3 <- data.frame(value = unlist(t3))
+df3 <- data.frame(parametr=c('Wartość statystyki', 'p-wartość', 'Estymowane prawdopodobieństwo sukcesu'), wartość=df3[c(1,3,4),1])
+
+kable(df3) %>% 
+    column_spec(1, border_left = TRUE, border_right = FALSE) %>%
+    column_spec(2, border_left = FALSE, border_right = TRUE)
+```
+### Wnioski
+Korzystając z testu dokładnego (`binom.test`) na poziomie istotności $\alpha = 0.05$ weryfikowaną hipotezę, że prawdopodobieństwo, iż w korporacji pracuje kobieta wynosi 0.5 należy odrzucić (p-wartość w tym teście wynosi `r t1$p.value`). Podobnie w przypadku testu asymptotycznego (`prop.test`) na poziomie istotności $\alpha = 0.05$ z zastosowaną poprawką na ciągłość (p-wartość wynosi `r t2$p.value`) oraz bez uwzględniania poprawki (p-wartość `r t3$p.value`) również odrzucamy weryfikowaną hipotezę na rzecz hipotezy alternatywnej, że prawdopodobieństwo, iż w korporacji pracuje kobieta jest różne od $0.5$.
+
+
+b) Testujemy hipotezę zerową $H_0:$ prawdopodobieństwo, że pracownik jest zadowolony ze swojego wynagrodzenia jest większe bądź równe 0.8, przeciwko hipotezie alternatywnej $H_1:$ prawdopodobieństwo, że pracownik jest zadowolony ze swojego wynagrodzenia jest mniejsze od 0.8.
+
+- Wyniki uzyskane przy pomocy funkcji `binom.test`
+```{r}
+df4 <- data.frame(value = unlist(t4))
+df4 <- data.frame(parametr=c('Liczba sukcesów', 'Liczba prób', 'p-wartość', 'Estymowane prawdopodobieństwo sukcesu'), wartość=df4[c(1,2,3,6),1])
+
+kable(df4) %>% 
+    column_spec(1, border_left = TRUE, border_right = FALSE) %>%
+    column_spec(2, border_left = FALSE, border_right = TRUE)
+```
+- Wyniki uzyskane przy pomocy funkcji `prop.test` z poprawką na ciągłość
+```{r}
+df5 <- data.frame(value = unlist(t5))
+df5 <- data.frame(parametr=c('Wartość statystyki', 'p-wartość', 'Estymowane prawdopodobieństwo sukcesu'), wartość=df5[c(1,3,4),1])
+
+kable(df5) %>% 
+    column_spec(1, border_left = TRUE, border_right = FALSE) %>%
+    column_spec(2, border_left = FALSE, border_right = TRUE)
+```
+- Wyniki uzyskane przy pomocy funkcji `prop.test` bez poprawki na ciągłość
+```{r}
+df6 <- data.frame(value = unlist(t6))
+df6 <- data.frame(parametr=c('Wartość statystyki', 'p-wartość', 'Estymowane prawdopodobieństwo sukcesu'), wartość=df6[c(1,3,4),1])
+
+kable(df6) %>% 
+    column_spec(1, border_left = TRUE, border_right = FALSE) %>%
+    column_spec(2, border_left = FALSE, border_right = TRUE)
+```
+### Wnioski
+Korzystając z testu dokładnego (`binom.test`) na poziomie istotności $\alpha = 0.05$ weryfikowaną hipotezę, że prawdopodobieństwo, iż pracownik jest zadowolony ze swojego wynagrodzenia jest większe bądź równe 0.8 należy odrzucić (p-wartość w tym teście wynosi `r t4$p.value`). Podobnie w przypadku testu asymptotycznego (`prop.test`) na poziomie istotności $\alpha = 0.05$ z zastosowaną poprawką na ciągłość (p-wartość wynosi `r t5$p.value`) oraz bez uwzględniania poprawki (p-wartość `r t6$p.value`) również odrzucamy weryfikowaną hipotezę na rzecz hipotezy alternatywnej, że prawdopodobieństwo, iż pracownik jest zadowolony ze swojego wynagrodzenia jest mniejsze od 0.8.
+
+
+c) Testujemy hipotezę, że prawdopodobieństwo, iż kobieta pracuje na stanowisku kierowniczym jest równe prawdopodobieństwu, że mężczyzna paracuje na stanowisku kierowniczym.
+
+```{r}
+kob_kier <- 8
+m_kier <- 19
+l_kobiet <- 71
+l_mezcz <- 129
+tc <- prop.test(c(kob_kier,m_kier),c(l_kobiet,l_mezcz))
+```
+
+Wyniki uzyskane przy pomocy funkcji `prop.test`
+```{r}
+dfc <- data.frame(value = unlist(tc))
+dfc <- data.frame(parametr=c('Wartość statystyki', 'p-wartość', 'estimate.prop 1', 'estimate.prop 2'), wartość=dfc[c(1,3,4,5),1])
+
+kable(dfc) %>% 
+    column_spec(1, border_left = TRUE, border_right = FALSE) %>%
+    column_spec(2, border_left = FALSE, border_right = TRUE)
+```
+
+### Wnioski
+Korzystając z testu asymptotycznego (`prop.test`) na poziomie istotności $\alpha = 0.05$ nie ma podstaw do odrzucenia hipotezy, że prawdopodobieństwo, iż kobieta pracuje na stanowisku kierowniczym jest równe prawdopodobieństwu, że mężczyzna paracuje na stanowisku kierowniczym. Wartość poziomu krytycznego wynosi `r tc$p.value`.
+
+
+d) Testujemy hipotezę, że prawdopodobieństwo, iż kobieta jest zadowolona ze swojego wynagrodzenia jest równe prawdopodobieństwu, że mężczyzna jest zadowolony ze swojego wynagrodzenia.
+
+
+e) Testujemy hipotezę, że prawdopodobieństwo, iż kobieta pracuje w dziale obsługi kadrowo-płacowej jest większe lub równe prawdopodobieństwu, że mężczyzna pracuje w dziale obsługi kadrowo-płacowej.
