@@ -9,11 +9,13 @@ header-includes:
   \usepackage{float}
   \renewcommand{\tablename}{Tab.}
   \renewcommand{\figurename}{Wykres}
+  \floatplacement{figure}{H}
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, warning=FALSE, message=FALSE)
 knitr::opts_chunk$set(fig.width=8, fig.height=5) 
+pdf.options(encoding = 'CP1250')
 
 library("tidyverse")
 library("vcd")
@@ -29,8 +31,8 @@ library("binom")
 
 
 # Część I
-
-## Tablice liczności dla zmiennej A1
+## Zadanie 1
+### Tablice liczności dla zmiennej A1
 
 ```{r}
 personel <- read.csv2(file = "personel.csv", header=FALSE)
@@ -178,7 +180,7 @@ cat(c("\\begin{table}[H]
 ```
 
 
-## Tablice liczności dla zmiennnej W1
+### Tablice liczności dla zmiennnej W1
 
 ```{r}
 tabW1 <- personel %>% count(A1) %>% mutate(prop=n/sum(n))
@@ -316,8 +318,8 @@ cat(c("\\begin{table}[H]
 )) 
 ```
 
-
-## Tabele wielodzielcze
+## Zadanie 2
+### Tabele wielodzielcze
 
 ```{r, echo=TRUE, results='asis'}
 kable(structable(W1~P, personel) %>% addmargins(),
@@ -341,8 +343,8 @@ kable(structable(A1~D, personel) %>% addmargins(), caption="Tabela wielodzielcza
     kable_styling(latex_options = "HOLD_position")
 ```
 
-
-## Wykres słupkowy
+## Zadanie 3
+### Wykres słupkowy
 
 ```{r,echo=FALSE}
 personel <- read.csv2('personel.csv',header=FALSE)
@@ -386,51 +388,50 @@ names(personel) <- c('D','S','A1','A2','W1','W2','P','Wiek','Wyk')
 personel <- personel %>% mutate(across(D:Wyk,as.factor))
 ```
 
-```{r, echo=TRUE}
+```{r, fig.pos='H', echo=TRUE, fig.cap='\\label{histW1}Wykres słupkowy dla oceny wynagorodzenia przed wyjazdem'}
 daneW1 <- personel %>% count(W1) %>% data.frame()
 
 ggplot(daneW1, aes(x=W1, y=n)) + 
     geom_bar(stat = "identity", fill="hotpink") + 
-    ggtitle("Wykres słupkowy dla oceny wynagrodzenia przed wyjazdem") + 
     xlab('Ocena wynagrodzenia przed wyjazdem') + 
     ylab('ilość')
 ```
 
-```{r}
+```{r, fig.pos='H', fig.cap='\\label{histW2}Wykres słupkowy dla oceny wynagorodzenia po wyjeździe'}
 daneW2 <- personel %>% count(W2) %>% data.frame()
 
 ggplot(daneW2, aes(x=W2, y=n)) + 
     geom_bar(stat = "identity", fill="hotpink") + 
-    ggtitle("Wykres słupkowy dla oceny wynagrodzenia po wyjeździe") + 
     xlab('Ocena wynagrodzenia po wyjeździe') + 
     ylab('ilość')
 ```
 
-Jakieś dwa zdanie tak jak mówiła, ale jej nie słuchałam, więc nie wiem.
 
-## Wykres kołowy
+### Wykres kołowy
 
-```{r, echo=TRUE}
+```{r, fig.pos='H', echo=TRUE, fig.cap='\\label{koloW1}Wykres kołowy dla oceny wynagrodzenia przed wyjazdem'}
 ggplot(daneW1, aes(x="", y=n, fill=W1)) + 
     geom_bar(stat="identity", width=1) + 
     coord_polar("y", start=0) +
     theme_void() +
     scale_fill_brewer(palette="RdPu") + 
-    ggtitle("Wykres kołowy dla oceny wynagrodzenia przed wyjazdem") + guides(fill=guide_legend(title='Odpowiedź'))
+    guides(fill=guide_legend(title='Odpowiedź'))
 ```
 
-```{r}
+```{r, fig.pos='H', fig.cap='\\label{koloW2}Wykres kołowy dla oceny wynagrodzenia po wyjeździe'}
  ggplot(daneW2, aes(x="", y=n, fill=W2)) + 
     geom_bar(stat="identity", width=1) + 
     coord_polar("y", start=0) +
     scale_fill_brewer(palette="RdPu") + 
     theme_void() +
-    ggtitle("Wykres kołowy dla oceny wynagrodzenia po wyjeździe") + guides(fill=guide_legend(title='Odpowiedź'))
+    guides(fill=guide_legend(title='Odpowiedź'))
 ```
 
-Porównując oba wykresy kołowe i słupkowe, nie widzimy znaczącego wpływu wyjazdu integracyjnego na ocenę zadowolenia pracowników z wynagrodzenia. Można zauważyć, że większość pracowników jest co najmniej zadowolona ze swojego wynagrodzenia. NIE WIEM CO JESZCZE :(((((((((((
+**Wnioski** \
+Porównując oba wykresy kołowe (\ref{koloW1}, \ref{koloW2}) i słupkowe (\ref{histW1}, \ref{histW2}), nie widzimy znaczących zmian w odpowiedziach respondentów. Możemy zatem stwierdzić, że wyjazd nie wpłynął na zmianę oceny otrzymywanego wynagrodzenia. Ponadto można zauważyć, że większość pracowników jest co najmniej zadowolona ze swojego wynagrodzenia.
 
-## Wykresy mozaikowe
+## Zadanie 4
+### Wykresy mozaikowe
 
 ```{r, echo=FALSE}
 personel <- read.csv2(file = "personel.csv", header=FALSE)
@@ -439,33 +440,34 @@ personel$A2[personel$A2 == '11'] = '1'
 personel <- personel %>% mutate(across(D:Wyk, as.factor))
 ```
 
-```{r, echo=TRUE}
+```{r, fig.pos='H', echo=TRUE, , fig.cap='\\label{mozaikaDA1}Wykres mozaikowy dla działu oraz atmosfery.'}
 mosaic(~D+A1, personel,labeling = vcd::labeling_border(rot_labels = c(90, 90)))
 ```
 
-Większość pracownicy każdego z działów jest co najmniej zadowolona z atmosfery panującej w miejscu pracy. W dziale sprzedaży obserwujemy sporą, w stosunku do liczby pracowników, liczbę osób, które nie potrafią określić, czy są zadowolone, czy też nie. 
+Na podstawie wykresu \ref{mozaikaDA1} możemy stwierdzić, że większość pracowników każdego z działów jest co najmniej zadowolona z atmosfery panującej w miejscu pracy. W dziale sprzedaży obserwujemy sporą, w stosunku do liczby pracowników, liczbę osób, które nie potrafią określić, czy są zadowolone, czy też nie. 
 
-```{r}
+```{r, fig.pos='H', fig.cap='\\label{mozaikaDW1}Wykres mozaikowy dla działu i zadowolenia z wynagrodzenia przed wyjazdem.'}
 mosaic(~D+W1, personel)
 ```
 
-Jeśli chodzi o ocenę zadowolenia ze swojego wynagrodzenia, liczby są bardziej wyrównane. W dziale zaopatrzenia przeważają pozytywne odpowiedzi, w pozostałych trudniej zauważyć, które stanowią większość. 
+Jeśli chodzi o ocenę zadowolenia ze swojego wynagrodzenia (wykres \ref{mozaikaDW1}), liczby są bardziej wyrównane. W dziale zaopatrzenia przeważają pozytywne odpowiedzi, w pozostałych trudniej zauważyć, które stanowią większość. 
 
-```{r}
+```{r, fig.pos='H', fig.cap='\\label{mozaikaSP}Wykres mozikowy dla stanowiska kierowniczego i płci.'}
 mosaic(~S+P, personel)
 ```
 
-W firmie większość na stanowiskach kierowniczych stanowią mężczyźni. Jednak widać też, że w firmie pracuje ich więcej, zatem stosunek kierowniczek do kobiet i kierowników do mężczyzn może być podobny. 
+Zgodnie z wykresem \ref{mozaikaSP} w firmie większość na stanowiskach kierowniczych stanowią mężczyźni. Jednak widać też, że w firmie pracuje ich więcej, zatem stosunek kierowniczek do kobiet i kierowników do mężczyzn może być podobny. 
 
-```{r}
+```{r, fig.pos='H', fig.cap='\\label{mozaikaPW1}Wykres mozaikowy dla płci i zadowolenia z wynagrodzenia przed wyjazdem.'}
 mosaic(~P+W1, personel)
 ```
 
-Kobiety w firmie mają podzielone zdania na temat swojego wynagrodzenia, jednak jeśli już są zadowolone, to zdecydowanie. Natomiast mężczyźni są minimalnie bardziej zadowoleni niż nie, jednak liczby te również nie są od siebie mocno odległe.
+Kobiety w firmie mają podzielone zdania na temat swojego wynagrodzenia, jednak jeśli już są zadowolone, to zdecydowanie. Natomiast mężczyźni są minimalnie bardziej zadowoleni niż nie, jednak liczby te również nie są od siebie mocno odległe (wykres \ref{mozaikaPW1}).
+
 
 # Część II
-
-## Funkcja losująca ze zwracaniem i bez
+## Zadanie 5
+### Funkcja losująca ze zwracaniem i bez
 
 ```{r, echo=TRUE}
 f <- function(x='bez'){
@@ -476,10 +478,25 @@ f <- function(x='bez'){
   }
   mtcars[s, ]
 }
-
-f('zwracanie') %>% kable
 ```
-## Funkcja likert
+
+```{r}
+f('zwracanie') %>% kable(caption='Losowanie ze zwracaniem') %>%
+  column_spec(1, border_left = TRUE, border_right = FALSE) %>%
+  column_spec(12, border_left = FALSE, border_right = TRUE) %>%
+  kable_styling(latex_options = "HOLD_position")
+```
+
+```{r}
+f() %>% kable(caption='Losowanie bez zwracania') %>%
+  column_spec(1, border_left = TRUE, border_right = FALSE) %>%
+  column_spec(12, border_left = FALSE, border_right = TRUE) %>%
+  kable_styling(latex_options = "HOLD_position")
+```
+
+
+## Zadanie 6
+### Funkcja likert
 
 ```{r,echo=FALSE}
 personel <- read.csv2('personel.csv',header=FALSE)
@@ -527,7 +544,11 @@ personel <- personel %>% mutate(across(Dział:Wykształcenie,as.factor))
 df <- data.frame(personel$`Atmosfera przed wyjazdem`,personel$`Atmosfera po wyjeździe`)
 colnames(df) <- c('Atmosfera przed wyjazdem', 'Atmosfera po wyjeździe') 
 likt_atmo <- likert(df)
-summary(likt_atmo) %>% kable
+
+summary(likt_atmo) %>% kable %>%
+  column_spec(1, border_left = TRUE, border_right = FALSE) %>%
+  column_spec(7, border_left = FALSE, border_right = TRUE) %>%
+  kable_styling(latex_options = "HOLD_position")
 
 likert.bar.plot(likt_atmo) + 
   guides(fill=guide_legend(nrow=2,byrow=TRUE,title='Odpowiedź')) + 
@@ -541,26 +562,35 @@ plot(likt_atmo,type='heat') +
 likert.density.plot(likt_atmo)
 ```
 
-## Podgrupa ze względu na dział
+### Podgrupa ze względu na dział
 
 ```{r, echo=FALSE}
 df <- data.frame(personel$`Atmosfera przed wyjazdem`,personel$`Atmosfera po wyjeździe`)
 colnames(df) <- c('Atmosfera przed wyjazdem', 'Atmosfera po wyjeździe') 
 likt_atmo_gr_D <- likert(df,grouping=personel$Dział)
-kable(summary(likt_atmo_gr_D))
+
+kable(summary(likt_atmo_gr_D)) %>%
+  column_spec(1, border_left = TRUE, border_right = FALSE) %>%
+  column_spec(7, border_left = FALSE, border_right = TRUE) %>%
+  kable_styling(latex_options = "HOLD_position")
+
 likert.bar.plot(likt_atmo_gr_D) + guides(fill=guide_legend(nrow=2,byrow=TRUE,title='Odpowiedź'))+ 
   ylab("Procent") + xlab('Dział')
 
 likert.density.plot(likt_atmo_gr_D,legend='Dział')
 ```
 
-## Podgrupa ze względu na płeć
+### Podgrupa ze względu na płeć
 
 ```{r, echo=FALSE}
 df <- data.frame(personel$`Atmosfera przed wyjazdem`,personel$`Atmosfera po wyjeździe`)
 colnames(df) <- c('Atmosfera przed wyjazdem', 'Atmosfera po wyjeździe') 
 likt_atmo_gr_P <- likert(df,grouping=personel$Płeć)
-kable(summary(likt_atmo_gr_P))
+
+kable(summary(likt_atmo_gr_P)) %>%
+  column_spec(1, border_left = TRUE, border_right = FALSE) %>%
+  column_spec(7, border_left = FALSE, border_right = TRUE) %>%
+  kable_styling(latex_options = "HOLD_position")
 
 likert.bar.plot(likt_atmo_gr_P) + guides(fill=guide_legend(nrow=2,byrow=TRUE,title='Odpowiedź'))+ 
   ylab("Procent") + xlab('Płeć')
@@ -568,8 +598,8 @@ likert.bar.plot(likt_atmo_gr_P) + guides(fill=guide_legend(nrow=2,byrow=TRUE,tit
 likert.density.plot(likt_atmo_gr_P,legend='Płeć')
 ```
 
-
-## Przedział ufności Cloppera-Pearsona
+## Zadanie 7
+### Przedział ufności Cloppera-Pearsona
 
 ```{r, echo=FALSE}
 personel <- read.csv2('personel.csv',header=FALSE)
@@ -626,12 +656,18 @@ clopper_pearson_ci2 <- function(x, n=NULL, a=0.05){
 - funkcja wbudowana
 ```{r}
 x <- rbinom(1, 20, 0.4)
-kable(binom.confint(x, 20, methods='exact'))
+kable(binom.confint(x, 20, methods='exact')) %>% 
+  column_spec(1, border_left = TRUE, border_right = FALSE) %>%
+  column_spec(6, border_left = FALSE, border_right = TRUE) %>%
+  kable_styling(latex_options = "HOLD_position")
 ```
 
 - funkcja `clopper_pearcon_ci`
 ```{r}
-clopper_pearson_ci2(x, 20) %>% kable
+clopper_pearson_ci2(x, 20) %>% kable %>%
+  column_spec(1, border_left = TRUE, border_right = FALSE) %>%
+  column_spec(4, border_left = FALSE, border_right = TRUE) %>%
+  kable_styling(latex_options = "HOLD_position")
 ```
 ### Zadowolenie z wynagrodzenia w całej badanej grupie
 ```{r}
@@ -641,12 +677,18 @@ Y <- sum(personel$W1 == 2, personel$W1 == 1)
 
 - funkcja `clopper_pearson_ci`
 ```{r}
-clopper_pearson_ci2(Y, n) %>% kable
+clopper_pearson_ci2(Y, n) %>% kable %>%
+  column_spec(1, border_left = TRUE, border_right = FALSE) %>%
+  column_spec(4, border_left = FALSE, border_right = TRUE) %>%
+  kable_styling(latex_options = "HOLD_position")
 ```
 
 - funkcja wbudowana
 ```{r}
-binom.confint(Y, n, method="exact") %>% kable
+binom.confint(Y, n, method="exact") %>% kable %>%
+  column_spec(1, border_left = TRUE, border_right = FALSE) %>%
+  column_spec(6, border_left = FALSE, border_right = TRUE) %>%
+  kable_styling(latex_options = "HOLD_position")
 ```
 
 
@@ -665,13 +707,19 @@ for(i in 1:length(D$x)){
   dfD <- rbind(dfD, clopper_pearson_ci2(D$x[i], D$all[i]))
 }
 
-dfD %>% kable
+dfD %>% kable() %>%
+  column_spec(1, border_left = TRUE, border_right = FALSE) %>%
+  column_spec(4, border_left = FALSE, border_right = TRUE) %>%
+  kable_styling(latex_options = "HOLD_position")
 ```
 
 
 - funkcja wbudowana
 ```{r}
-binom.confint(D$x, D$all, method="exact") %>% kable
+binom.confint(D$x, D$all, method="exact") %>% kable() %>%
+  column_spec(1, border_left = TRUE, border_right = FALSE) %>%
+  column_spec(6, border_left = FALSE, border_right = TRUE) %>%
+  kable_styling(latex_options = "HOLD_position")
 ```
 
 
@@ -690,18 +738,24 @@ for(i in 1:length(S$x)){
   dfS <- rbind(dfS, clopper_pearson_ci2(S$x[i], S$all[i]))
 }
 
-kable(dfS)
+kable(dfS) %>%
+  column_spec(1, border_left = TRUE, border_right = FALSE) %>%
+  column_spec(4, border_left = FALSE, border_right = TRUE) %>%
+  kable_styling(latex_options = "HOLD_position")
 ```
 
 - funkcja wbudowana
 ```{r}
-binom.confint(S$x, S$all, method="exact") %>% kable
+binom.confint(S$x, S$all, method="exact") %>% kable %>%
+  column_spec(1, border_left = TRUE, border_right = FALSE) %>%
+  column_spec(6, border_left = FALSE, border_right = TRUE) %>%
+  kable_styling(latex_options = "HOLD_position")
 ```
 
 
 # Część III
-
-## Generowanie rozkładu dwumianowego
+## Zadanie 8
+### Generowanie rozkładu dwumianowego
 
 Do wygenerowania liczb z rozkładu dwumianowego wykorzystamy poniższy algorytm: 
 
@@ -746,7 +800,7 @@ generuj_dwumianowy <- function(n, p, N){
 
 ### Porównanie funkcji
 
-```{r, results = 'asis'}
+```{r}
 x1 <- rbinom(1000, 20, 0.6)
 x2 <- generuj_dwumianowy(20, 0.6, 1000)
 
@@ -754,8 +808,12 @@ df <- data.frame('funkcja'=c('rbinom', 'generuj_dwumianowy'),
       'średnia'= c(mean(x1), mean(x2)),
       'wariancja'=c(var(x1), var(x2)))
 
-kable(df, caption = 'Wartości statystyk', format='markdown')
+kable(df, caption = 'Wartości statystyk') %>%
+  column_spec(1, border_left = TRUE, border_right = FALSE) %>%
+  column_spec(3, border_left = FALSE, border_right = TRUE) %>%
+  kable_styling(latex_options = "HOLD_position")
 ```
+
 ```{r}
 df_x1 <- data.frame('x'=x1)
 df_x2 <- data.frame('x'=x2)
@@ -763,23 +821,27 @@ df_x2 <- data.frame('x'=x2)
 x<- 1:20
 df <- data.frame('x'= x, 'fun'= dbinom(x,20,0.6))
 
+```
+
+```{r, fig.cap='\\label{hist1}Histogram dla próby otrzymanej przy pomocy funkcji wbudowanej'}
 ggplot() + 
   geom_histogram(data = df_x1, aes(x = x, y = ..density..), fill='hotpink', binwidth=1) + 
-  labs(title = 'Histogram dla próby otrzymanej przy pomocy funkcji wbudowanej')+
+  labs(y='gęstość')+
   geom_point(data=df, mapping=aes(x,fun))
-
 ```
-```{r}
+
+```{r, fig.cap='\\label{hist2}Histogram dla próby otrzymanej przy pomocy funkcji generuj_dwumianowy.'}
 ggplot(data = df_x2, aes(x = x)) + 
   geom_histogram(aes(y = ..density..), fill='hotpink', binwidth=1) + 
-  labs(title = 'Histogram dla próby otrzymanej przy pomocy funkcji generuj_dwumianowy')
+  labs(y='gęstość') +
+  geom_point(data=df, mapping=aes(x,fun))
 ```
 
-## Prawdopodobieństwo pokrycia
+## Zadanie 9
 
 ### Opis symulacji
 
-Coś, że Monte Carlo itp.
+Przeprowadzimy symulację bazującą na metodzie Monte Carlo. Jej celem jest porównanie prawdopodobieństwa pokrycia oraz długości następujących przedziałów ufności: Cloppera-Pearsona, Walda i Bayesa w zależności od rozmiaru próby $n \in {30, 100, 1000}$ i wartości prawdopodobieństwa $p \in [0,1]$. Symulacja opiera się na poniższym algorytmie.
 
 ### Algorytm
 1. Ustal $n$ i $p$.
@@ -874,7 +936,7 @@ ggplot() + geom_line(aes(x=cp100$p, y=cp100$len, color='Cloppera-Pearsona')) +
                       values = c("purple", "hotpink", "darkblue"))
 ```
 
-```{r}
+```{r, fig.cap='\\label{procent1000}Procent pokrycia dla n = 1000'}
 ggplot() + geom_line(aes(x=cp1000$p, y=cp1000$pokrycie, color='Cloppera-Pearsona')) + 
   geom_line(aes(x=w1000$p, y=w1000$pokrycie, color='Walda')) +
   geom_line(aes(x=b1000$p, y=b1000$pokrycie, color='Bayesa')) +
@@ -883,7 +945,8 @@ ggplot() + geom_line(aes(x=cp1000$p, y=cp1000$pokrycie, color='Cloppera-Pearsona
   scale_colour_manual("Przedział ufności", 
                       breaks = c("Cloppera-Pearsona", "Walda", "Bayesa"),
                       values = c("purple", "hotpink", "darkblue"))
-
+```
+```{r, fig.cap='\\label{len1000}Średnia długość przedziału dla n = 1000'}
 ggplot() + geom_line(aes(x=cp1000$p, y=cp1000$len, color='Cloppera-Pearsona')) + 
   geom_line(aes(x=w1000$p, y=w1000$len, color='Walda')) +
   geom_line(aes(x=b1000$p, y=b1000$len,color='Bayesa')) +
@@ -893,9 +956,11 @@ ggplot() + geom_line(aes(x=cp1000$p, y=cp1000$len, color='Cloppera-Pearsona')) +
                       values = c("purple", "hotpink", "darkblue"))
 ```
 
+
 # Część IV
 
-## Weryfikacja hipotez
+## Zadanie 11
+### Weryfikacja hipotez
 Wszystkie poniższe hipotezy są weryfikowane na poziomie istotności $0.05$.
 
 ```{r, echo=FALSE}
@@ -921,31 +986,34 @@ a) Testujemy hipotezę zerową $H_0:$ prawdopodobieństwo, że w korporacji prac
 - Wyniki uzyskane przy pomocy funkcji `binom.test`
 ```{r}
 df1 <- data.frame(value = unlist(t1))
-#df1 <- data.frame(parametr=c('Liczba sukcesów', 'Liczba prób', 'p-wartość', 'Estymowane prawdopodobieństwo sukcesu'), wartość=df1[c(1,2,3,6),1])
+df1 <- data.frame(parametr=c('statistic.number of successes', 'parameter.number of trials', 'p.value', 'conf.int1', 'conf.int2', 'estimate.probability of success', 'null.value.probability of success', 'alternative', 'method'), wartość=df1[c(1:9),1])
 
 kable(df1) %>% 
     column_spec(1, border_left = TRUE, border_right = FALSE) %>%
-    column_spec(2, border_left = FALSE, border_right = TRUE)
+    column_spec(2, border_left = FALSE, border_right = TRUE) %>%
+    kable_styling(latex_options = "HOLD_position")
 ```
 - Wyniki uzyskane przy pomocy funkcji `prop.test` z uzwględnieniem poprawki na ciągłość
 ```{r}
 df2 <- data.frame(value = unlist(t2))
-#df2 <- data.frame(parametr=c('Wartość statystyki', 'p-wartość', 'Estymowane prawdopodobieństwo sukcesu'), wartość=df2[c(1,3,4),1])
+df2 <- data.frame(parametr=c('statistic.X-squared', 'parameter.df', 'p.value', 'estimate.prop 1', 'estimate.prop 2', 'conf.int1', 'conf.int2', 'alternative', 'method'), wartość=df2[c(1:9),1])
 
 kable(df2) %>% 
     column_spec(1, border_left = TRUE, border_right = FALSE) %>%
-    column_spec(2, border_left = FALSE, border_right = TRUE)
+    column_spec(2, border_left = FALSE, border_right = TRUE) %>%
+    kable_styling(latex_options = "HOLD_position")
 ```
 - Wyniki uzyskane przy pomocy funkcji `prop.test` bezz uwzględnienia poprawki na ciągłość
 ```{r}
 df3 <- data.frame(value = unlist(t3))
-#df3 <- data.frame(parametr=c('Wartość statystyki', 'p-wartość', 'Estymowane prawdopodobieństwo sukcesu'), wartość=df3[c(1,3,4),1])
+df3 <- data.frame(parametr=c('statistic.X-squared', 'parameter.df', 'p.value', 'estimate.prop 1', 'estimate.prop 2', 'conf.int1', 'conf.int2', 'alternative', 'method'), wartość=df3[c(1:9),1])
 
 kable(df3) %>% 
     column_spec(1, border_left = TRUE, border_right = FALSE) %>%
-    column_spec(2, border_left = FALSE, border_right = TRUE)
+    column_spec(2, border_left = FALSE, border_right = TRUE) %>%
+    kable_styling(latex_options = "HOLD_position")
 ```
-### Wnioski
+**Wnioski** \
 Korzystając z testu dokładnego (`binom.test`) na poziomie istotności $\alpha = 0.05$ weryfikowaną hipotezę, że prawdopodobieństwo, iż w korporacji pracuje kobieta wynosi 0.5 należy odrzucić (p-wartość w tym teście wynosi `r t1$p.value`). Podobnie w przypadku testu asymptotycznego (`prop.test`) na poziomie istotności $\alpha = 0.05$ z zastosowaną poprawką na ciągłość (p-wartość wynosi `r t2$p.value`) oraz bez uwzględniania poprawki (p-wartość `r t3$p.value`) również odrzucamy weryfikowaną hipotezę na rzecz hipotezy alternatywnej, że prawdopodobieństwo, iż w korporacji pracuje kobieta jest różne od $0.5$.
 
 
@@ -954,31 +1022,37 @@ b) Testujemy hipotezę zerową $H_0:$ prawdopodobieństwo, że pracownik jest za
 - Wyniki uzyskane przy pomocy funkcji `binom.test`
 ```{r}
 df4 <- data.frame(value = unlist(t4))
-#df4 <- data.frame(parametr=c('Liczba sukcesów', 'Liczba prób', 'p-wartość', 'Estymowane prawdopodobieństwo sukcesu'), wartość=df4[c(1,2,3,6),1])
+df4 <- data.frame(parametr=c('statistic.number of successes', 'parameter.number of trials', 'p.value', 'conf.int1', 'conf.int2', 'estimate.probability of success', 'null.value.probability of success', 'alternative', 'method'), wartość=df4[c(1:9),1])
 
 kable(df4) %>% 
     column_spec(1, border_left = TRUE, border_right = FALSE) %>%
-    column_spec(2, border_left = FALSE, border_right = TRUE)
+    column_spec(2, border_left = FALSE, border_right = TRUE) %>%
+    kable_styling(latex_options = "HOLD_position")
 ```
+
 - Wyniki uzyskane przy pomocy funkcji `prop.test` z poprawką na ciągłość
 ```{r}
 df5 <- data.frame(value = unlist(t5))
-#df5 <- data.frame(parametr=c('Wartość statystyki', 'p-wartość', 'Estymowane prawdopodobieństwo sukcesu'), wartość=df5[c(1,3,4),1])
+df5 <- data.frame(parametr=c('statistic.X-squared', 'parameter.df', 'p.value', 'estimate.prop 1', 'estimate.prop 2', 'conf.int1', 'conf.int2', 'alternative', 'method'), wartość=df5[c(1:9),1])
 
 kable(df5) %>% 
     column_spec(1, border_left = TRUE, border_right = FALSE) %>%
-    column_spec(2, border_left = FALSE, border_right = TRUE)
+    column_spec(2, border_left = FALSE, border_right = TRUE) %>%
+    kable_styling(latex_options = "HOLD_position")
 ```
+
 - Wyniki uzyskane przy pomocy funkcji `prop.test` bez poprawki na ciągłość
 ```{r}
 df6 <- data.frame(value = unlist(t6))
-#df6 <- data.frame(parametr=c('Wartość statystyki', 'p-wartość', 'Estymowane prawdopodobieństwo sukcesu'), wartość=df6[c(1,3,4),1])
+df6 <- data.frame(parametr=c('statistic.X-squared', 'parameter.df', 'p.value', 'estimate.prop 1', 'estimate.prop 2', 'conf.int1', 'conf.int2', 'alternative', 'method'), wartość=df6[c(1:9),1])
 
 kable(df6) %>% 
     column_spec(1, border_left = TRUE, border_right = FALSE) %>%
-    column_spec(2, border_left = FALSE, border_right = TRUE)
+    column_spec(2, border_left = FALSE, border_right = TRUE) %>%
+    kable_styling(latex_options = "HOLD_position")
 ```
-### Wnioski
+
+**Wnioski** \
 Korzystając z testu dokładnego (`binom.test`) na poziomie istotności $\alpha = 0.05$ weryfikowaną hipotezę, że prawdopodobieństwo, iż pracownik jest zadowolony ze swojego wynagrodzenia jest większe bądź równe 0.8 należy odrzucić (p-wartość w tym teście wynosi `r t4$p.value`). Podobnie w przypadku testu asymptotycznego (`prop.test`) na poziomie istotności $\alpha = 0.05$ z zastosowaną poprawką na ciągłość (p-wartość wynosi `r t5$p.value`) oraz bez uwzględniania poprawki (p-wartość `r t6$p.value`) również odrzucamy weryfikowaną hipotezę na rzecz hipotezy alternatywnej, że prawdopodobieństwo, iż pracownik jest zadowolony ze swojego wynagrodzenia jest mniejsze od 0.8.
 
 
@@ -995,14 +1069,15 @@ tc <- prop.test(c(kob_kier,m_kier),c(l_kobiet,l_mezcz))
 Wyniki uzyskane przy pomocy funkcji `prop.test`
 ```{r}
 dfc <- data.frame(value = unlist(tc))
-#dfc <- data.frame(parametr=c('Wartość statystyki', 'p-wartość', 'estimate.prop 1', 'estimate.prop 2'), wartość=dfc[c(1,3,4,5),1])
+dfc <- data.frame(parametr=c('statistic.X-squared', 'parameter.df', 'p.value', 'estimate.prop 1', 'estimate.prop 2', 'conf.int1', 'conf.int2', 'alternative', 'method'), wartość=dfc[c(1:9),1])
 
 kable(dfc) %>% 
     column_spec(1, border_left = TRUE, border_right = FALSE) %>%
-    column_spec(2, border_left = FALSE, border_right = TRUE)
+    column_spec(2, border_left = FALSE, border_right = TRUE) %>%
+    kable_styling(latex_options = "HOLD_position")
 ```
 
-### Wnioski
+**Wnioski** \
 Korzystając z testu asymptotycznego (`prop.test`) na poziomie istotności $\alpha = 0.05$ nie ma podstaw do odrzucenia hipotezy, że prawdopodobieństwo, iż kobieta pracuje na stanowisku kierowniczym jest równe prawdopodobieństwu, że mężczyzna paracuje na stanowisku kierowniczym. Wartość poziomu krytycznego wynosi `r tc$p.value`.
 
 
@@ -1018,14 +1093,15 @@ l_mezcz <- 129
 td <- prop.test(c(kob_zad,m_zad),c(l_kobiet,l_mezcz))
 
 dfd <- data.frame(value = unlist(td))
-#dfd <- data.frame(parametr=c('Wartość statystyki', 'p-wartość', 'Estymowane prawdopodobieństwo sukcesu'), wartość=dfd[c(1,3,4),1])
+dfd <- data.frame(parametr=c('statistic.X-squared', 'parameter.df', 'p.value', 'estimate.prop 1', 'estimate.prop 2', 'conf.int1', 'conf.int2', 'alternative', 'method'), wartość=dfd[c(1:9),1])
 
 kable(dfd) %>% 
     column_spec(1, border_left = TRUE, border_right = FALSE) %>%
-    column_spec(2, border_left = FALSE, border_right = TRUE)
+    column_spec(2, border_left = FALSE, border_right = TRUE) %>%
+    kable_styling(latex_options = "HOLD_position")
 ```
 
-### Wnioski
+**Wnioski** \
 Korzystając z testu asymptotycznego (`prop.test`) na poziomie istotności $\alpha = 0.05$ nie ma podstaw do odrzucenia hipotezy, że prawdopodobieństwo, iż kobieta jest zadowolona ze swojego wynagrodzenia jest równe prawdopodobieństwu, że mężczyzna jest zadowolony ze swojego wynagrodzenia. Wartość poziomu krytycznego wynosi `r td$p.value`.
 
 
@@ -1041,11 +1117,12 @@ l_mezcz <- 129
 te <- prop.test(c(kob_hr,m_hr),c(l_kobiet,l_mezcz), alternative='l')
 
 dfe <- data.frame(value = unlist(te))
-#dfe <- data.frame(parametr=c('Wartość statystyki', 'p-wartość', 'Estymowane prawdopodobieństwo sukcesu'), wartość=dfe[c(1,3,4),1])
+dfe <- data.frame(parametr=c('statistic.X-squared', 'parameter.df', 'p.value', 'estimate.prop 1', 'estimate.prop 2', 'conf.int1', 'conf.int2', 'alternative', 'method'), wartość=dfe[c(1:9),1])
 
 kable(dfe) %>% 
     column_spec(1, border_left = TRUE, border_right = FALSE) %>%
-    column_spec(2, border_left = FALSE, border_right = TRUE)
+    column_spec(2, border_left = FALSE, border_right = TRUE) %>%
+    kable_styling(latex_options = "HOLD_position")
 ```
-### Wnioski
+**Wnioski** \
 Na podstwie przeprowadzonego testu asymptotycznego (`prop.test`)  nie mamy podstaw do odrzucenia hitoptezy, że prawdopodobieństwo, iż kobieta pracuje w dziale obsługi kadrowo-płacowej jest większe lub równe prawdopodobieństwu, że mężczyzna pracuje w dziale obsługi kadrowo-płacowej. Wartość poziomu krytycznego w tym teście wynosi w przybliżeniu `r te$p.value`.
