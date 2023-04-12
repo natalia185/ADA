@@ -921,7 +921,7 @@ a) Testujemy hipotezę zerową $H_0:$ prawdopodobieństwo, że w korporacji prac
 - Wyniki uzyskane przy pomocy funkcji `binom.test`
 ```{r}
 df1 <- data.frame(value = unlist(t1))
-df1 <- data.frame(parametr=c('Liczba sukcesów', 'Liczba prób', 'p-wartość', 'Estymowane prawdopodobieństwo sukcesu'), wartość=df1[c(1,2,3,6),1])
+#df1 <- data.frame(parametr=c('Liczba sukcesów', 'Liczba prób', 'p-wartość', 'Estymowane prawdopodobieństwo sukcesu'), wartość=df1[c(1,2,3,6),1])
 
 kable(df1) %>% 
     column_spec(1, border_left = TRUE, border_right = FALSE) %>%
@@ -930,7 +930,7 @@ kable(df1) %>%
 - Wyniki uzyskane przy pomocy funkcji `prop.test` z uzwględnieniem poprawki na ciągłość
 ```{r}
 df2 <- data.frame(value = unlist(t2))
-df2 <- data.frame(parametr=c('Wartość statystyki', 'p-wartość', 'Estymowane prawdopodobieństwo sukcesu'), wartość=df2[c(1,3,4),1])
+#df2 <- data.frame(parametr=c('Wartość statystyki', 'p-wartość', 'Estymowane prawdopodobieństwo sukcesu'), wartość=df2[c(1,3,4),1])
 
 kable(df2) %>% 
     column_spec(1, border_left = TRUE, border_right = FALSE) %>%
@@ -939,7 +939,7 @@ kable(df2) %>%
 - Wyniki uzyskane przy pomocy funkcji `prop.test` bezz uwzględnienia poprawki na ciągłość
 ```{r}
 df3 <- data.frame(value = unlist(t3))
-df3 <- data.frame(parametr=c('Wartość statystyki', 'p-wartość', 'Estymowane prawdopodobieństwo sukcesu'), wartość=df3[c(1,3,4),1])
+#df3 <- data.frame(parametr=c('Wartość statystyki', 'p-wartość', 'Estymowane prawdopodobieństwo sukcesu'), wartość=df3[c(1,3,4),1])
 
 kable(df3) %>% 
     column_spec(1, border_left = TRUE, border_right = FALSE) %>%
@@ -954,7 +954,7 @@ b) Testujemy hipotezę zerową $H_0:$ prawdopodobieństwo, że pracownik jest za
 - Wyniki uzyskane przy pomocy funkcji `binom.test`
 ```{r}
 df4 <- data.frame(value = unlist(t4))
-df4 <- data.frame(parametr=c('Liczba sukcesów', 'Liczba prób', 'p-wartość', 'Estymowane prawdopodobieństwo sukcesu'), wartość=df4[c(1,2,3,6),1])
+#df4 <- data.frame(parametr=c('Liczba sukcesów', 'Liczba prób', 'p-wartość', 'Estymowane prawdopodobieństwo sukcesu'), wartość=df4[c(1,2,3,6),1])
 
 kable(df4) %>% 
     column_spec(1, border_left = TRUE, border_right = FALSE) %>%
@@ -963,7 +963,7 @@ kable(df4) %>%
 - Wyniki uzyskane przy pomocy funkcji `prop.test` z poprawką na ciągłość
 ```{r}
 df5 <- data.frame(value = unlist(t5))
-df5 <- data.frame(parametr=c('Wartość statystyki', 'p-wartość', 'Estymowane prawdopodobieństwo sukcesu'), wartość=df5[c(1,3,4),1])
+#df5 <- data.frame(parametr=c('Wartość statystyki', 'p-wartość', 'Estymowane prawdopodobieństwo sukcesu'), wartość=df5[c(1,3,4),1])
 
 kable(df5) %>% 
     column_spec(1, border_left = TRUE, border_right = FALSE) %>%
@@ -972,7 +972,7 @@ kable(df5) %>%
 - Wyniki uzyskane przy pomocy funkcji `prop.test` bez poprawki na ciągłość
 ```{r}
 df6 <- data.frame(value = unlist(t6))
-df6 <- data.frame(parametr=c('Wartość statystyki', 'p-wartość', 'Estymowane prawdopodobieństwo sukcesu'), wartość=df6[c(1,3,4),1])
+#df6 <- data.frame(parametr=c('Wartość statystyki', 'p-wartość', 'Estymowane prawdopodobieństwo sukcesu'), wartość=df6[c(1,3,4),1])
 
 kable(df6) %>% 
     column_spec(1, border_left = TRUE, border_right = FALSE) %>%
@@ -995,7 +995,7 @@ tc <- prop.test(c(kob_kier,m_kier),c(l_kobiet,l_mezcz))
 Wyniki uzyskane przy pomocy funkcji `prop.test`
 ```{r}
 dfc <- data.frame(value = unlist(tc))
-dfc <- data.frame(parametr=c('Wartość statystyki', 'p-wartość', 'estimate.prop 1', 'estimate.prop 2'), wartość=dfc[c(1,3,4,5),1])
+#dfc <- data.frame(parametr=c('Wartość statystyki', 'p-wartość', 'estimate.prop 1', 'estimate.prop 2'), wartość=dfc[c(1,3,4,5),1])
 
 kable(dfc) %>% 
     column_spec(1, border_left = TRUE, border_right = FALSE) %>%
@@ -1008,5 +1008,44 @@ Korzystając z testu asymptotycznego (`prop.test`) na poziomie istotności $\alp
 
 d) Testujemy hipotezę, że prawdopodobieństwo, iż kobieta jest zadowolona ze swojego wynagrodzenia jest równe prawdopodobieństwu, że mężczyzna jest zadowolony ze swojego wynagrodzenia.
 
+```{r}
+#sum(personel$W1 == 'Zdecydowanie się zgadzam' & personel$Płeć == 'Kobieta', personel$W1 == 'Zgadzam się' & personel$Płeć == 'Kobieta')
+#sum(personel$W1 == 'Zdecydowanie się zgadzam' & personel$Płeć == 'Mężczyzna', personel$W1 == 'Zgadzam się' & personel$Płeć == 'Mężczyzna')
+m_zad <- 70
+kob_zad <- 36
+l_kobiet <- 71
+l_mezcz <- 129
+td <- prop.test(c(kob_zad,m_zad),c(l_kobiet,l_mezcz))
+
+dfd <- data.frame(value = unlist(td))
+#dfd <- data.frame(parametr=c('Wartość statystyki', 'p-wartość', 'Estymowane prawdopodobieństwo sukcesu'), wartość=dfd[c(1,3,4),1])
+
+kable(dfd) %>% 
+    column_spec(1, border_left = TRUE, border_right = FALSE) %>%
+    column_spec(2, border_left = FALSE, border_right = TRUE)
+```
+
+### Wnioski
+Korzystając z testu asymptotycznego (`prop.test`) na poziomie istotności $\alpha = 0.05$ nie ma podstaw do odrzucenia hipotezy, że prawdopodobieństwo, iż kobieta jest zadowolona ze swojego wynagrodzenia jest równe prawdopodobieństwu, że mężczyzna jest zadowolony ze swojego wynagrodzenia. Wartość poziomu krytycznego wynosi `r td$p.value`.
+
 
 e) Testujemy hipotezę, że prawdopodobieństwo, iż kobieta pracuje w dziale obsługi kadrowo-płacowej jest większe lub równe prawdopodobieństwu, że mężczyzna pracuje w dziale obsługi kadrowo-płacowej.
+
+```{r}
+#sum(personel$Dział == 'Obsługa kadrowo-płacowa' & personel$Płeć == 'Kobieta')
+#sum(personel$Dział == 'Obsługa kadrowo-płacowa' & personel$Płeć == 'Mężczyzna')
+m_hr <- 3
+kob_hr <- 23
+l_kobiet <- 71
+l_mezcz <- 129
+te <- prop.test(c(kob_hr,m_hr),c(l_kobiet,l_mezcz), alternative='l')
+
+dfe <- data.frame(value = unlist(te))
+#dfe <- data.frame(parametr=c('Wartość statystyki', 'p-wartość', 'Estymowane prawdopodobieństwo sukcesu'), wartość=dfe[c(1,3,4),1])
+
+kable(dfe) %>% 
+    column_spec(1, border_left = TRUE, border_right = FALSE) %>%
+    column_spec(2, border_left = FALSE, border_right = TRUE)
+```
+### Wnioski
+Na podstwie przeprowadzonego testu asymptotycznego (`prop.test`)  nie mamy podstaw do odrzucenia hitoptezy, że prawdopodobieństwo, iż kobieta pracuje w dziale obsługi kadrowo-płacowej jest większe lub równe prawdopodobieństwu, że mężczyzna pracuje w dziale obsługi kadrowo-płacowej. Wartość poziomu krytycznego w tym teście wynosi w przybliżeniu `r te$p.value`.
