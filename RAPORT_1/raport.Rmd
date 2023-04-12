@@ -58,6 +58,15 @@ tabA1Pk <- personel %>% filter(P=="K") %>% count(A1) %>% mutate(prop=n/sum(n))
 tabA1Pm <- personel %>% filter(P=="M") %>% count(A1) %>% mutate(prop=n/sum(n))
 
 ```
+```{r, echo=TRUE}
+t <- kable(tabA1, format = "latex", booktabs = TRUE) %>% 
+    column_spec(1, border_left = TRUE, border_right = TRUE) %>%
+    column_spec(3, border_left = TRUE, border_right = TRUE)
+
+t1 <- kable(tabA1wyk1, format = "latex", booktabs = TRUE) %>% 
+    column_spec(1, border_left = TRUE, border_right = TRUE) %>%
+    column_spec(3, border_left = TRUE, border_right = TRUE)
+```
 
 
 ```{r, results='asis'}
@@ -826,14 +835,41 @@ df <- data.frame('x'= x, 'fun'= dbinom(x,20,0.6))
 ```{r, fig.cap='\\label{hist1}Histogram dla próby otrzymanej przy pomocy funkcji wbudowanej'}
 ggplot() + 
   geom_histogram(data = df_x1, aes(x = x, y = ..density..), fill='hotpink', binwidth=1) + 
-  labs(y='gęstość')+
+  labs(y='gęstość', x='ilość sukcesów')+
   geom_point(data=df, mapping=aes(x,fun))
 ```
 
 ```{r, fig.cap='\\label{hist2}Histogram dla próby otrzymanej przy pomocy funkcji generuj_dwumianowy.'}
 ggplot(data = df_x2, aes(x = x)) + 
   geom_histogram(aes(y = ..density..), fill='hotpink', binwidth=1) + 
-  labs(y='gęstość') +
+  labs(y='gęstość', x='ilość sukcesów') +
+  geom_point(data=df, mapping=aes(x,fun))
+```
+
+W algorytmie poniżej generujemy rozkład dwumianowy za pomocą rozkładu jednostajnego. Generujemy 
+
+Algorytm ten opiera się na definicji rozkładu dwumianowego, który jest dyskretnym rozkładem prawdopodobieństwa, opisującym liczbę sukcesów w ustalonej liczbie niezależnych prób ze stałym prawdopodobieństwem sukcesu.
+
+W algorytmie symulujemy dużą liczbę prób ze stałą liczbą prób (n) i stałym prawdopodobieństwem sukcesu (p). Dla każdej próby generujemy losową liczbę z przedziału od 0 do 1 (standardowy rozkład jednostajny) i porównujemy ją z prawdopodobieństwem sukcesu, p. Jeśli liczba losowa jest mniejsza lub równa p, liczymy to jako sukces; w przeciwnym razie traktujemy to jako porażkę. Powtarzamy ten proces n razy, aby zasymulować pojedynczy rozkład dwumianowy, a cały proces powtarzamy wiele razy, aby wygenerować próbkę rozkładów dwumianowych. Uzyskujemy próbkę rozkładów dwumianowych, która jest zbliżona do rzeczywistego rozkładu dwumianowego.
+
+```{r, echo=TRUE}
+n <- 20
+p <- 0.6
+liczba_probek <- 1:1000
+sukcesy <- numeric(length(liczba_probek))
+
+for (i in liczba_probek) {
+  próby <- runif(n)
+  sukcesy[i] <- sum(próby <= p)
+}
+```
+
+
+```{r, fig.cap='\\label{hist2}Histogram dla próby otrzymanej przy pomocy rozkładu jednostajnego.'}
+df_dod <- data.frame('x'=sukcesy)
+ggplot(data = df_dod, aes(x = x)) + 
+  geom_histogram(aes(y = ..density..), fill='hotpink', binwidth=1) + 
+  labs(y='gęstość', x='ilość sukcesów') +
   geom_point(data=df, mapping=aes(x,fun))
 ```
 
@@ -882,6 +918,7 @@ simulation <- function(n, method, name){
   }
 ```
 
+
 ```{r}
 cp30 <- read.csv('cpn30.csv', col.names = c('p', 'pokrycie', 'len'))
 w30 <- read.csv('wald_n30.csv', col.names = c('p', 'pokrycie', 'len'))
@@ -897,7 +934,8 @@ b1000 <- read.csv('bayes_n1000.csv', col.names = c('p', 'pokrycie', 'len'))
 
 ```
 
-```{r}
+
+```{r, fig.cap='\\label{procent1000}Procent pokrycia dla n = 30'}
 ggplot() + geom_line(aes(x=cp30$p, y=cp30$pokrycie, color='Cloppera-Pearsona')) + 
   geom_line(aes(x=w30$p, y=w30$pokrycie, color='Walda')) +
   geom_line(aes(x=b30$p, y=b30$pokrycie,color='Bayesa')) +
@@ -907,7 +945,9 @@ ggplot() + geom_line(aes(x=cp30$p, y=cp30$pokrycie, color='Cloppera-Pearsona')) 
                       breaks = c("Cloppera-Pearsona", "Walda", "Bayesa"),
                       values = c("purple", "hotpink", "darkblue"))
 ```
-```{r}
+
+
+```{r, fig.cap='\\label{len1000}Średnia długość przedziału dla n = 30'}
 ggplot() + geom_line(aes(x=cp30$p, y=cp30$len, color='Cloppera-Pearsona')) + 
   geom_line(aes(x=w30$p, y=w30$len, color='Walda')) +
   geom_line(aes(x=b30$p, y=b30$len, color='Bayesa')) +
@@ -917,7 +957,8 @@ ggplot() + geom_line(aes(x=cp30$p, y=cp30$len, color='Cloppera-Pearsona')) +
                       values = c("purple", "hotpink", "darkblue"))
 ```
 
-```{r}
+
+```{r, fig.cap='\\label{procent1000}Procent pokrycia dla n = 100'}
 ggplot() + geom_line(aes(x=cp100$p, y=cp100$pokrycie, color='Cloppera-Pearsona')) + 
   geom_line(aes(x=w100$p, y=w100$pokrycie,color='Walda')) +
   geom_line(aes(x=b100$p, y=b100$pokrycie, color='Bayesa')) +
@@ -926,7 +967,10 @@ ggplot() + geom_line(aes(x=cp100$p, y=cp100$pokrycie, color='Cloppera-Pearsona')
   scale_colour_manual("Przedział ufności", 
                       breaks = c("Cloppera-Pearsona", "Walda", "Bayesa"),
                       values = c("purple", "hotpink", "darkblue"))
+```
 
+
+```{r, fig.cap='\\label{len1000}Średnia długość przedziału dla n = 100'}
 ggplot() + geom_line(aes(x=cp100$p, y=cp100$len, color='Cloppera-Pearsona')) + 
   geom_line(aes(x=w100$p, y=w100$len, color='Walda')) +
   geom_line(aes(x=b100$p, y=b100$len, color='Bayesa')) +
@@ -935,6 +979,7 @@ ggplot() + geom_line(aes(x=cp100$p, y=cp100$len, color='Cloppera-Pearsona')) +
                       breaks = c("Cloppera-Pearsona", "Walda", "Bayesa"),
                       values = c("purple", "hotpink", "darkblue"))
 ```
+
 
 ```{r, fig.cap='\\label{procent1000}Procent pokrycia dla n = 1000'}
 ggplot() + geom_line(aes(x=cp1000$p, y=cp1000$pokrycie, color='Cloppera-Pearsona')) + 
@@ -946,6 +991,8 @@ ggplot() + geom_line(aes(x=cp1000$p, y=cp1000$pokrycie, color='Cloppera-Pearsona
                       breaks = c("Cloppera-Pearsona", "Walda", "Bayesa"),
                       values = c("purple", "hotpink", "darkblue"))
 ```
+
+
 ```{r, fig.cap='\\label{len1000}Średnia długość przedziału dla n = 1000'}
 ggplot() + geom_line(aes(x=cp1000$p, y=cp1000$len, color='Cloppera-Pearsona')) + 
   geom_line(aes(x=w1000$p, y=w1000$len, color='Walda')) +
