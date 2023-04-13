@@ -3,7 +3,8 @@ title: "Analiza danych ankietowych"
 subtitle: "Raport 1"
 author: "Klaudia Janicka 262268, Natalia Iwańska 262270"
 date: "`r Sys.Date()`"
-output: pdf_document
+output: 
+  pdf_document
 header-includes:
   \usepackage{booktabs}
   \usepackage{float}
@@ -111,13 +112,14 @@ t9 <- kable(tabA1Pm, format = "latex", booktabs = TRUE) %>%
 
 
 cat(c("\\begin{table}[H]
-    \\begin{minipage}{.5\\linewidth}",
+    \\begin{minipage}[t]{.45\\linewidth}",
       t,
     "\\centering",
     "\\caption{Tablica liczności dla A1.}
       \\centering",
     "\\end{minipage}%
-    \\begin{minipage}{.5\\linewidth}",
+    \\hfill
+    \\begin{minipage}[t]{.45\\linewidth}",
       t1,
     "\\centering",
     "\\caption{Tablica liczności dla A1 ze względu na Wyk=1.}
@@ -127,12 +129,13 @@ cat(c("\\begin{table}[H]
 ))
 
 cat(c("\\begin{table}[H]
-    \\begin{minipage}{.5\\linewidth}",
+    \\begin{minipage}[t]{.45\\linewidth}",
       t2,
     "\\centering",
     "\\caption{Tablica liczności dla A1 ze względu na Wyk=2.}",
     "\\end{minipage}%
-    \\begin{minipage}{.5\\linewidth}",
+    \\hfill
+    \\begin{minipage}[t]{.45\\linewidth}",
       t3,
     "\\centering",
     "\\caption{Tablica liczności dla A1 ze względu na Wyk=3.}
@@ -142,12 +145,13 @@ cat(c("\\begin{table}[H]
 ))  
 
 cat(c("\\begin{table}[H]
-    \\begin{minipage}{.5\\linewidth}",
+    \\begin{minipage}[t]{.45\\linewidth}",
       t4,
     "\\centering",
     "\\caption{Tablica liczności dla A1 ze względu na D=Z.}",
     "\\end{minipage}%
-    \\begin{minipage}{.5\\linewidth}",
+    \\hfill
+    \\begin{minipage}[t]{.45\\linewidth}",
       t5,
     "\\centering",
     "\\caption{Tablica liczności dla A1 ze względu na D=P.}
@@ -157,12 +161,13 @@ cat(c("\\begin{table}[H]
 )) 
 
 cat(c("\\begin{table}[H]
-    \\begin{minipage}{.5\\linewidth}",
+    \\begin{minipage}[t]{.45\\linewidth}",
       t6,
     "\\centering",
     "\\caption{Tablica liczności dla A1 ze względu na D=S.}",
     "\\end{minipage}%
-    \\begin{minipage}{.5\\linewidth}",
+    \\hfill
+    \\begin{minipage}[t]{.45\\linewidth}",
       t7,
     "\\centering",
     "\\caption{Tablica liczności dla A1 ze względu na D=O.}
@@ -172,12 +177,13 @@ cat(c("\\begin{table}[H]
 )) 
 
 cat(c("\\begin{table}[H]
-    \\begin{minipage}{.5\\linewidth}",
+    \\begin{minipage}[t]{.45\\linewidth}",
       t8,
     "\\centering",
     "\\caption{Tablica liczności dla A1 ze względu na P=k.}",
     "\\end{minipage}%
-    \\begin{minipage}{.5\\linewidth}",
+    \\hfill
+    \\begin{minipage}[t]{.45\\linewidth}",
       t9,
     "\\centering",
     "\\caption{Tablica liczności dla A1 ze względu na P=m.}
@@ -250,13 +256,14 @@ t9W <- kable(tabW1Pm, format = "latex", booktabs = TRUE) %>%
 
 
 cat(c("\\begin{table}[H]
-    \\begin{minipage}{.5\\linewidth}",
+    \\begin{minipage}[t]{.45\\linewidth}",
       tW,
     "\\centering",
     "\\caption{Tablica liczności dla W1.}
       \\centering",
     "\\end{minipage}%
-    \\begin{minipage}{.5\\linewidth}",
+    \\hfill
+    \\begin{minipage}[t]{.45\\linewidth}",
       t1W,
     "\\centering",
     "\\caption{Tablica liczności dla W1 ze względu na Wyk=1.}
@@ -266,12 +273,13 @@ cat(c("\\begin{table}[H]
 ))
 
 cat(c("\\begin{table}[H]
-    \\begin{minipage}{.5\\linewidth}",
+    \\begin{minipage}[t]{.45\\linewidth}",
       t2W,
     "\\centering",
     "\\caption{Tablica liczności dla W1 ze względu na Wyk=2.}",
     "\\end{minipage}%
-    \\begin{minipage}{.5\\linewidth}",
+    \\hfill
+    \\begin{minipage}[t]{.45\\linewidth}",
       t3W,
     "\\centering",
     "\\caption{Tablica liczności dla W1 ze względu na Wyk=3.}
@@ -281,12 +289,13 @@ cat(c("\\begin{table}[H]
 ))  
 
 cat(c("\\begin{table}[H]
-    \\begin{minipage}{.5\\linewidth}",
+    \\begin{minipage}[t]{.45\\linewidth}",
       t4W,
     "\\centering",
     "\\caption{Tablica liczności dla W1 ze względu na D=Z.}",
     "\\end{minipage}%
-    \\begin{minipage}{.5\\linewidth}",
+    \\hfill
+    \\begin{minipage}[t]{.45\\linewidth}",
       t5W,
     "\\centering",
     "\\caption{Tablica liczności dla W1 ze względu na D=P.}
@@ -296,12 +305,13 @@ cat(c("\\begin{table}[H]
 )) 
 
 cat(c("\\begin{table}[H]
-    \\begin{minipage}{.5\\linewidth}",
+    \\begin{minipage}[t]{.45\\linewidth}",
       t6W,
     "\\centering",
     "\\caption{Tablica liczności dla W1 ze względu na D=S.}",
     "\\end{minipage}%
-    \\begin{minipage}{.5\\linewidth}",
+    \\hfill
+    \\begin{minipage}[t]{.45\\linewidth}",
       t7W,
     "\\centering",
     "\\caption{Tablica liczności dla W1 ze względu na D=O.}
@@ -311,12 +321,13 @@ cat(c("\\begin{table}[H]
 )) 
 
 cat(c("\\begin{table}[H]
-    \\begin{minipage}{.5\\linewidth}",
+    \\begin{minipage}[t]{.45\\linewidth}",
       t8W,
     "\\centering",
     "\\caption{Tablica liczności dla W1 ze względu na P=k.}",
     "\\end{minipage}%
-    \\begin{minipage}{.5\\linewidth}",
+    \\hfill
+    \\begin{minipage}[t]{.45\\linewidth}",
       t9W,
     "\\centering",
     "\\caption{Tablica liczności dla W1 ze względu na P=m.}
@@ -608,12 +619,22 @@ likert.density.plot(likt_atmo_gr_P,legend='Płeć')
 
 ## Zadanie 7
 ### Przedział ufności Cloppera-Pearsona
-
-```{r, echo=FALSE}
+```{r}
 personel <- read.csv2('personel.csv',header=FALSE)
 names(personel) <- c('D','S','A1','A2','W1','W2','P','Wiek','Wyk')
 personel$A2[personel$A2 == '11'] = '1'
-personel <- personel %>% mutate(across(D:Wyk,as.factor))
+personel$D[personel$D == 'O'] = 'Obsługa kadrowo-płacowa'
+personel$D[personel$D == 'P'] = 'Produkcja'
+personel$D[personel$D == 'Z'] = 'Zaopatrzenia'
+personel$D[personel$D == 'S'] = 'Sprzedaż'
+
+personel$S[personel$S == 1] = 'Tak'
+personel$S[personel$S == 0] = 'Nie'
+
+personel$P[personel$P == 'K'] = 'Kobieta'
+personel$P[personel$P == 'M'] = 'Mężczyzna'
+names(personel) <- c('Dział','S','Atmosfera przed wyjazdem','Atmosfera po wyjeździe','W1','W2','Płeć','Wiek','Wykształcenie')
+personel <- personel %>% mutate(across(Dział:Wykształcenie,as.factor))
 ```
 
 ```{r, echo=TRUE}
@@ -691,7 +712,7 @@ binom.confint(Y, n, method="exact") %>% kable %>%
 
 ### Zadowolenie z wynagrodzenia ze względu na dział
 ```{r}
-D <- personel %>% group_by(D) %>% 
+D <- personel %>% group_by(Dział) %>% 
       summarise(x = sum(W1 == 1, W1 == 2),
                 all = sum(W1 == 1, W1 == 2, W1 == -1, W1 == -2))
 ```
@@ -704,9 +725,11 @@ for(i in 1:length(D$x)){
   dfD <- rbind(dfD, clopper_pearson_ci(D$x[i], D$all[i]))
 }
 
+dfD <-cbind(dfD, "Dział"=D$Dział)
+
 dfD %>% kable() %>%
   column_spec(1, border_left = TRUE, border_right = FALSE) %>%
-  column_spec(4, border_left = FALSE, border_right = TRUE) %>%
+  column_spec(5, border_left = FALSE, border_right = TRUE) %>%
   kable_styling(latex_options = "HOLD_position")
 ```
 
@@ -735,9 +758,11 @@ for(i in 1:length(S$x)){
   dfS <- rbind(dfS, clopper_pearson_ci(S$x[i], S$all[i]))
 }
 
+dfS <- cbind(dfS, 'Stanowisko kierownicze' = S$S) 
+
 kable(dfS) %>%
   column_spec(1, border_left = TRUE, border_right = FALSE) %>%
-  column_spec(4, border_left = FALSE, border_right = TRUE) %>%
+  column_spec(5, border_left = FALSE, border_right = TRUE) %>%
   kable_styling(latex_options = "HOLD_position")
 ```
 
@@ -749,6 +774,8 @@ binom.confint(S$x, S$all, method="exact") %>% kable %>%
   kable_styling(latex_options = "HOLD_position")
 ```
 
+**Wnioski**\
+TOTALNIE NIE MAM POJĘCIA CO TU NAPISAĆ!!! :(
 
 # Część III
 ## Zadanie 8
@@ -834,17 +861,15 @@ ggplot(data = df_x2, aes(x = x)) +
   geom_point(data=df, mapping=aes(x,fun))
 ```
 
+### Generowanie rozkładu dwumianowego (sposób 2)
 
+W algorytmie poniżej generujemy rozkład dwumianowy za pomocą rozkładu jednostajnego. 
 
-```{r, include=FALSE}
-#NIE USUWAŁAM
+Algorytm ten opiera się na definicji rozkładu dwumianowego, który jest dyskretnym rozkładem prawdopodobieństwa, opisującym liczbę sukcesów w ustalonej liczbie niezależnych prób ze stałym prawdopodobieństwem sukcesu.
 
-#W algorytmie poniżej generujemy rozkład dwumianowy za pomocą rozkładu jednostajnego. Generujemy 
+W algorytmie symulujemy dużą liczbę prób ze stałą liczbą prób (n) i stałym prawdopodobieństwem sukcesu (p). Dla każdej próby generujemy losową liczbę z przedziału od 0 do 1 (standardowy rozkład jednostajny) i porównujemy ją z prawdopodobieństwem sukcesu, p. Jeśli liczba losowa jest mniejsza lub równa p, liczymy to jako sukces; w przeciwnym razie traktujemy to jako porażkę. Powtarzamy ten proces n razy, aby zasymulować pojedynczy rozkład dwumianowy, a cały proces powtarzamy wiele razy, aby wygenerować próbkę rozkładów dwumianowych. Uzyskujemy próbkę rozkładów dwumianowych, która jest zbliżona do rzeczywistego rozkładu dwumianowego.
 
-#Algorytm ten opiera się na definicji rozkładu dwumianowego, który jest dyskretnym rozkładem prawdopodobieństwa, opisującym liczbę sukcesów w ustalonej liczbie niezależnych prób ze stałym prawdopodobieństwem sukcesu.
-
-#W algorytmie symulujemy dużą liczbę prób ze stałą liczbą prób (n) i stałym prawdopodobieństwem sukcesu (p). Dla każdej próby generujemy losową liczbę z przedziału od 0 do 1 (standardowy rozkład jednostajny) i porównujemy ją z prawdopodobieństwem sukcesu, p. Jeśli liczba losowa jest mniejsza lub równa p, liczymy to jako sukces; w przeciwnym razie traktujemy to jako porażkę. Powtarzamy ten proces n razy, aby zasymulować pojedynczy rozkład dwumianowy, a cały proces powtarzamy wiele razy, aby wygenerować próbkę rozkładów dwumianowych. Uzyskujemy próbkę rozkładów dwumianowych, która jest zbliżona do rzeczywistego rozkładu dwumianowego.
-
+```{r, echo=TRUE}
 n <- 20
 p <- 0.6
 liczba_probek <- 1:1000
@@ -857,7 +882,7 @@ for (i in liczba_probek) {
 ```
 
 
-```{r, include=FALSE, fig.cap='\\label{hist2}Histogram dla próby otrzymanej przy pomocy rozkładu jednostajnego.'}
+```{r, echo=FALSE, fig.cap='\\label{hist3}Histogram dla próby otrzymanej przy pomocy rozkładu jednostajnego.'}
 df_dod <- data.frame('x'=sukcesy)
 ggplot(data = df_dod, aes(x = x)) + 
   geom_histogram(aes(y = ..density..), fill='hotpink', binwidth=1) + 
