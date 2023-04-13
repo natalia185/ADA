@@ -342,21 +342,21 @@ cat(c("\\begin{table}[H]
 
 ```{r, echo=TRUE, results='asis'}
 kable(structable(W1~P, personel) %>% addmargins(),
-      caption="Tabela wielodzielcza uzwlgędniająca zmienną W1 i P.") %>% 
+      caption="Tabela wielodzielcza uwzględniająca zmienną W1 i P.") %>% 
       column_spec(1, border_left = TRUE) %>%
       column_spec(6, border_right = TRUE) %>%
       kable_styling(latex_options = "HOLD_position")
 ```
 
 ```{r, results='asis'}
-kable(structable(W1~S, personel) %>% addmargins(), caption="Tabela wielodzielcza uzwlgędniająca zmienną W1 i S.") %>% 
+kable(structable(W1~S, personel) %>% addmargins(), caption="Tabela wielodzielcza uwzględniająca zmienną W1 i S.") %>% 
     column_spec(1, border_left = TRUE) %>%
     column_spec(6, border_right = TRUE) %>%
     kable_styling(latex_options = "HOLD_position")
 ```
 
 ```{r, results='asis'}
-kable(structable(A1~D, personel) %>% addmargins(), caption="Tabela wielodzielcza uzwlgędniająca zmienną A1 i D.") %>% 
+kable(structable(A1~D, personel) %>% addmargins(), caption="Tabela wielodzielcza uwzględniająca zmienną A1 i D.") %>% 
     column_spec(1, border_left = TRUE) %>%
     column_spec(7, border_right = TRUE) %>%
     kable_styling(latex_options = "HOLD_position")
@@ -407,7 +407,7 @@ names(personel) <- c('D','S','A1','A2','W1','W2','P','Wiek','Wyk')
 personel <- personel %>% mutate(across(D:Wyk,as.factor))
 ```
 
-```{r, fig.pos='H', echo=TRUE, fig.cap='\\label{histW1}Wykres słupkowy dla oceny wynagorodzenia przed wyjazdem'}
+```{r, fig.pos='H', echo=TRUE, fig.cap='\\label{histW1}Wykres słupkowy dla oceny wynagrodzenia przed wyjazdem'}
 daneW1 <- personel %>% count(W1) %>% data.frame()
 
 ggplot(daneW1, aes(x=W1, y=n)) + 
@@ -416,7 +416,7 @@ ggplot(daneW1, aes(x=W1, y=n)) +
     ylab('ilość')
 ```
 
-```{r, fig.pos='H', fig.cap='\\label{histW2}Wykres słupkowy dla oceny wynagorodzenia po wyjeździe'}
+```{r, fig.pos='H', fig.cap='\\label{histW2}Wykres słupkowy dla oceny wynagrodzenia po wyjeździe'}
 daneW2 <- personel %>% count(W2) %>% data.frame()
 
 ggplot(daneW2, aes(x=W2, y=n)) + 
@@ -471,7 +471,7 @@ mosaic(~D+W1, personel)
 
 Jeśli chodzi o ocenę zadowolenia ze swojego wynagrodzenia (wykres \ref{mozaikaDW1}), liczby są bardziej wyrównane. W dziale zaopatrzenia przeważają pozytywne odpowiedzi, w pozostałych trudniej zauważyć, które stanowią większość. 
 
-```{r, fig.pos='H', fig.cap='\\label{mozaikaSP}Wykres mozikowy dla stanowiska kierowniczego i płci.'}
+```{r, fig.pos='H', fig.cap='\\label{mozaikaSP}Wykres mozaikowy dla stanowiska kierowniczego i płci.'}
 mosaic(~S+P, personel)
 ```
 
@@ -616,6 +616,14 @@ likert.bar.plot(likt_atmo_gr_P) + guides(fill=guide_legend(nrow=2,byrow=TRUE,tit
 
 likert.density.plot(likt_atmo_gr_P,legend='Płeć')
 ```
+
+**Wnioski**\
+W odniesieniu do danych ogólnych bez grupowania widzimy, że większość pracowników jest zadowolonych z atmosfery w pracy w badaniu przeprowadzonych przed oraz po wyjeździe integracyjnym. Neutralne głosy oscylują w granicach od 17,5-20%, a suma negatywnych odpowiedzi jest mniejsza niż 1/5. 
+
+Jeśli pogrupujemy odpowiedzi ze względu na dział, w jakim pracuje badana osoba, widzimy, że najbardziej zadowolony jest dział obsługi kadrowo-płacowej, a najgorzej atmosferę oceniają osoby z działu sprzedaży. 
+
+Przy podziale ze względu na płeć mamy dość podobne wyniki. Obie płcie są prawie jednakowo zadowolone lub niezadowolone z atmosfery panującej w pracy. Najmniej neutralnych odpowiedzi mają jednak kobiety. 
+
 
 ## Zadanie 7
 ### Przedział ufności Cloppera-Pearsona
@@ -775,7 +783,7 @@ binom.confint(S$x, S$all, method="exact") %>% kable %>%
 ```
 
 **Wnioski**\
-TOTALNIE NIE MAM POJĘCIA CO TU NAPISAĆ!!! :(
+Funkcja zaimplementowana przez nas w każdym z rozpatrywanych przypadków daje wyniki takie, jak funkcja wbudowana, zatem wnioskujemy, że działa poprawnie.
 
 # Część III
 ## Zadanie 8
@@ -900,7 +908,7 @@ Przeprowadzimy symulację bazującą na metodzie Monte Carlo. Jej celem jest por
 1. Ustal $n$ i $p$.
 2. Generuj realizację zmiennej losowej z rozkładu $\mathcal{B}(n,p)$.
 3. Wyznacz przedział ufności dla parametru $p$ wybraną metodą.
-4. Sprzwdź czy $p \in$ przedziału ufności. Wyznacz długość przedziału.
+4. Sprawdź czy $p \in$ przedziału ufności. Wyznacz długość przedziału.
 5. Powtórz 2-4 $N$ razy.
 6. Wyznacz procent pokrycia i średnią długość przedziału.
 
@@ -1062,7 +1070,7 @@ kable(df1) %>%
     column_spec(2, border_left = FALSE, border_right = TRUE) %>%
     kable_styling(latex_options = "HOLD_position")
 ```
-- Wyniki uzyskane przy pomocy funkcji `prop.test` z uzwględnieniem poprawki na ciągłość
+- Wyniki uzyskane przy pomocy funkcji `prop.test` z uwzględnieniem poprawki na ciągłość
 ```{r}
 df2 <- data.frame(value = unlist(t2))
 df2 <- data.frame(parametr=c('statistic.X-squared', 'parameter.df', 'p.value', 'estimate.prop 1', 'estimate.prop 2', 'conf.int1', 'conf.int2', 'alternative', 'method'), wartość=df2[c(1:9),1])
@@ -1072,7 +1080,7 @@ kable(df2) %>%
     column_spec(2, border_left = FALSE, border_right = TRUE) %>%
     kable_styling(latex_options = "HOLD_position")
 ```
-- Wyniki uzyskane przy pomocy funkcji `prop.test` bezz uwzględnienia poprawki na ciągłość
+- Wyniki uzyskane przy pomocy funkcji `prop.test` bez uwzględnienia poprawki na ciągłość
 ```{r}
 df3 <- data.frame(value = unlist(t3))
 df3 <- data.frame(parametr=c('statistic.X-squared', 'parameter.df', 'p.value', 'estimate.prop 1', 'estimate.prop 2', 'conf.int1', 'conf.int2', 'alternative', 'method'), wartość=df3[c(1:9),1])
@@ -1125,7 +1133,7 @@ kable(df6) %>%
 Korzystając z testu dokładnego (`binom.test`) na poziomie istotności $\alpha = 0.05$ weryfikowaną hipotezę, że prawdopodobieństwo, iż pracownik jest zadowolony ze swojego wynagrodzenia jest większe bądź równe 0.8 należy odrzucić (p-wartość w tym teście wynosi `r t4$p.value`). Podobnie w przypadku testu asymptotycznego (`prop.test`) na poziomie istotności $\alpha = 0.05$ z zastosowaną poprawką na ciągłość (p-wartość wynosi `r t5$p.value`) oraz bez uwzględniania poprawki (p-wartość `r t6$p.value`) również odrzucamy weryfikowaną hipotezę na rzecz hipotezy alternatywnej, że prawdopodobieństwo, iż pracownik jest zadowolony ze swojego wynagrodzenia jest mniejsze od 0.8.
 
 
-c) Testujemy hipotezę, że prawdopodobieństwo, iż kobieta pracuje na stanowisku kierowniczym jest równe prawdopodobieństwu, że mężczyzna paracuje na stanowisku kierowniczym.
+c) Testujemy hipotezę, że prawdopodobieństwo, iż kobieta pracuje na stanowisku kierowniczym jest równe prawdopodobieństwu, że mężczyzna pracuje na stanowisku kierowniczym.
 
 ```{r}
 kob_kier <- 8
@@ -1147,7 +1155,7 @@ kable(dfc) %>%
 ```
 
 **Wnioski** \
-Korzystając z testu asymptotycznego (`prop.test`) na poziomie istotności $\alpha = 0.05$ nie ma podstaw do odrzucenia hipotezy, że prawdopodobieństwo, iż kobieta pracuje na stanowisku kierowniczym jest równe prawdopodobieństwu, że mężczyzna paracuje na stanowisku kierowniczym. Wartość poziomu krytycznego wynosi `r tc$p.value`.
+Korzystając z testu asymptotycznego (`prop.test`) na poziomie istotności $\alpha = 0.05$ nie ma podstaw do odrzucenia hipotezy, że prawdopodobieństwo, iż kobieta pracuje na stanowisku kierowniczym jest równe prawdopodobieństwu, że mężczyzna pracuje na stanowisku kierowniczym. Wartość poziomu krytycznego wynosi `r tc$p.value`.
 
 
 d) Testujemy hipotezę, że prawdopodobieństwo, iż kobieta jest zadowolona ze swojego wynagrodzenia jest równe prawdopodobieństwu, że mężczyzna jest zadowolony ze swojego wynagrodzenia.
@@ -1194,4 +1202,4 @@ kable(dfe) %>%
     kable_styling(latex_options = "HOLD_position")
 ```
 **Wnioski** \
-Na podstwie przeprowadzonego testu asymptotycznego (`prop.test`)  nie mamy podstaw do odrzucenia hitoptezy, że prawdopodobieństwo, iż kobieta pracuje w dziale obsługi kadrowo-płacowej jest większe lub równe prawdopodobieństwu, że mężczyzna pracuje w dziale obsługi kadrowo-płacowej. Wartość poziomu krytycznego w tym teście wynosi w przybliżeniu `r te$p.value`.
+Na podstawie przeprowadzonego testu asymptotycznego (`prop.test`)  nie mamy podstaw do odrzucenia hipotezy, że prawdopodobieństwo, iż kobieta pracuje w dziale obsługi kadrowo-płacowej jest większe lub równe prawdopodobieństwu, że mężczyzna pracuje w dziale obsługi kadrowo-płacowej. Wartość poziomu krytycznego w tym teście wynosi w przybliżeniu `r te$p.value`.
