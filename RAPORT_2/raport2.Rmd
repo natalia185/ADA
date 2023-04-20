@@ -34,15 +34,31 @@ personel <- personel %>% mutate(across(D:Wyk,as.factor))
 # Zadanie 2
 
 ```{r, echo=FALSE}
-t2 <- ftable(personel,col.vars='P',row.vars='S')
-test2 <- fisher.test(t2)
+t2 <- structable(P~S,personel) %>% addmargins()
+t1 <- ftable(personel$P,personel$S)
+test2 <- fisher.test(t1)
+```
 
-test2$p.value
+```{=latex}
+\begin{table}[ht]
+\centering
+\begin{tabular}{|c|c|c|c|}
+  \hline
+ & K & M \\ 
+  \hline
+0 & 63.00 & 110.00 \\ 
+\hline
+  1 & 8.00 & 19.00 \\ 
+   \hline
+\end{tabular}
+\end{table}
 ```
 
 ```{r}
-t2 %>% kable
+test2$p.value
 ```
+
+
 
 
 **Wnioski**
@@ -74,7 +90,7 @@ t4c <- ftable(personel,col.vars='W1',row.vars='P')
 fisher.test(t4c)
 
 t4d <- ftable(personel,col.vars='W1',row.vars='Wiek')
-fisher.test(t4d, workspace = 217000)
+fisher.test(t4d, workspace = 271020)
 ```
 
 **Wnioski**

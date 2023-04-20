@@ -28,6 +28,7 @@ library("kableExtra")
 library("ggplot2")
 library('likert')
 library("binom")
+library('stats')
 ```
 
 
@@ -852,8 +853,9 @@ df_x2 <- data.frame('x'=x2)
 
 x<- 1:20
 df <- data.frame('x'= x, 'fun'= dbinom(x,20,0.6))
-
+df_cdf <- data.frame('x'= x, 'fun'= pbinom(x,20,0.6))
 ```
+
 
 ```{r, fig.cap='\\label{hist1}Histogram dla próby otrzymanej przy pomocy funkcji wbudowanej'}
 ggplot() + 
@@ -862,12 +864,25 @@ ggplot() +
   geom_point(data=df, mapping=aes(x,fun))
 ```
 
+
 ```{r, fig.cap='\\label{hist2}Histogram dla próby otrzymanej przy pomocy funkcji generuj_dwumianowy.'}
 ggplot(data = df_x2, aes(x = x)) + 
   geom_histogram(aes(y = ..density..), fill='hotpink', binwidth=1) + 
   labs(y='gęstość', x='ilość sukcesów') +
   geom_point(data=df, mapping=aes(x,fun))
 ```
+
+```{r, fig.cap='\\label{hist1}Porównanie dystrybuanty dla próby otrzymanej przy pomocy funkcji generuj_dwumianowy z dystrybuantą teoretyczną'}
+ggplot(df_x2, aes(x,colour = 'empiryczna')) +
+  stat_ecdf() + 
+  labs(y='prawdopodobieństwo', x='ilość sukcesów') + 
+  geom_point(data=df_cdf,mapping=aes(x,fun,colour='teoretyczna'))+
+  scale_colour_manual("Przedział ufności", 
+                      breaks = c("empiryczna", "teoretyczna"),
+                      values = c("hotpink", "black"))
+```
+
+Otrzymany histogram oraz porównanie dystrybuant sugerują, że nasza funkcja odpowiednio symuluje zmienne z rozkładu dwumianowego.
 
 ### Generowanie rozkładu dwumianowego (sposób 2)
 
@@ -896,6 +911,16 @@ ggplot(data = df_dod, aes(x = x)) +
   geom_histogram(aes(y = ..density..), fill='hotpink', binwidth=1) + 
   labs(y='gęstość', x='ilość sukcesów') +
   geom_point(data=df, mapping=aes(x,fun))
+```
+
+```{r, fig.cap='\\label{hist1}Porównanie dystrybuanty dla próby otrzymanej przy pomocy rozkładu jednostajnego z dystrybuantą teoretyczną'}
+ggplot(df_dod, aes(x,colour = 'empiryczna')) +
+  stat_ecdf() + 
+  labs(y='prawdopodobieństwo', x='ilość sukcesów') + 
+  geom_point(data=df_cdf,mapping=aes(x,fun,colour='teoretyczna'))+
+  scale_colour_manual("Przedział ufności", 
+                      breaks = c("empiryczna", "teoretyczna"),
+                      values = c("hotpink", "black"))
 ```
 
 ## Zadanie 9
