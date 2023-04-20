@@ -1,0 +1,82 @@
+---
+title: "Raport 2"
+author: "Natalia Iwańska 262270, Klaudia Janicka 262268"
+date: "`r Sys.Date()`"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message=FALSE)
+knitr::opts_chunk$set(fig.width=8, fig.height=4.5) 
+pdf.options(encoding = 'CP1250')
+```
+
+```{r, include=FALSE, echo=FALSE}
+library("tidyverse")
+library("vcd")
+library("ggplot2")
+library("knitr")
+library("dplyr")
+library("xtable")
+library("kableExtra")
+library("ggplot2")
+library('likert')
+library("binom")
+```
+
+```{r, include=FALSE, echo=FALSE}
+personel <- read.csv2('personel.csv',header=FALSE)
+names(personel) <- c('D','S','A1','A2','W1','W2','P','Wiek','Wyk')
+personel$A2[personel$A2 == '11'] = '1'
+personel <- personel %>% mutate(across(D:Wyk,as.factor))
+```
+
+# Zadanie 2
+
+```{r, echo=FALSE}
+t2 <- ftable(personel,col.vars='P',row.vars='S')
+test2 <- fisher.test(t2)
+
+test2$p.value
+```
+
+```{r}
+t2 %>% kable
+```
+
+
+**Wnioski**
+
+
+# Zadanie 3
+
+```{r}
+t3a <- ftable(personel,col.vars='S',row.vars='Wiek')
+fisher.test(t3a)
+
+t3b <- ftable(personel,col.vars='S',row.vars='Wyk')
+fisher.test(t3b)
+```
+
+**Wnioski**
+
+
+# zadanie 4
+
+```{r}
+t4a <- ftable(personel,col.vars='W1',row.vars='S')
+fisher.test(t4a)
+
+t4b <- ftable(personel,col.vars='W1',row.vars='Wyk')
+fisher.test(t4b)
+
+t4c <- ftable(personel,col.vars='W1',row.vars='P')
+fisher.test(t4c)
+
+t4d <- ftable(personel,col.vars='W1',row.vars='Wiek')
+fisher.test(t4d, workspace = 217000)
+```
+
+**Wnioski**
+
+
