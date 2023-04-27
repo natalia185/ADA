@@ -33,6 +33,9 @@ personel <- personel %>% mutate(across(D:Wyk,as.factor))
 
 # Zadanie 2
 
+$H_0 \colon$ Płeć i zajmowane stanowisko nie zależą od siebie.
+
+
 ```{r, echo=FALSE}
 t2 <- structable(P~S,personel) %>% addmargins()
 t1 <- ftable(personel$P,personel$S)
@@ -46,49 +49,74 @@ test2 <- fisher.test(t1)
   \hline
  & K & M \\ 
   \hline
-0 & 63.00 & 110.00 \\ 
+nie & 63.00 & 110.00 \\ 
 \hline
-  1 & 8.00 & 19.00 \\ 
+  tak & 8.00 & 19.00 \\ 
    \hline
 \end{tabular}
 \end{table}
 ```
 
+Korzystamy z testu Fishera.
+
 ```{r}
 test2$p.value
 ```
 
-
-
-
 **Wnioski**
+
+Na zadanym poziomie istotności, $\alpha = 0.05$, wyliczona p-wartość sugeruje, że nie mamy podstaw do odrzucenia hipotezy zerowej. 
 
 
 # Zadanie 3
 
+$H_0 \colon$ Zajmowanie stanowiska kierowniczego nie zależy od wieku.
+
+Korzystamy z testu Fishera. 
+
 ```{r}
 t3a <- ftable(personel,col.vars='S',row.vars='Wiek')
 fisher.test(t3a)
+```
 
+$H_0 \colon$ Zajmowanie stanowiska kierowniczego nie zależy od wykształcenia.
+
+```{r}
 t3b <- ftable(personel,col.vars='S',row.vars='Wyk')
 fisher.test(t3b)
 ```
 
 **Wnioski**
 
+w pierwszym przeprowadzonym teście wyliczona p-wartość sugeruje, że nie ma podstaw do odrzucenia hipotezy zerowej, iż zajmowanie stanowiska kierowniczego nie zależy od wieku. Natomiast w 2. przypadku odrzucamy hipotezę zerową - zajmowanie stanowiska kierowniczego nie zależy od wykształcenia.
+
 
 # zadanie 4
+
+$H_0 \colon$ Zadowolenie z wynagrodzenia ( w pierwszym badanym okresie) nie zależy od zajmowanego stanowiska.
 
 ```{r}
 t4a <- ftable(personel,col.vars='W1',row.vars='S')
 fisher.test(t4a)
+```
 
+$H_0 \colon$ Zadowolenie z wynagrodzenia (w pierwszym badanym okresie) nie zależy od wykształcenia.
+
+```{r}
 t4b <- ftable(personel,col.vars='W1',row.vars='Wyk')
 fisher.test(t4b)
+```
 
+$H_0 \colon$ Zadowolenie z wynagrodzenia(w pierwszym badanym okresie) nie zależy od płci.
+
+```{r}
 t4c <- ftable(personel,col.vars='W1',row.vars='P')
 fisher.test(t4c)
+```
 
+$H_0 \colon$ Zadowolenie z wynagrodzenia (w pierwszym badanym okresie) nie zależy od wieku. 
+
+```{r}
 t4d <- ftable(personel,col.vars='W1',row.vars='Wiek')
 fisher.test(t4d, workspace = 271020)
 ```
