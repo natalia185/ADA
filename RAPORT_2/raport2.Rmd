@@ -124,3 +124,44 @@ fisher.test(t4d, workspace = 271020)
 **Wnioski**
 
 
+# Zadanie 7
+
+```{r}
+size_simulation <- function(alpha=0.05, M=5000){
+  ns <- c(50, 100, 1000)
+  p <- c(1/20, 9/20, 1/20, 9/20)
+  fisher <- rep(NA, 3)
+  chisq <- rep(NA, 3)
+  ratio <- rep(NA, 3)
+  for(i in 1:length(ns)){
+    n <- ns[i]
+    count_f <- 0
+    count_c <- 0
+    count_r <- 0
+    for(m in 1:M){
+      tab <- matrix(rmultinom(1, n, p), nrow=2)
+      while(0 %in% tab){
+        tab <- matrix(rmultinom(1, n, p), nrow=2)
+      }
+      if(fisher.test(tab, conf.level = 1-alpha)$p.value < alpha){
+        count_f <- count_f + 1
+      }
+      if(chisq.test(tab)$p.value < alpha){
+        count_c <- count_c + 1
+      }
+      if(assocstats(tab)$chisq_tests[,3][1] < alpha){
+        count_r <- count_r + 1
+      }
+    }
+    fisher[i] <- count_f/M
+    chisq[i] <- count_c/M
+    ratio[i] <- count_r/M
+  }
+  return(data.frame('n' = ns, 'fisher' = fisher,'chisq' = chisq, 'likelihood_ratio' = ratio))
+}
+```
+
+```{r}
+size_simulation() %>% kable
+```
+
