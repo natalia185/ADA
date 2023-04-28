@@ -3,6 +3,12 @@ title: "Raport 2"
 author: "Natalia Iwańska 262270, Klaudia Janicka 262268"
 date: "`r Sys.Date()`"
 output: pdf_document
+header-includes:
+  \usepackage{booktabs}
+  \usepackage{float}
+  \renewcommand{\tablename}{Tab.}
+  \renewcommand{\figurename}{Wykres}
+  \floatplacement{figure}{H}
 ---
 
 ```{r setup, include=FALSE}
@@ -126,10 +132,12 @@ fisher.test(t4d, workspace = 271020)
 
 # Zadanie 7
 
-```{r}
-size_simulation <- function(alpha=0.05, M=5000){
+## a)
+```{r, echo = FALSE}
+p <- c(1/20, 9/20, 1/20, 9/20)
+
+simulation <- function(p, alpha=0.05, M=5000){
   ns <- c(50, 100, 1000)
-  p <- c(1/20, 9/20, 1/20, 9/20)
   fisher <- rep(NA, 3)
   chisq <- rep(NA, 3)
   ratio <- rep(NA, 3)
@@ -161,7 +169,30 @@ size_simulation <- function(alpha=0.05, M=5000){
 }
 ```
 
-```{r}
-size_simulation() %>% kable
+
+```{r, echo = FALSE}
+read.csv('size.csv') %>% kable(col.names = c('n', 'test Fishera', 'test chi-kwadrat Pearsona', 'test ilorazu wiarogodności'), caption = 'Tu będzie coś mądrego.') %>%
+  column_spec(1, border_left = TRUE) %>%
+  column_spec(4, border_right = TRUE) %>%
+  kable_styling(latex_options = "HOLD_position")
 ```
+
+
+## b)
+
+```{r, echo = FALSE}
+p2 <- c(1/40, 19/40, 3/40, 17/40)
+#write.csv(simulation(p2), 'power.csv', row.names = FALSE)
+```
+
+
+```{r, echo = FALSE}
+read.csv('power.csv') %>% kable(col.names = c('n', 'test Fishera', 'test chi-kwadrat Pearsona', 'test ilorazu wiarogodności'), caption = 'Tu będzie coś mądrego.') %>%
+  column_spec(1, border_left = TRUE) %>%
+  column_spec(4, border_right = TRUE) %>%
+  kable_styling(latex_options = "HOLD_position")
+```
+
+
+
 
