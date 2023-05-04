@@ -39,7 +39,13 @@ personel <- personel %>% mutate(across(D:Wyk,as.factor))
 
 # Zadanie 2
 
-$H_0 \colon$ Płeć i zajmowane stanowisko nie zależą od siebie.
+Przy pomocy testu Fishera na poziomie istotności $\alpha = 0.05$ zweryfikowano następującą hipotezę:
+
+$H_0 \colon$ płeć i zajmowane stanowisko nie zależą od siebie,
+
+przeciwko
+
+$H_1 \colon$ płeć i zajmowane stanowisko są od siebie zależne.
 
 
 ```{r, echo=FALSE}
@@ -51,7 +57,7 @@ test2 <- fisher.test(t1)
 ```{=latex}
 \begin{table}[ht]
 \centering
-\begin{tabular}{|c|c|c|c|}
+\begin{tabular}{|c|c|c|}
   \hline
  & K & M \\ 
   \hline
@@ -60,81 +66,202 @@ nie & 63.00 & 110.00 \\
   tak & 8.00 & 19.00 \\ 
    \hline
 \end{tabular}
+\caption{Tablica dwudzielcza.}
 \end{table}
 ```
 
-Korzystamy z testu Fishera.
-
-```{r}
-test2$p.value
-```
 
 **Wnioski**
 
-Na zadanym poziomie istotności, $\alpha = 0.05$, wyliczona p-wartość sugeruje, że nie mamy podstaw do odrzucenia hipotezy zerowej. 
+Na zadanym poziomie istotności, $\alpha = 0.05$, wyliczona p-wartość wynosi `r test2$p.value` co sugeruje, że nie ma podstaw do odrzucenia hipotezy zerowej. Zatem można przyjąć, że prawdopodobieństwo, że na stanowisku kierowniczym pracuje kobieta jest równe prawdopodobieństwu, że na stanowisku kierowniczym pracuje mężczyzna.
 
 
 # Zadanie 3
 
-$H_0 \colon$ Zajmowanie stanowiska kierowniczego nie zależy od wieku.
+Korzystając z testu Freemana-Haltona, na poziomie istotności $\alpha = 0.05$, zweryfikowano następujace hipotezy:
 
-Korzystamy z testu Fishera. 
+* $H_0 \colon$ Zajmowanie stanowiska kierowniczego nie zależy od wieku.
 
-```{r}
+```{=latex}
+\begin{table}[ht]
+\centering
+\begin{tabular}{|c|c|c|}
+  \hline
+ & 0 & 1 \\ 
+  \hline
+1 & 23 & 3 \\ 
+\hline
+  2 & 91 & 13 \\ 
+   \hline
+3 & 39 & 6 \\ 
+   \hline
+4 & 20 & 5 \\ 
+   \hline
+\end{tabular}
+\caption{Tablica dwudzielcza dla stanowiska oraz wieku.}
+\end{table}
+```
+
+```{r, echo=FALSE}
 t3a <- ftable(personel,col.vars='S',row.vars='Wiek')
-fisher.test(t3a)
 ```
 
-$H_0 \colon$ Zajmowanie stanowiska kierowniczego nie zależy od wykształcenia.
+W przeprowadzonym teście p-wartość wyniosła `r fisher.test(t3a)$p.value`.
 
-```{r}
+
+* $H_0 \colon$ Zajmowanie stanowiska kierowniczego nie zależy od wykształcenia.
+
+```{=latex}
+\begin{table}[ht]
+\centering
+\begin{tabular}{|c|c|c|}
+  \hline
+ & 0 & 1 \\ 
+  \hline
+1 & 40 & 1 \\ 
+\hline
+2 & 123 & 17 \\ 
+   \hline
+3 & 10 & 9 \\ 
+   \hline
+\end{tabular}
+\caption{Tablica dwudzielcza dla stanowiska oraz wykształcenia.}
+\end{table}
+```
+
+```{r, echo=FALSE}
 t3b <- ftable(personel,col.vars='S',row.vars='Wyk')
-fisher.test(t3b)
 ```
+
+W przeprowadzonym teście p-wartość wyniosła `r fisher.test(t3b)$p.value`.
 
 **Wnioski**
 
-w pierwszym przeprowadzonym teście wyliczona p-wartość sugeruje, że nie ma podstaw do odrzucenia hipotezy zerowej, iż zajmowanie stanowiska kierowniczego nie zależy od wieku. Natomiast w 2. przypadku odrzucamy hipotezę zerową - zajmowanie stanowiska kierowniczego nie zależy od wykształcenia.
+w pierwszym przeprowadzonym teście wyliczona p-wartość sugeruje, że nie ma podstaw do odrzucenia hipotezy zerowej, iż zajmowanie stanowiska kierowniczego nie zależy od wieku. Natomiast w 2. przypadku odrzucono hipotezę zerową - zajmowanie stanowiska kierowniczego nie zależy od wykształcenia.
 
 
 # zadanie 4
 
-$H_0 \colon$ Zadowolenie z wynagrodzenia ( w pierwszym badanym okresie) nie zależy od zajmowanego stanowiska.
+Korzystając z testu Freemana-Haltona, na poziomie istotności $\alpha = 0.05$, zweryfikowano następujace hipotezy:
 
-```{r}
+* $H_0 \colon$ Zadowolenie z wynagrodzenia (w pierwszym badanym okresie) nie zależy od zajmowanego stanowiska.
+
+```{=latex}
+\begin{table}[ht]
+\centering
+\begin{tabular}{|c|c|c|c|c|}
+  \hline
+ & -2 & -1 & 1 & 2\\ 
+  \hline
+0 & 64 & 18 & 0 & 91 \\ 
+\hline
+1 & 10 & 2 & 2 & 13 \\ 
+   \hline
+\end{tabular}
+\caption{Tablica dwudzielcza dla zadowolenia z wynagrodzenia oraz stanowiska.}
+\end{table}
+```
+
+```{r, echo=FALSE}
 t4a <- ftable(personel,col.vars='W1',row.vars='S')
-fisher.test(t4a)
-```
-
-$H_0 \colon$ Zadowolenie z wynagrodzenia (w pierwszym badanym okresie) nie zależy od wykształcenia.
-
-```{r}
-t4b <- ftable(personel,col.vars='W1',row.vars='Wyk')
-fisher.test(t4b)
-```
-
-$H_0 \colon$ Zadowolenie z wynagrodzenia(w pierwszym badanym okresie) nie zależy od płci.
-
-```{r}
-t4c <- ftable(personel,col.vars='W1',row.vars='P')
-fisher.test(t4c)
-```
-
-$H_0 \colon$ Zadowolenie z wynagrodzenia (w pierwszym badanym okresie) nie zależy od wieku. 
-
-```{r}
-t4d <- ftable(personel,col.vars='W1',row.vars='Wiek')
-fisher.test(t4d, workspace = 271020)
 ```
 
 **Wnioski**
 
+W przeprowadzonym teście p-wartość wyniosła `r fisher.test(t4a)$p.value`. Zatem hipotezę, że zadowolenie z wynagrodzenia nie zależy od zajmowanego stanowiska należy odrzucić.
+
+* $H_0 \colon$ Zadowolenie z wynagrodzenia (w pierwszym badanym okresie) nie zależy od wykształcenia.
+
+```{=latex}
+\begin{table}[ht]
+\centering
+\begin{tabular}{|c|c|c|c|c|}
+  \hline
+ & -2 & -1 & 1 & 2\\ 
+  \hline
+1 & 20 & 3 & 0 & 18 \\ 
+\hline
+2 & 45 & 17 & 0 & 78 \\ 
+   \hline
+3 & 9 & 0 & 2 & 8 \\ 
+   \hline
+\end{tabular}
+\caption{Tablica dwudzielcza dla zadowolenia z wynagrodzenia oraz wykształcenia.}
+\end{table}
+```
+
+```{r, echo=FALSE}
+t4b <- ftable(personel,col.vars='W1',row.vars='Wyk')
+```
+
+**Wnioski**
+
+W przeprowadzonym teście p-wartość wyniosła `r fisher.test(t4b)$p.value`. Na tej podstawie odrzucono hipotezę o niezależności zadowolenia z wynagrodzenia od wykształcenia.
+
+* $H_0 \colon$ Zadowolenie z wynagrodzenia(w pierwszym badanym okresie) nie zależy od płci.
+
+```{=latex}
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|c|c|c|}
+  \hline
+ & -2 & -1 & 1 & 2\\ 
+  \hline
+K & 25 & 10 & 1 & 35 \\ 
+\hline
+M & 49 & 10 & 1 & 69 \\ 
+   \hline
+\end{tabular}
+\caption{Tablica dwudzielcza dla zadowolenia z wynagrodzenia oraz płci.}
+\end{table}
+```
+
+```{r, echo=FALSE}
+t4c <- ftable(personel,col.vars='W1',row.vars='P')
+```
+
+**Wnioski**
+
+Na podstwie otrzymanej p-wartości (`r fisher.test(t4c)$p.value`) nie ma podstw do odrzucenia hipotezy o niezależności zadowolenia z wynagrodzenia od płci. 
+
+* $H_0 \colon$ Zadowolenie z wynagrodzenia (w pierwszym badanym okresie) nie zależy od wieku. 
+
+```{=latex}
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|c|c|c|}
+  \hline
+ & -2 & -1 & 1 & 2\\ 
+  \hline
+1 & 9 & 1 & 0 & 16 \\ 
+\hline
+2 & 42 & 9 & 1 & 52 \\ 
+   \hline
+3 & 12 & 6 & 0 & 27 \\ 
+   \hline
+4 & 11 & 4 & 1 & 9 \\ 
+   \hline
+\end{tabular}
+\caption{Tablica dwudzielcza dla zadowolenia z wynagrodzenia oraz wieku.}
+\end{table}
+```
+
+```{r, echo=FALSE}
+t4d <- ftable(personel,col.vars='W1',row.vars='Wiek')
+```
+
+**Wnioski**
+
+Bazując na p-wartość, która wyniosła `r fisher.test(t4d, workspace = 271020)$p.value` nie ma podstw do odrzucenia hipotezy o niezależności zadowolenia z wynagrodzenia od wieku.
+
 
 # Zadanie 7
 
-## a)
+W celu oszacowania zarówno rozmiaru jak i mocy testu odpowiednio dla testu Fishera, testu chi-kwadrat Pearsona oraz testu ilorazu wiarogodności przeprowadzone zostały symulacje Monte Carlo z liczbą powtórzeń $M=5000$. Wszystkie testy zostały przeprowadzone na poziomie istotności $\alpha = 0.05$. Wymienione powyżej testy weryfikują hipotezę o niezależności
+
+$H_0 \colon$ $\boldsymbol p \in \mathcal{P}_0$, gdzie $\quad \mathcal{P}_0 = \{\boldsymbol p = (p_{11}, \dots, p_{1C},\dots, p_{RC}): p_{ij} = p_{i+} p_{+j}\}$.
+
 ```{r, echo = FALSE}
-p <- c(1/20, 9/20, 1/20, 9/20)
 
 simulation <- function(p, alpha=0.05, M=5000){
   ns <- c(50, 100, 1000)
@@ -170,15 +297,61 @@ simulation <- function(p, alpha=0.05, M=5000){
 ```
 
 
+## a) Szacowanie rozmiaru testu
+
+W poniższych symulacjach wektor prawdopodobieństw w rozkładzie wielomianowym jest postaci $p = \bigl(\frac{1}{20}, \frac{9}{20}, \frac{1}{20}, \frac{9}{20} \bigr)$. Wektor ten można zapisać w postaci tablicy 2x2 wraz z prawdopodobieństwami brzegowymi.
+
 ```{r, echo = FALSE}
-read.csv('size.csv') %>% kable(col.names = c('n', 'test Fishera', 'test chi-kwadrat Pearsona', 'test ilorazu wiarogodności'), caption = 'Tu będzie coś mądrego.') %>%
+data.frame('1' = c(1/20, 1/20, 1/10), '2' = c(9/20, 9/20, 9/10), 'i+' = c(1/2, 1/2, 1), row.names = c('1', '2', '+j')) %>% kable(col.names = c('1', '2', 'i+')) %>%
   column_spec(1, border_left = TRUE) %>%
   column_spec(4, border_right = TRUE) %>%
   kable_styling(latex_options = "HOLD_position")
 ```
 
+W celu weryfikacji zgodności powyższego wektora z hipotezą zerową sprawdzono, czy warunek $p_{ij} = p_{i+} p_{+j}$ jest spełniony dla każdego $i,j$ z zadanego wektora.
 
-## b)
+* $p_{11} = 0.05 \quad = \quad p_{1+}p_{+1} = 0.5 \cdot 0.10 = 0.05$
+* $p_{12} = 0.45 \quad = \quad p_{1+}p_{+2} = 0.5 \cdot 0.90 = 0.45$
+* $p_{21} = 0.05 \quad = \quad p_{2+}p_{+1} = 0.5 \cdot 0.10 = 0.05$
+* $p_{22} = 0.45 \quad = \quad p_{2+}p_{+2} = 0.5 \cdot 0.90 = 0.45$
+
+Zatem podany wektor prawdopodobieństw jest zgodny z hipotezą zerową.
+
+```{r, echo = FALSE}
+p <- c(1/20, 9/20, 1/20, 9/20)
+#write.csv(simulation(p), 'size.csv', row.names = FALSE)
+```
+
+
+```{r, echo = FALSE}
+read.csv('size.csv') %>% kable(col.names = c('n', 'test Fishera', 'test chi-kwadrat Pearsona', 'test ilorazu wiarogodności'), caption = 'Prawdopodobieństwo popełnienie błędu I rodzaju w zależności od rozmiaru próby.') %>%
+  column_spec(1, border_left = TRUE) %>%
+  column_spec(4, border_right = TRUE) %>%
+  kable_styling(latex_options = "HOLD_position")
+```
+
+**Wnioski**
+
+Prawdopodobieństwo popełnienia błędu I rodzaju zbliżone do $\alpha = 0.05$ dla testu Fishera oraz testu chi-kwadrat Pearsona otrzymano dopiero dla próby rozmiaru 1000. Natomiast w przypadku testu ilorazu wiarogodności zbliżony wynik osiągnięto już w przypadku $n=100$, a dla $n=1000$ poziom 0.05 został nieznacznie przekroczony. Ostatecznie można stwierdzić, że test Fishera oraz test chi-kwadrat Pearsona są testami na poziomie istotności $\alpha$. **(?, plus nie wiem co z testem ilorazu wiarogodności)**
+
+
+## b) Szacowanie mocy testu
+
+W poniższych symulacjach wektor prawdopodobieństw w rozkładzie wielomianowym jest postaci $p = \bigl(\frac{1}{40}, \frac{19}{40}, \frac{3}{40}, \frac{17}{40} \bigr)$. Ponownie wektor ten można zapisać w postaci tablicy 2x2 wraz z prawdopodobieństwami brzegowymi.
+
+```{r, echo = FALSE}
+data.frame('1' = c(1/40, 3/40, 4/40), '2' = c(19/40, 17/40, 36/40), 'i+' = c(1/2, 1/2, 1), row.names = c('1', '2', '+j')) %>% kable(col.names = c('1', '2', 'i+')) %>%
+  column_spec(1, border_left = TRUE) %>%
+  column_spec(4, border_right = TRUE) %>%
+  kable_styling(latex_options = "HOLD_position")
+```
+
+W celu weryfikacji zgodności powyższego wektora z hipotezą zerową sprawdzono, czy warunek $p_{ij} = p_{i+} p_{+j}$ jest spełniony dla każdego $i,j$ z zadanego wektora.
+
+* $p_{11} = 0.025 \quad \neq \quad p_{1+}p_{+1} = 0.5 \cdot 0.10 = 0.05$
+
+Zatem podany wektor prawdopodobieństw nie jest zgodny z hipotezą zerową.
+
 
 ```{r, echo = FALSE}
 p2 <- c(1/40, 19/40, 3/40, 17/40)
@@ -187,12 +360,14 @@ p2 <- c(1/40, 19/40, 3/40, 17/40)
 
 
 ```{r, echo = FALSE}
-read.csv('power.csv') %>% kable(col.names = c('n', 'test Fishera', 'test chi-kwadrat Pearsona', 'test ilorazu wiarogodności'), caption = 'Tu będzie coś mądrego.') %>%
+read.csv('power.csv') %>% kable(col.names = c('n', 'test Fishera', 'test chi-kwadrat Pearsona', 'test ilorazu wiarogodności'), caption = 'Moc testu w zależności od wielkości próby.') %>%
   column_spec(1, border_left = TRUE) %>%
   column_spec(4, border_right = TRUE) %>%
   kable_styling(latex_options = "HOLD_position")
 ```
 
+**Wnioski**
 
+Największe prawdopodobieństwo odrzucenia hipotezy zerowej, gdy jest ona fałszywa dla każdej z testowanych długości próby odnotowano dla testu ilorazu wiarogodności. Zatem można wnioskować, że spośród badanych testów test ten ma największą moc i powinniśmy go stosować. **(? do sprawdzenia)**
 
 
