@@ -106,6 +106,7 @@ Korzystając z testu Freemana-Haltona, na poziomie istotności $\alpha = 0.05$, 
 t3a <- ftable(personel,col.vars='S',row.vars='Wiek')
 ```
 
+\setlength{\leftskip}{0.5cm}
 W przeprowadzonym teście p-wartość wyniosła `r fisher.test(t3a)$p.value`.
 
 
@@ -133,7 +134,8 @@ W przeprowadzonym teście p-wartość wyniosła `r fisher.test(t3a)$p.value`.
 t3b <- ftable(personel,col.vars='S',row.vars='Wyk')
 ```
 
-W przeprowadzonym teście p-wartość wyniosła `r fisher.test(t3b)$p.value`.
+
+>W przeprowadzonym teście p-wartość wyniosła `r fisher.test(t3b)$p.value`.
 
 **Wnioski**
 
@@ -166,9 +168,12 @@ Korzystając z testu Freemana-Haltona, na poziomie istotności $\alpha = 0.05$, 
 t4a <- ftable(personel,col.vars='W1',row.vars='S')
 ```
 
-**Wnioski**
 
-W przeprowadzonym teście p-wartość wyniosła `r fisher.test(t4a)$p.value`. Zatem hipotezę, że zadowolenie z wynagrodzenia nie zależy od zajmowanego stanowiska należy odrzucić.
+>**Wnioski**
+
+
+>W przeprowadzonym teście p-wartość wyniosła `r fisher.test(t4a)$p.value`. Zatem hipotezę, że zadowolenie z wynagrodzenia nie zależy od zajmowanego stanowiska należy odrzucić.
+\setlength{\leftskip}{0pt}
 
 * $H_0 \colon$ Zadowolenie z wynagrodzenia (w pierwszym badanym okresie) nie zależy od wykształcenia.
 
@@ -194,9 +199,9 @@ W przeprowadzonym teście p-wartość wyniosła `r fisher.test(t4a)$p.value`. Za
 t4b <- ftable(personel,col.vars='W1',row.vars='Wyk')
 ```
 
-**Wnioski**
+>**Wnioski**
 
-W przeprowadzonym teście p-wartość wyniosła `r fisher.test(t4b)$p.value`. Na tej podstawie odrzucono hipotezę o niezależności zadowolenia z wynagrodzenia od wykształcenia.
+>W przeprowadzonym teście p-wartość wyniosła `r fisher.test(t4b)$p.value`. Na tej podstawie odrzucono hipotezę o niezależności zadowolenia z wynagrodzenia od wykształcenia.
 
 * $H_0 \colon$ Zadowolenie z wynagrodzenia(w pierwszym badanym okresie) nie zależy od płci.
 
@@ -220,9 +225,9 @@ M & 49 & 10 & 1 & 69 \\
 t4c <- ftable(personel,col.vars='W1',row.vars='P')
 ```
 
-**Wnioski**
+>**Wnioski**
 
-Na podstwie otrzymanej p-wartości (`r fisher.test(t4c)$p.value`) nie ma podstw do odrzucenia hipotezy o niezależności zadowolenia z wynagrodzenia od płci. 
+>Na podstwie otrzymanej p-wartości (`r fisher.test(t4c)$p.value`) nie ma podstw do odrzucenia hipotezy o niezależności zadowolenia z wynagrodzenia od płci. 
 
 * $H_0 \colon$ Zadowolenie z wynagrodzenia (w pierwszym badanym okresie) nie zależy od wieku. 
 
@@ -250,24 +255,54 @@ Na podstwie otrzymanej p-wartości (`r fisher.test(t4c)$p.value`) nie ma podstw 
 t4d <- ftable(personel,col.vars='W1',row.vars='Wiek')
 ```
 
-**Wnioski**
+>**Wnioski**
 
-Bazując na p-wartość, która wyniosła `r fisher.test(t4d, workspace = 271020)$p.value` nie ma podstaw do odrzucenia hipotezy o niezależności zadowolenia z wynagrodzenia od wieku.
+>Bazując na p-wartość, która wyniosła `r fisher.test(t4d, workspace = 271020)$p.value` nie ma podstaw do odrzucenia hipotezy o niezależności zadowolenia z wynagrodzenia od wieku.
 
 # Zadanie 6
 
+Korzystając z testu chi-kwadrat Pearsona i z testu chi-kwadrat ilorazu wiarogodności na poziomie istotności $\alpha = 0.01$ zweryfikowano następującą hipotezę
+
 $H_0 \colon$ Zadowolenie z wynagrodzenia nie zależy od zajmowanego stanowiska.
 
-```{r}
-chisq.test(ftable(personel$W1,personel$S))
-assocstats(ftable(personel$W1,personel$S))$chisq_tests[,3][1]
+```{=latex}
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|c|}
+  \hline
+ & 0 & 1\\ 
+  \hline
+1 & 64 & 10 \\ 
+\hline
+2 & 18 & 2 \\ 
+   \hline
+3 & 0 & 2 \\ 
+   \hline
+4 & 91 & 13 \\ 
+   \hline
+\end{tabular}
+\caption{Tablica dwudzielcza dla zadowolenia z wynagrodzenia oraz zajmowanego stanowiska.}
+\end{table}
+```
+
+
+```{r, echo=FALSE}
+chisq = chisq.test(ftable(personel$W1,personel$S)) 
+likelihood = assocstats(ftable(personel$W1,personel$S))$chisq_tests[,3][1] 
+
+data.frame('test' = c('chi-kwadrat Pearsona', 'chi-kwadratilorazu wiarogodności'),
+           'p-wartość' = c(chisq$p.value, unname(likelihood))) %>% 
+  kable(caption = 'P-wartości dla poszczególnych testów.') %>%
+  column_spec(1, border_left = TRUE) %>%
+  column_spec(2, border_right = TRUE) %>%
+  kable_styling(latex_options = "HOLD_position")
 ```
 
 **Wnioski**
 
-P-wartość przeprowadzonego testu chi-kwadrat Pearsona wynosi `r chisq.test(ftable(personel$W1,personel$S))$p.value`, co oznacza, że odrzucamy hipotezę zerową na poziomie ufności $0.01$. Natomiast p-wartość testu chi-kwadratu ilorazu wiarygodności jest równa 0.03968965 co oznacza, że nie odrzucamy hipotezy zerowej na rzecz alternatywnej. 
+P-wartość przeprowadzonego testu chi-kwadrat Pearsona wynosi `r chisq.test(ftable(personel$W1,personel$S))$p.value`, co oznacza, że hipotezę zerową na poziomie ufności $0.01$ należy odrzucić. Natomiast p-wartość testu chi-kwadratu ilorazu wiarygodności jest równa 0.03968965 co oznacza, że nie ma podstaw do odrzucenia hipotezy zerowej na rzecz alternatywnej. 
 
-W zadaniu 4a, jak i w tym, badamy te same hipotezy, ale na innych poziomach istotności. W zadaniu 4a, jak również i z wykorzystaniem testu chi-kwadrat ilorazu wiarygodności nie odrzucamy hipotezy zerowej.
+W zadaniu 4a, jak i w tym, badamy te same hipotezy, ale na innych poziomach istotności. W zadaniu 4a, jak również i z wykorzystaniem testu chi-kwadrat ilorazu wiarygodności nie odrzucamy hipotezy zerowej. **(w 4a odrzucamy $H_0$ -> trzeba inny wniosek)**
 
 # Zadanie 7
 
