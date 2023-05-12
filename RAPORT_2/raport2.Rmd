@@ -29,6 +29,9 @@ library("ggplot2")
 library('likert')
 library("binom")
 library("DescTools")
+library(pracma)
+library(ca)
+library(psych)
 ```
 
 ```{r, include=FALSE, echo=FALSE}
@@ -267,7 +270,7 @@ Korzystając z testu chi-kwadrat Pearsona i z testu chi-kwadrat ilorazu wiarogod
 $H_0 \colon$ Zadowolenie z wynagrodzenia nie zależy od zajmowanego stanowiska.
 
 ```{=latex}
-\begin{table}[H]
+\begin{table}[H]g
 \centering
 \begin{tabular}{|c|c|c|}
   \hline
@@ -467,4 +470,50 @@ tau_c <- (tau_c_col + tau_c_row)/2
 tau_c
 ```
 
+# Zadanie 9
+```{r}
+tabela <- as.matrix(ftable(personel$Wyk, personel$W1))
+
+analiza.korespondencji <- function(tabela){
+  n <- length(tabela[,1])
+  m <- length(tabela[1,])
+  n <- sum(rowSums(tabela))
+  P <- tabela/n
+  r <- rowSums(P)
+  c <- colSums(P)
+  d_r <- diag(r)
+  d_c <- diag(c)
+  R <- inv(d_r)
+  C <- inv(d_c)
+  A <- inv(d_r ^ (1/2)) %*% (P - r %*% t(c)) %*% inv(d_c ^ (1/2))
+  total_inertia <- tr(t(A) %*% A)
+  A <- svd(A)
+  Gamma <- diag(A$d)
+  U <- A$u
+  V <- A$v
+  F_ <- inv(d_r^(1/2)) %*% U %*% Gamma
+  G <- inv(d_c^(1/2)) %*% V %*% Gamma
+  F_ <- F_[,1:2]
+  G <- G[,1:2]
+  xs_row <- F_[,1] #współrzędne x dla wierszy
+  ys_row <- F_[,2] #współrzędne y dla wierszy
+  xs_col <- G[,1] #współrzędne x dla kolumn
+  ys_col <- G[,2] #współrzędne y dla kolumn
+  gam <- A$d ^ 2
+  dim1 <- round(sum(gam[1])/sum(gam), 3) * 100
+  dim2 <- round(sum(gam[2])/sum(gam), 3) * 100
+  df_row <- data.frame('Dim.1' = xs_row, 'Dim.2' = ys_row, row.names = rownames(tabela))
+  df_col <- data.frame('Dim.1' = xs_col, 'Dim.2' = ys_col, row.names = colnames(tabela))
+  
+  ggplot() + geom_point(aes(x=df_row$Dim.1, y=df_row$Dim.2), color='blue', shape = 16) +
+    geom_text(aes(x=df_row$Dim.1, y=df_row$Dim.2),label=rownames(df_row), 
+              nudge_x = 0, nudge_y = 0.02, size=2.5, color='blue') +
+    geom_point(aes(x=df_col$Dim.1, y=df_col$Dim.2), color='red', shape=17) +
+    geom_text(aes(x=df_col$Dim.1, y=df_col$Dim.2),label=rownames(df_col), 
+              nudge_x = 0, nudge_y = -0.02, size=2.5, color='red') +
+    xlab(paste('Dim 1 (', as.character(round(dim1,2)), '%)')) +
+    ylab(paste('Dim 2 (', as.character(round(dim2,2)), '%)'))
+}
+analiza.korespondencji(tabela)
+```
 
