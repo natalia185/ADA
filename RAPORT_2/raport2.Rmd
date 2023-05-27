@@ -3,6 +3,7 @@ title: "Raport 2"
 author: "Natalia Iwańska 262270, Klaudia Janicka 262268"
 date: "`r Sys.Date()`"
 output: pdf_document
+fig_caption: yes
 header-includes:
   \usepackage{booktabs}
   \usepackage{float}
@@ -65,9 +66,9 @@ test2 <- fisher.test(t1)
   \hline
  & K & M \\ 
   \hline
-nie & 63.00 & 110.00 \\ 
+NIE & 63.00 & 110.00 \\ 
 \hline
-  tak & 8.00 & 19.00 \\ 
+  TAK & 8.00 & 19.00 \\ 
    \hline
 \end{tabular}
 \caption{Tablica dwudzielcza.}
@@ -91,15 +92,15 @@ Korzystając z testu Freemana-Haltona, na poziomie istotności $\alpha = 0.05$, 
 \centering
 \begin{tabular}{|c|c|c|}
   \hline
- & 0 & 1 \\ 
+ & NIE & TAK \\ 
   \hline
-1 & 23 & 3 \\ 
+< 25 & 23 & 3 \\ 
 \hline
-  2 & 91 & 13 \\ 
+  26-35 & 91 & 13 \\ 
    \hline
-3 & 39 & 6 \\ 
+36-50 & 39 & 6 \\ 
    \hline
-4 & 20 & 5 \\ 
+> 50 & 20 & 5 \\ 
    \hline
 \end{tabular}
 \caption{Tablica dwudzielcza dla stanowiska oraz wieku.}
@@ -121,13 +122,13 @@ W przeprowadzonym teście p-wartość wyniosła `r fisher.test(t3a)$p.value`.
 \centering
 \begin{tabular}{|c|c|c|}
   \hline
- & 0 & 1 \\ 
+ & NIE & TAK \\ 
   \hline
-1 & 40 & 1 \\ 
+Zawodowe & 40 & 1 \\ 
 \hline
-2 & 123 & 17 \\ 
+Średnie & 123 & 17 \\ 
    \hline
-3 & 10 & 9 \\ 
+Wyższe & 10 & 9 \\ 
    \hline
 \end{tabular}
 \caption{Tablica dwudzielcza dla stanowiska oraz wykształcenia.}
@@ -159,9 +160,9 @@ Korzystając z testu Freemana-Haltona, na poziomie istotności $\alpha = 0.05$, 
   \hline
  & -2 & -1 & 1 & 2\\ 
   \hline
-0 & 64 & 18 & 0 & 91 \\ 
+NIE & 64 & 18 & 0 & 91 \\ 
 \hline
-1 & 10 & 2 & 2 & 13 \\ 
+TAK & 10 & 2 & 2 & 13 \\ 
    \hline
 \end{tabular}
 \caption{Tablica dwudzielcza dla zadowolenia z wynagrodzenia oraz stanowiska.}
@@ -188,11 +189,11 @@ t4a <- ftable(personel,col.vars='W1',row.vars='S')
   \hline
  & -2 & -1 & 1 & 2\\ 
   \hline
-1 & 20 & 3 & 0 & 18 \\ 
+Zawodowe & 20 & 3 & 0 & 18 \\ 
 \hline
-2 & 45 & 17 & 0 & 78 \\ 
+Średnie & 45 & 17 & 0 & 78 \\ 
    \hline
-3 & 9 & 0 & 2 & 8 \\ 
+Wyższe & 9 & 0 & 2 & 8 \\ 
    \hline
 \end{tabular}
 \caption{Tablica dwudzielcza dla zadowolenia z wynagrodzenia oraz wykształcenia.}
@@ -242,13 +243,13 @@ t4c <- ftable(personel,col.vars='W1',row.vars='P')
   \hline
  & -2 & -1 & 1 & 2\\ 
   \hline
-1 & 9 & 1 & 0 & 16 \\ 
+< 25 & 9 & 1 & 0 & 16 \\ 
 \hline
-2 & 42 & 9 & 1 & 52 \\ 
+26-35 & 42 & 9 & 1 & 52 \\ 
    \hline
-3 & 12 & 6 & 0 & 27 \\ 
+36-50 & 12 & 6 & 0 & 27 \\ 
    \hline
-4 & 11 & 4 & 1 & 9 \\ 
+> 50 & 11 & 4 & 1 & 9 \\ 
    \hline
 \end{tabular}
 \caption{Tablica dwudzielcza dla zadowolenia z wynagrodzenia oraz wieku.}
@@ -308,7 +309,7 @@ P-wartość przeprowadzonego testu chi-kwadrat Pearsona wynosi `r chisq.test(fta
 
 W zadaniu 4a, przeprowadzając test Freemana-Haltona, odrzucono na poziomie istotności $0.05$ tę samą hipotezę, którą badano w zadaniu 6. 
 
-Zatem wyniki testu Freemana-Haltona na poziomie istotności, jak i testu chi-kwadrat Pearsona dla $\alpha = 0.01$ sugerują, żeby odrzucić niezależność zadowolenia z wynagrodzenia i stanowiska zajmowanego przez pracownika, natomiast w przypadku testu chi-kwadrat ilorazu wiarygodności na poziomie $0.01$ nie ma podstaw do odrzucenia hipotezy. 
+Zatem wyniki testu Freemana-Haltona na poziomie istotności $0.05$, jak i testu chi-kwadrat Pearsona dla $\alpha = 0.01$ sugerują, żeby odrzucić niezależność zadowolenia z wynagrodzenia i stanowiska zajmowanego przez pracownika, natomiast w przypadku testu chi-kwadrat ilorazu wiarygodności na poziomie $0.01$ nie ma podstaw do odrzucenia hipotezy. 
 
 # Zadanie 7
 
@@ -387,7 +388,7 @@ read.csv('size.csv') %>% kable(col.names = c('n', 'test Fishera', 'test chi-kwad
 
 **Wnioski**
 
-Prawdopodobieństwo popełnienia błędu I rodzaju zbliżone do $\alpha = 0.05$ dla testu Fishera oraz testu chi-kwadrat Pearsona otrzymano dopiero dla próby rozmiaru 1000. Natomiast w przypadku testu ilorazu wiarogodności zbliżony wynik osiągnięto już w przypadku $n=100$, a dla $n=1000$ poziom 0.05 został nieznacznie przekroczony. Dla $n=50$ żaden z testów nie zbliżył się do wartości $\alpha$. Ostatecznie można stwierdzić, że test Fishera oraz test chi-kwadrat Pearsona dla n = 1000 oraz test ilorazu wiarygodności dla $n \geq 0$ są testami na poziomie istotności $\alpha$,
+Prawdopodobieństwo popełnienia błędu I rodzaju zbliżone do $\alpha = 0.05$ dla testu Fishera oraz testu chi-kwadrat Pearsona otrzymano dopiero dla próby rozmiaru 1000. Natomiast w przypadku testu ilorazu wiarogodności zbliżony wynik osiągnięto już w przypadku $n=100$, a dla $n=1000$ poziom 0.05 został nieznacznie przekroczony. Dla $n=50$ żaden z testów nie zbliżył się do wartości $\alpha$. Ostatecznie można stwierdzić, że test Fishera oraz test chi-kwadrat Pearsona dla n = 1000 oraz test ilorazu wiarygodności dla $n \geq 100$ są testami na poziomie istotności $\alpha$,
 
 
 ## b) Szacowanie mocy testu
@@ -524,15 +525,18 @@ analiza.korespondencji <- function(tabela){
     xlab(paste('Dim 1 (', as.character(round(dim1,2)), '%)')) +
     ylab(paste('Dim 2 (', as.character(round(dim2,2)), '%)'))
 }
+```
 
+
+```{r wlasna, echo=FALSE, fig.cap="Wykres korespondencji dla zadowolenia z wynagrodzenia w pierwszym okresie i wykształcenia uzyskany za pomocą funkcji wbudowanej."}
 analiza.korespondencji(tabela)
 ```
 
-```{r, echo=FALSE}
+```{r wbudowana, echo=FALSE, fig.cap="Wykres korespondencji dla zadowolenia z wynagrodzenia w pierwszym okresie i wykształcenia, wykonany za pomocą funkcji wbudowanej z biblioteki 'ca'."}
 plot(ca(tabela))
 ```
 
 **Wnioski** 
 
-Wyniki analizy korespondencji uzyskane przy pomocy funkcji wbudowanej są identyczne jak w przypadku funkcji wbudowanej, więc można wywnioskować, że funkcja została zaimplementowana poprawnie. 
+Wyniki analizy korespondencji uzyskane przy pomocy funkcji wbudowanej (Wykres 1.) są identyczne jak w przypadku funkcji wbudowanej (Wykres 2.), więc można wywnioskować, że funkcja została zaimplementowana poprawnie. 
 
