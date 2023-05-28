@@ -3,6 +3,7 @@ title: "Raport 2"
 author: "Natalia Iwańska 262270, Klaudia Janicka 262268"
 date: "`r Sys.Date()`"
 output: pdf_document
+fig_caption: yes
 header-includes:
   \usepackage{booktabs}
   \usepackage{float}
@@ -65,9 +66,9 @@ test2 <- fisher.test(t1)
   \hline
  & K & M \\ 
   \hline
-nie & 63.00 & 110.00 \\ 
+NIE & 63.00 & 110.00 \\ 
 \hline
-  tak & 8.00 & 19.00 \\ 
+  TAK & 8.00 & 19.00 \\ 
    \hline
 \end{tabular}
 \caption{Tablica dwudzielcza.}
@@ -82,7 +83,7 @@ Na zadanym poziomie istotności, $\alpha = 0.05$, wyliczona p-wartość wynosi `
 
 # Zadanie 3
 
-Korzystając z testu Freemana-Haltona, na poziomie istotności $\alpha = 0.05$, zweryfikowano następujace hipotezy:
+Korzystając z testu Freemana-Haltona, na poziomie istotności $\alpha = 0.05$, zweryfikowano następujące hipotezy:
 
 * $H_0 \colon$ Zajmowanie stanowiska kierowniczego nie zależy od wieku.
 
@@ -91,15 +92,15 @@ Korzystając z testu Freemana-Haltona, na poziomie istotności $\alpha = 0.05$, 
 \centering
 \begin{tabular}{|c|c|c|}
   \hline
- & 0 & 1 \\ 
+ & NIE & TAK \\ 
   \hline
-1 & 23 & 3 \\ 
+< 25 & 23 & 3 \\ 
 \hline
-  2 & 91 & 13 \\ 
+  26-35 & 91 & 13 \\ 
    \hline
-3 & 39 & 6 \\ 
+36-50 & 39 & 6 \\ 
    \hline
-4 & 20 & 5 \\ 
+> 50 & 20 & 5 \\ 
    \hline
 \end{tabular}
 \caption{Tablica dwudzielcza dla stanowiska oraz wieku.}
@@ -117,17 +118,17 @@ W przeprowadzonym teście p-wartość wyniosła `r fisher.test(t3a)$p.value`.
 * $H_0 \colon$ Zajmowanie stanowiska kierowniczego nie zależy od wykształcenia.
 
 ```{=latex}
-\begin{table}[ht]
+\begin{table}[H]
 \centering
 \begin{tabular}{|c|c|c|}
   \hline
- & 0 & 1 \\ 
+ & NIE & TAK \\ 
   \hline
-1 & 40 & 1 \\ 
+Zawodowe & 40 & 1 \\ 
 \hline
-2 & 123 & 17 \\ 
+Średnie & 123 & 17 \\ 
    \hline
-3 & 10 & 9 \\ 
+Wyższe & 10 & 9 \\ 
    \hline
 \end{tabular}
 \caption{Tablica dwudzielcza dla stanowiska oraz wykształcenia.}
@@ -143,12 +144,12 @@ t3b <- ftable(personel,col.vars='S',row.vars='Wyk')
 
 **Wnioski**
 
-w pierwszym przeprowadzonym teście wyliczona p-wartość sugeruje, że nie ma podstaw do odrzucenia hipotezy zerowej, iż zajmowanie stanowiska kierowniczego nie zależy od wieku. Natomiast w 2. przypadku odrzucono hipotezę zerową - zajmowanie stanowiska kierowniczego nie zależy od wykształcenia.
+W pierwszym przeprowadzonym teście wyliczona p-wartość sugeruje, że nie ma podstaw do odrzucenia hipotezy zerowej, iż zajmowanie stanowiska kierowniczego nie zależy od wieku. Natomiast w 2. przypadku odrzucono hipotezę zerową - zajmowanie stanowiska kierowniczego nie zależy od wykształcenia.
 
 
 # zadanie 4
 
-Korzystając z testu Freemana-Haltona, na poziomie istotności $\alpha = 0.05$, zweryfikowano następujace hipotezy:
+Korzystając z testu Freemana-Haltona, na poziomie istotności $\alpha = 0.05$, zweryfikowano następujące hipotezy:
 
 * $H_0 \colon$ Zadowolenie z wynagrodzenia (w pierwszym badanym okresie) nie zależy od zajmowanego stanowiska.
 
@@ -159,9 +160,9 @@ Korzystając z testu Freemana-Haltona, na poziomie istotności $\alpha = 0.05$, 
   \hline
  & -2 & -1 & 1 & 2\\ 
   \hline
-0 & 64 & 18 & 0 & 91 \\ 
+NIE & 64 & 18 & 0 & 91 \\ 
 \hline
-1 & 10 & 2 & 2 & 13 \\ 
+TAK & 10 & 2 & 2 & 13 \\ 
    \hline
 \end{tabular}
 \caption{Tablica dwudzielcza dla zadowolenia z wynagrodzenia oraz stanowiska.}
@@ -188,11 +189,11 @@ t4a <- ftable(personel,col.vars='W1',row.vars='S')
   \hline
  & -2 & -1 & 1 & 2\\ 
   \hline
-1 & 20 & 3 & 0 & 18 \\ 
+Zawodowe & 20 & 3 & 0 & 18 \\ 
 \hline
-2 & 45 & 17 & 0 & 78 \\ 
+Średnie & 45 & 17 & 0 & 78 \\ 
    \hline
-3 & 9 & 0 & 2 & 8 \\ 
+Wyższe & 9 & 0 & 2 & 8 \\ 
    \hline
 \end{tabular}
 \caption{Tablica dwudzielcza dla zadowolenia z wynagrodzenia oraz wykształcenia.}
@@ -231,7 +232,7 @@ t4c <- ftable(personel,col.vars='W1',row.vars='P')
 
 >**Wnioski**
 
->Na podstwie otrzymanej p-wartości (`r fisher.test(t4c)$p.value`) nie ma podstw do odrzucenia hipotezy o niezależności zadowolenia z wynagrodzenia od płci. 
+>Na podstawie otrzymanej p-wartości (`r fisher.test(t4c)$p.value`) nie ma podstaw do odrzucenia hipotezy o niezależności zadowolenia z wynagrodzenia od płci. 
 
 * $H_0 \colon$ Zadowolenie z wynagrodzenia (w pierwszym badanym okresie) nie zależy od wieku. 
 
@@ -242,13 +243,13 @@ t4c <- ftable(personel,col.vars='W1',row.vars='P')
   \hline
  & -2 & -1 & 1 & 2\\ 
   \hline
-1 & 9 & 1 & 0 & 16 \\ 
+< 25 & 9 & 1 & 0 & 16 \\ 
 \hline
-2 & 42 & 9 & 1 & 52 \\ 
+26-35 & 42 & 9 & 1 & 52 \\ 
    \hline
-3 & 12 & 6 & 0 & 27 \\ 
+36-50 & 12 & 6 & 0 & 27 \\ 
    \hline
-4 & 11 & 4 & 1 & 9 \\ 
+> 50 & 11 & 4 & 1 & 9 \\ 
    \hline
 \end{tabular}
 \caption{Tablica dwudzielcza dla zadowolenia z wynagrodzenia oraz wieku.}
@@ -270,7 +271,7 @@ Korzystając z testu chi-kwadrat Pearsona i z testu chi-kwadrat ilorazu wiarogod
 $H_0 \colon$ Zadowolenie z wynagrodzenia nie zależy od zajmowanego stanowiska.
 
 ```{=latex}
-\begin{table}[H]g
+\begin{table}[H]
 \centering
 \begin{tabular}{|c|c|c|}
   \hline
@@ -306,7 +307,9 @@ data.frame('test' = c('chi-kwadrat Pearsona', 'chi-kwadratilorazu wiarogodności
 
 P-wartość przeprowadzonego testu chi-kwadrat Pearsona wynosi `r chisq.test(ftable(personel$W1,personel$S))$p.value`, co oznacza, że hipotezę zerową na poziomie ufności $0.01$ należy odrzucić. Natomiast p-wartość testu chi-kwadratu ilorazu wiarygodności jest równa 0.03968965 co oznacza, że nie ma podstaw do odrzucenia hipotezy zerowej na rzecz alternatywnej. 
 
-W zadaniu 4a, jak i w tym, badamy te same hipotezy, ale na innych poziomach istotności. W zadaniu 4a, jak również i z wykorzystaniem testu chi-kwadrat ilorazu wiarygodności nie odrzucamy hipotezy zerowej. **(w 4a odrzucamy $H_0$ -> trzeba inny wniosek)**
+W zadaniu 4a, przeprowadzając test Freemana-Haltona, odrzucono na poziomie istotności $0.05$ tę samą hipotezę, którą badano w zadaniu 6. 
+
+Zatem wyniki testu Freemana-Haltona na poziomie istotności $0.05$, jak i testu chi-kwadrat Pearsona dla $\alpha = 0.01$ sugerują, żeby odrzucić niezależność zadowolenia z wynagrodzenia i stanowiska zajmowanego przez pracownika, natomiast w przypadku testu chi-kwadrat ilorazu wiarygodności na poziomie $0.01$ nie ma podstaw do odrzucenia hipotezy. 
 
 # Zadanie 7
 
@@ -385,7 +388,7 @@ read.csv('size.csv') %>% kable(col.names = c('n', 'test Fishera', 'test chi-kwad
 
 **Wnioski**
 
-Prawdopodobieństwo popełnienia błędu I rodzaju zbliżone do $\alpha = 0.05$ dla testu Fishera oraz testu chi-kwadrat Pearsona otrzymano dopiero dla próby rozmiaru 1000. Natomiast w przypadku testu ilorazu wiarogodności zbliżony wynik osiągnięto już w przypadku $n=100$, a dla $n=1000$ poziom 0.05 został nieznacznie przekroczony. Ostatecznie można stwierdzić, że test Fishera oraz test chi-kwadrat Pearsona są testami na poziomie istotności $\alpha$. **(?, plus nie wiem co z testem ilorazu wiarogodności)**
+Prawdopodobieństwo popełnienia błędu I rodzaju zbliżone do $\alpha = 0.05$ dla testu Fishera oraz testu chi-kwadrat Pearsona otrzymano dopiero dla próby rozmiaru 1000. Natomiast w przypadku testu ilorazu wiarogodności zbliżony wynik osiągnięto już w przypadku $n=100$, a dla $n=1000$ poziom 0.05 został nieznacznie przekroczony. Dla $n=50$ żaden z testów nie zbliżył się do wartości $\alpha$. Ostatecznie można stwierdzić, że test Fishera oraz test chi-kwadrat Pearsona dla n = 1000 oraz test ilorazu wiarygodności dla $n \geq 100$ są testami na poziomie istotności $\alpha$,
 
 
 ## b) Szacowanie mocy testu
@@ -421,8 +424,7 @@ read.csv('power.csv') %>% kable(col.names = c('n', 'test Fishera', 'test chi-kwa
 
 **Wnioski**
 
-Największe prawdopodobieństwo odrzucenia hipotezy zerowej, gdy jest ona fałszywa dla każdej z testowanych długości próby odnotowano dla testu ilorazu wiarogodności. Zatem można wnioskować, że spośród badanych testów test ten ma największą moc i powinniśmy go stosować. **(? do sprawdzenia)**
-
+Największe prawdopodobieństwo odrzucenia hipotezy zerowej, gdy jest ona fałszywa dla każdej z testowanych długości próby odnotowano dla testu ilorazu wiarogodności. Zatem można wnioskować, że spośród badanych testów test ten ma największą moc i powinniśmy go stosować. 
 
 # Zadanie 8
 
@@ -436,7 +438,7 @@ t8b <- structable(W1~Wyk,personel)
 t8c <- structable(S~Wyk,personel)
 
 t8a %>% addmargins() %>% 
-  kable(caption='Tablica dwudzielcza dla zmniennej W1 oraz S.') %>%
+  kable(caption='Tablica dwudzielcza dla zmiennej W1 oraz S.') %>%
   column_spec(1, border_left = TRUE) %>%
   column_spec(6, border_right = TRUE) %>%
   kable_styling(latex_options = "HOLD_position")
@@ -446,13 +448,13 @@ tau_a_row <- GoodmanKruskalTau(t8a, direction="row")
 tau_a <- (tau_a_col + tau_a_row)/2
 ```
 
->Dla powyższej tabeli przeprowadzono test Fishera na poziomie istotności $\alpha=0.5$, w celu sprawdzenia hipotezy o niezależności. Na podstawie otrzymanej p-wartości (`r round(fisher.test(t8a)$p.value,4)`) odrzucono hipotezę o niezależności. Ponieważ zmienna S jest nominalna to do wyliczenia miary współzmiennności wykorzystano współczynnik tau (współczynnik Goodmana i Kruskala), którego wartość wyniosła `r tau_a`. Zatem można uznać, że **POTRZEBNE WNIOSKI**
+>Dla powyższej tabeli przeprowadzono test Fishera na poziomie istotności $\alpha=0.05$, w celu sprawdzenia hipotezy o niezależności. Na podstawie otrzymanej p-wartości (`r round(fisher.test(t8a)$p.value,4)`) odrzucono hipotezę o niezależności. Ponieważ zmienna S jest nominalna to do wyliczenia miary współzmienności wykorzystano współczynnik $\tau$ (współczynnik Goodmana i Kruskala), którego wartość wyniosła `r tau_a`. Z własności $\tau \colon \tau = 0$, gdy badane zmienne losowe są niezależne. Zatem można uznać, że zmienne nie są niezależne, gdyż obliczone $\tau \neq 0$. 
 
 * zadowolenie z wynagrodzenia (w pierwszym badanym okresie) i wykształcenie
 
 ```{r, echo=FALSE}
 t8b %>% addmargins() %>% 
-  kable(caption='Tablica dwudzielcza dla zmniennej W1 oraz Wyk.') %>%
+  kable(caption='Tablica dwudzielcza dla zmiennej W1 oraz Wyk.') %>%
   column_spec(1, border_left = TRUE) %>%
   column_spec(6, border_right = TRUE) %>%
   kable_styling(latex_options = "HOLD_position")
@@ -460,13 +462,13 @@ t8b %>% addmargins() %>%
 gamma_b <- GoodmanKruskalGamma(t8b)
 ```
 
->Dla powyższej tabeli przeprowadzono test Fishera na poziomie istotności $\alpha=0.5$, w celu sprawdzenia hipotezy o niezależności. Na podstawie otrzymanej p-wartości (`r round(fisher.test(t8b)$p.value,4)`) odrzucono hipotezę o niezależności. Ponieważ obie zmienne są porządkowe do wyliczenia miary współzmiennności wykorzystano współczynnik gamma, którego wartość wyniosła `r gamma_b`. Zatem można uznać, że zmienne są ze sobą dodatnio zależne.
+>Dla powyższej tabeli przeprowadzono test Fishera na poziomie istotności $\alpha=0.5$, w celu sprawdzenia hipotezy o niezależności. Na podstawie otrzymanej p-wartości (`r round(fisher.test(t8b)$p.value,4)`) odrzucono hipotezę o niezależności. Ponieważ obie zmienne są porządkowe do wyliczenia miary współzmienności wykorzystano współczynnik $\gamma$, którego wartość wyniosła `r gamma_b`. Zatem można uznać, że zmienne są ze sobą dodatnio zależne.
 
 * zajmowane stanowisko i wykształcenie
 
 ```{r, echo=FALSE}
 t8c %>% addmargins() %>% 
-  kable(caption='Tablica dwudzielcza dla zmniennej S oraz Wyk.') %>%
+  kable(caption='Tablica dwudzielcza dla zmiennej S oraz Wyk.') %>%
   column_spec(1, border_left = TRUE) %>%
   column_spec(4, border_right = TRUE) %>%
   kable_styling(latex_options = "HOLD_position")
@@ -476,7 +478,7 @@ tau_c_row <- GoodmanKruskalTau(t8c, direction="row")
 tau_c <- (tau_c_col + tau_c_row)/2
 ```
 
->Dla powyższej tabeli przeprowadzono test Fishera na poziomie istotności $\alpha=0.5$, w celu sprawdzenia hipotezy o niezależności. Na podstawie otrzymanej p-wartości (`r round(fisher.test(t8c)$p.value,4)`) odrzucono hipotezę o niezależności. Ponieważ zmienna S jest nominalna to do wyliczenia miary współzmiennności wykorzystano współczynnik tau (współczynnik Goodmana i Kruskala), którego wartość wyniosła `r tau_c`. Zatem można uznać, że ... **POTRZEBNE WNIOSKI**
+>Dla powyższej tabeli przeprowadzono test Fishera na poziomie istotności $\alpha=0.5$, w celu sprawdzenia hipotezy o niezależności. Na podstawie otrzymanej p-wartości (`r round(fisher.test(t8c)$p.value,4)`) odrzucono hipotezę o niezależności. Ponieważ zmienna S jest nominalna to do wyliczenia miary współzmienności wykorzystano współczynnik $\tau$ (współczynnik Goodmana i Kruskala), którego wartość wyniosła `r tau_c`. Zatem można uznać, że zmienne nie są niezależne, gdyż obliczone $\tau \neq 0$. 
 
 
 # Zadanie 9
@@ -523,6 +525,18 @@ analiza.korespondencji <- function(tabela){
     xlab(paste('Dim 1 (', as.character(round(dim1,2)), '%)')) +
     ylab(paste('Dim 2 (', as.character(round(dim2,2)), '%)'))
 }
+```
+
+
+```{r wlasna, echo=FALSE, fig.cap="Wykres korespondencji dla zadowolenia z wynagrodzenia w pierwszym okresie i wykształcenia uzyskany za pomocą funkcji wbudowanej."}
 analiza.korespondencji(tabela)
 ```
+
+```{r wbudowana, echo=FALSE, fig.cap="Wykres korespondencji dla zadowolenia z wynagrodzenia w pierwszym okresie i wykształcenia, wykonany za pomocą funkcji wbudowanej z biblioteki 'ca'."}
+plot(ca(tabela))
+```
+
+**Wnioski** 
+
+Wyniki analizy korespondencji uzyskane przy pomocy funkcji wbudowanej (Wykres 1.) są identyczne jak w przypadku funkcji wbudowanej (Wykres 2.), więc można wywnioskować, że funkcja została zaimplementowana poprawnie. 
 
