@@ -527,6 +527,9 @@ analiza.korespondencji <- function(tabela){
 }
 ```
 
+# Zadanie 10
+
+Przeprowadzono analizę korespondencji dla zadowolenia z wynagrodzenia w pierwszym badanym okresie i zajmowanego stanowiska przy pomocy funkcji wbudowanej oraz własnej funkcji.
 
 ```{r wlasna, echo=FALSE, fig.cap="Wykres korespondencji dla zadowolenia z wynagrodzenia w pierwszym okresie i wykształcenia uzyskany za pomocą funkcji wbudowanej."}
 analiza.korespondencji(tabela)
