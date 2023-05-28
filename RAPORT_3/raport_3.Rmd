@@ -1,0 +1,50 @@
+---
+title: "Raport nr 3"
+author: "Natalia Iwańska 262270, Klaudia Janicka 262268"
+date: "`r Sys.Date()`"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message=FALSE)
+knitr::opts_chunk$set(fig.width=8, fig.height=4.5) 
+pdf.options(encoding = 'CP1250')
+```
+
+```{r, include=FALSE, echo=FALSE}
+library("tidyverse")
+library("vcd")
+library("ggplot2")
+library("knitr")
+library("dplyr")
+library("xtable")
+library("kableExtra")
+library("ggplot2")
+library("gnm")
+```
+
+
+```{r, include=FALSE, echo=FALSE}
+personel <- read.csv2('personel.csv',header=FALSE)
+names(personel) <- c('D','S','A1','A2','W1','W2','P','Wiek','Wyk')
+personel$A2[personel$A2 == '11'] = '1'
+personel <- personel %>% mutate(across(D:Wyk,as.factor))
+personel$A2 <- factor(personel$A2, levels = c(-2,-1,0,1,2))
+
+```
+
+
+# Zadanie 1
+
+```{r, echo=FALSE}
+tab1 <- ftable(personel$A1, personel$A2)
+tab1 %>% addmargins() %>% kable(caption='Tablica dwudzielcza dla zmniennych A1 i A2.', col.names=c(-2,-2,0,1,2,'Sum')) %>% 
+  kable_styling(latex_options = "HOLD_position")
+  
+```
+```{r, echo=FALSE}
+data1 <- tab1 %>% data.frame()
+glm(Freq~Symm(Var1,Var2), data=data1, family = poisson)
+
+```
+
