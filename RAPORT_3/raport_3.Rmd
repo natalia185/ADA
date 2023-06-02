@@ -39,12 +39,52 @@ personel$A2 <- factor(personel$A2, levels = c(-2,-1,0,1,2))
 ```{r, echo=FALSE}
 tab1 <- ftable(personel$A1, personel$A2)
 tab1 %>% addmargins() %>% kable(caption='Tablica dwudzielcza dla zmniennych A1 i A2.', col.names=c(-2,-2,0,1,2,'Sum')) %>% 
+  column_spec(1, border_left = TRUE) %>%
+  column_spec(7, border_right = TRUE) %>%
   kable_styling(latex_options = "HOLD_position")
   
 ```
+## Test McNemary
+Nie możemy skorzystać z testu McNemary, ponieważ w tablicy na odpowiadjących sobie miejscach ($Y_{ij}$ i $Y_{ji}$) występują zera, co "psuje" nam statystykę testową (wynika to wprost z jej definicji).
+
+
+## Test bazujący na ilorazie wiarogodności
+
 ```{r, echo=FALSE}
 data1 <- tab1 %>% data.frame()
-glm(Freq~Symm(Var1,Var2), data=data1, family = poisson)
-
+symetry <- glm(Freq~Symm(Var1,Var2), data=data1, family = poisson)
+stat <- symetry$deviance
+df <- symetry$df.residual
+p_val <- 1- pchisq(stat, df)
 ```
+
+Korzystając z testu bazującego na ilorazie wiarogodności na poziomie istotności $\alpha=0.05$ otrzymana p-wartość wyniosła `r p_val`. Zatem weryfikowaną hipotezę o symetrii, która jest równoważna hipotezie o brzegowej jednorodności należy odrzucić.
+
+
+# Zadanie 2
+
+```{r, echo=FALSE}
+tab2 <- ftable(personel$W1, personel$W2)
+tab2 %>% addmargins() %>% 
+  kable(caption='Tablica dwudzielcza dla zmniennych W1 i W2.', col.names = c(-2, -1, 1, 2, 'Sum')) %>% 
+  column_spec(1, border_left = TRUE) %>%
+  column_spec(6, border_right = TRUE) %>%
+  kable_styling(latex_options = "HOLD_position")
+```
+## Test McNemary
+Podobnie jak w poprzednim zadaniu nie możemy skorzystać z testu McNemary, ponieważ w tablicy na odpowiadjących sobie miejscach ($Y_{ij}$ i $Y_{ji}$) występują zera, co "psuje" nam statystykę testową (wynika to wprost z jej definicji).
+
+## Test bazujący na ilorazie wiarogodności
+
+```{r, echo=FALSE}
+data2 <- tab2 %>% data.frame()
+symetry2 <- glm(Freq~Symm(Var1,Var2), data=data2, family = poisson)
+stat2 <- symetry2$deviance
+df2 <- symetry2$df.residual
+p_val2 <- 1- pchisq(stat2, df2)
+```
+
+Korzystając z testu bazującego na ilorazie wiarogodności na poziomie istotności $\alpha=0.05$ otrzymana p-wartość wyniosła `r p_val2`. Zatem nie mamy podstaw do odrzucenia hipotezy zerowej o symetrii, która jest równoważna hipotezie o brzegowej jednorodności.
+
+
 
