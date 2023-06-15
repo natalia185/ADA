@@ -91,7 +91,7 @@ Korzystając z testu bazującego na ilorazie wiarogodności na poziomie istotno�
 ```{r, echo=FALSE}
 personel_n <- read.csv2('personel.csv',header=FALSE)
 names(personel_n) <- c('D','S','A1','A2','W1','W2','P','Wiek','Wyk')
-personel_n$A2[persone_nl$A2 == '11'] = '1'
+personel_n$A2[personel_n$A2 == '11'] = '1'
 personel_new <- personel
 personel_new$W1[personel_new$W1 == '-2'] = '-1'
 personel_new$W1[personel_new$W1 == '2'] = '1'
@@ -161,6 +161,8 @@ moc <- function(n){
   }
 return(data.frame( 'prob' = p2, 'results' = res))
 }
+
+moc(20)
 ```
 
 
