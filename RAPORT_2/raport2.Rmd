@@ -317,7 +317,9 @@ W celu oszacowania zarówno rozmiaru jak i mocy testu odpowiednio dla testu Fish
 
 $H_0 \colon$ $\boldsymbol p \in \mathcal{P}_0$, gdzie $\quad \mathcal{P}_0 = \{\boldsymbol p = (p_{11}, \dots, p_{1C},\dots, p_{RC}): p_{ij} = p_{i+} p_{+j}\}$.
 
-```{r, echo = FALSE}
+Funkcja, z której skorzystano do oszacowania rozmiarów i mocy testów: 
+
+```{r}
 
 simulation <- function(p, alpha=0.05, M=5000){
   ns <- c(50, 100, 1000)

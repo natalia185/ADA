@@ -87,4 +87,80 @@ p_val2 <- 1- pchisq(stat2, df2)
 Korzystając z testu bazującego na ilorazie wiarogodności na poziomie istotności $\alpha=0.05$ otrzymana p-wartość wyniosła `r p_val2`. Zatem nie mamy podstaw do odrzucenia hipotezy zerowej o symetrii, która jest równoważna hipotezie o brzegowej jednorodności.
 
 
+# Zadanie 3
+```{r, echo=FALSE}
+personel <- read.csv2('personel.csv',header=FALSE)
+names(personel) <- c('D','S','A1','A2','W1','W2','P','Wiek','Wyk')
+personel$A2[personel$A2 == '11'] = '1'
+personel_new <- personel
+personel_new$W1[personel_new$W1 == '-2'] = '-1'
+personel_new$W1[personel_new$W1 == '2'] = '1'
+personel_new$W2[personel_new$W2 == '-2'] = '-1'
+personel_new$W2[personel_new$W2 == '2'] = '1'
+personel_new <- personel_new %>% mutate(across(D:Wyk,as.factor))
+tabela <- ftable(personel_new$W1, personel_new$W2)
+```
+
+```{r}
+#TEST Z
+test_z <- function(tabela){
+  n <- sum(rowSums(tabela))
+  P <- tabela/n
+  r <- rowSums(P)
+  c <- colSums(P)
+  D <- r[1] - c[1]
+  sigma2_D <- (r[1]*(1-r[1])+c[1]*(1-c[1])-2*(P[1,1]*P[2,2]-P[1,2]*P[2,1]))/n
+  Z <- D/sqrt(sigma2_D)
+  p <- 2*(1 - pnorm(abs(Z)))
+  return(p)
+}
+
+#TEST Z0
+test_z0 <- function(tabela){
+  n <- sum(rowSums(tabela))
+  P <- tabela/n
+  r <- rowSums(P)
+  c <- colSums(P)
+  D <- r[1] - c[1]
+  sigma2_D0 <- (tabela[1,2]+tabela[2,1])/n^2
+  Z_0 <- D/sqrt(sigma2_D0)
+  p <- 2*(1 - pnorm(abs(Z_0)))
+  return(p)
+}
+
+```
+
+```{r, echo=FALSE}
+df <- data.frame('test' = c('Test Z', 'Test Z0', 'McNemar test z poprawką na ciągłość', 
+                            'McNemar test bez poprawki'), 'p-value' = c(test_z(tabela), test_z0(tabela), mcnemar.test(tabela)$p.value, mcnemar.test(tabela, correct=FALSE)$p.value))
+df %>% kable(col.names = c('test', 'p-value')) %>%
+  column_spec(1, border_left = TRUE) %>%
+  column_spec(2, border_right = TRUE) %>%
+  kable_styling(latex_options = "HOLD_position")
+```
+Na podstawie otrzymanych p-wartości testów przeprowadzonych na poziomie istotności $\alpha=0.05$ stwierdzamy, że nie mamy podstaw do odrzucenia hipotezy zerowej o symetrii, która jest równoważna hipotezie o brzegowej jednorodności.
+
+```{r}
+moc <- function(n){
+  MC <- 1000
+  p2 <- seq(0.01,0.99,0.01)
+  p1 <- 0.5
+  m <- length(p2)
+  res <- rep(NA, m)
+  for (i in 1:m){
+    counter <- 0
+    for (j in 1:MC){
+    X <- factor(sample(c("1","0"), n, replace=TRUE, prob = c(p1,1-p1)), levels = 0:1)
+    Y <- factor(sample(c("1","0"), n, replace=TRUE, prob = c(p2[i],1-p2[i])), levels=0:1)
+    tab <- ftable(X,Y)
+    if (test_z(tab) < 0.05){
+      counter <- counter+1
+      }
+    }
+    res[i] <- counter/MC
+  }
+return(data.frame( 'prob' = p2, 'results' = res))
+}
+```
+
 
