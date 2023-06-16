@@ -139,7 +139,6 @@ df %>% kable(col.names = c('test', 'p-value')) %>%
   kable_styling(latex_options = "HOLD_position")
 ```
 Na podstawie otrzymanych p-wartości testów przeprowadzonych na poziomie istotności $\alpha=0.05$ stwierdzamy, że nie mamy podstaw do odrzucenia hipotezy zerowej o symetrii, która jest równoważna hipotezie o brzegowej jednorodności.
-
 ```{r}
 moc <- function(n){
   MC <- 1000
@@ -165,6 +164,39 @@ return(data.frame( 'prob' = p2, 'results' = res))
 moc(20)
 ```
 
+# Zadanie 5
 
 
+* $[1\:3]$ zmienne ,,S'' i ,,W1'' mają dowolne rozkłady oraz zmienne te są niezależne, a zmienna ,,Wyk'' ma rozkład równomierny
+
+```{r, echo=FALSE}
+df <- as.data.frame(ftable(personel$S,personel$W1,personel$Wyk))
+names(df) <- c('S', 'W1', 'Wyk', 'Freq')
+```
+
+```{r}
+model_a <- glm(Freq ~ S + Wyk, 
+               data = df, family = poisson)
+p_a <- 1-pchisq(deviance(model_a), df = df.residual(model_a))
+```
+P-wartość `r p_a` jest mniejsza niż założony poziom istotności $\alpha$, więc odrzucamy hipotę zerową. Nasze dane nie pochodzą z modelu $[1\:3]$.
+
+* $[13]$ zmienne ,,S'' i ,,W1'' mają dowolne rozkłady oraz zmienne te nie są niezależne, a zmienna ,,Wyk'' ma rozkład równomierny
+```{r}
+model_b <- glm(Freq ~ S + Wyk + S*Wyk, 
+               data = df, family = poisson)
+p_b <- 1-pchisq(deviance(model_b), df = df.residual(model_b))
+cbind(model_a$data, fitted(model_b))
+```
+P-wartość `r `p_b` jest mniejsza niż założony poziom istotności $\alpha$, więc odrzucamy hipotę zerową. Nasze dane nie pochodzą z modelu $[13]$.
+
+* $[1\:2\:3]$ zmienne ,,S'', ,,W1'', ''Wyk'' są wzajemnie niezależne
+
+```{r}
+model_c <- glm(Freq ~ S + Wyk + W1, 
+               data = df, family = poisson)
+p_c <- 1-pchisq(deviance(model_c), df = df.residual(model_c))
+cbind(model_a$data, fitted(model_b))
+```
+P-wartość `r p_c` jest mniejsza niż założony poziom istotności $\alpha$, więc odrzucamy hipotę zerową. Nasze dane nie pochodzą z modelu $[1\:2\:3]$.
 
