@@ -139,8 +139,11 @@ df %>% kable(col.names = c('test', 'p-value')) %>%
   kable_styling(latex_options = "HOLD_position")
 ```
 Na podstawie otrzymanych p-wartości testów przeprowadzonych na poziomie istotności $\alpha=0.05$ stwierdzamy, że nie mamy podstaw do odrzucenia hipotezy zerowej o symetrii, która jest równoważna hipotezie o brzegowej jednorodności.
+
+# Zadanie 4
+
 ```{r}
-moc <- function(n){
+moc <- function(n, test){
   MC <- 1000
   p2 <- seq(0.01,0.99,0.01)
   p1 <- 0.5
@@ -152,7 +155,7 @@ moc <- function(n){
     X <- factor(sample(c("1","0"), n, replace=TRUE, prob = c(p1,1-p1)), levels = 0:1)
     Y <- factor(sample(c("1","0"), n, replace=TRUE, prob = c(p2[i],1-p2[i])), levels=0:1)
     tab <- ftable(X,Y)
-    if (test_z(tab) < 0.05){
+    if (test(tab) < 0.05){
       counter <- counter+1
       }
     }
@@ -160,14 +163,55 @@ moc <- function(n){
   }
 return(data.frame( 'prob' = p2, 'results' = res))
 }
-
-moc(20)
 ```
+
+
+```{r, echo=FALSE, fig.cap='Wykres funkcji mocy testu $Z$ i $Z_0$ dla $n=20$'}
+moc_20 <- as.data.frame(read.csv('moc_20.csv'))
+moc0_20 <- as.data.frame(read.csv('moc0_20.csv'))
+
+ggplot() + geom_line(data=moc_20,aes(x=prob, y=results, colour = 'Z')) + geom_line(data=moc0_20,aes(x=prob, y=results, color='Z0')) + scale_colour_manual("Test", 
+                      breaks = c("Z", "Z0"),
+                      values = c("black", "red")) + geom_hline(yintercept=0.05, color='grey50')+ labs(x='Wartość p2', y='Moc testu')
+```
+
+```{r, echo=FALSE, fig.cap='Wykres funkcji mocy testu $Z$ i $Z_0$ dla $n=50$'}
+moc_50 <- as.data.frame(read.csv('moc_50.csv'))
+moc0_50 <- as.data.frame(read.csv('moc0_50.csv'))
+
+ggplot() + geom_line(data=moc_50,aes(x=prob, y=results, colour = 'Z')) + geom_line(data=moc0_50,aes(x=prob, y=results, color='Z0')) + scale_colour_manual("Test", 
+                      breaks = c("Z", "Z0"),
+                      values = c("black", "red"))+ geom_hline(yintercept=0.05, color='grey50') + labs(x='Wartość p2', y='Moc testu')
+```
+
+```{r, echo=FALSE, fig.cap='Wykres funkcji mocy testu $Z$ i $Z_0$ dla $n=100$'}
+moc_100 <- as.data.frame(read.csv('moc_100.csv'))
+moc0_100 <- as.data.frame(read.csv('moc0_100.csv'))
+
+ggplot() + geom_line(data=moc_100,aes(x=prob, y=results, colour = 'Z')) + geom_line(data=moc0_100,aes(x=prob, y=results, color='Z0')) + scale_colour_manual("Test", 
+                      breaks = c("Z", "Z0"),
+                      values = c("black", "red"))+ geom_hline(yintercept=0.05, color='grey50')+ labs(x='Wartość p2', y='Moc testu')
+```
+
+```{r, echo=FALSE, fig.cap='Wykres funkcji mocy testu $Z$ i $Z_0$ dla $n=1000$'}
+moc_1000 <- as.data.frame(read.csv('moc_1000.csv'))
+moc0_1000 <- as.data.frame(read.csv('moc0_1000.csv'))
+
+ggplot() + geom_line(data=moc_1000,aes(x=prob, y=results, colour = 'Z')) + geom_line(data=moc0_1000,aes(x=prob, y=results, color='Z0')) + scale_colour_manual("Test", 
+                      breaks = c("Z", "Z0"),
+                      values = c("black", "red"))+ geom_hline(yintercept=0.05, color='grey50')+ labs(x='Wartość p2', y='Moc testu')
+```
+* Wnioski 
+
+Na wykresach powyżej przedstawiliśmy moce testów $Z$ i $Z_0$ dla $n\in\{20, 50, 100, 1000\}$, na podstawie symulacji Monte Carlo. Szarą linią na wykresach oznaczono poziom istotności $\alpha = 0.05$. Funkcja mocy testu powinna przechodzić przez wartość poziomu istotności w puncie $p_2=0.5$, ponieważ jest to miejsce, w którym oba prawdopodobieństwa są takie same, a wtedy hipoteza zerowa powinna być przyjmowana z prawdopodobieństwem $1-\alpha$. Dla $n=20$ funkcja mocy dla testu $Z$ jest lekko powyżej oczekiwanej wartości, ale wraz ze zwiększaniem się $n$, funkcja coraz bardziej zbliża się do pożądanej wartości. Można na tej podstawie wyciągnąć wniosek, że test $Z$ jest testem asymptotycznie nieobciążonym. Dla testu $Z_0$ sytuacja jest podobna, jednak wartość funkcji mocy dla najmniejszego rozważanego $n$, dla $p_2=0.5$ jest trochę mniejsza niż założony poziom istotności $\alpha$, ale znów, ze wzrostem wartości $n$, zbliża się ona do poziomu istotności, więc podobnie jak przy teście $Z$, można wyciągnąć wniosek, że test $Z_0$ jest testem asymptotycznie nieobciążonym. Natomiast obciążoność obydwu testów dla małych $n$ nie jest duża. Dla zwiększających się wartości $n$ widzimy, że wartości funkcji mocy są większe, dla $p_2\neq0.5$. Było to do przewidzenia, ponieważ wraz ze wzrastającą liczbą prób (ankietowanych), test powinien być częściej odrzucany dla $p_1\neq p_2$, bo moc testu rośnie.
+
+
+
 
 # Zadanie 5
 
 
-* $[1\:3]$ zmienne ,,S'' i ,,W1'' mają dowolne rozkłady oraz zmienne te są niezależne, a zmienna ,,Wyk'' ma rozkład równomierny
+* $[1\:3]$ zmienne ,,S'' i ,,Wyk'' mają dowolne rozkłady oraz zmienne te są niezależne, a zmienna ,,W1'' ma rozkład równomierny
 
 ```{r, echo=FALSE}
 df <- as.data.frame(ftable(personel$S,personel$W1,personel$Wyk))
@@ -178,25 +222,123 @@ names(df) <- c('S', 'W1', 'Wyk', 'Freq')
 model_a <- glm(Freq ~ S + Wyk, 
                data = df, family = poisson)
 p_a <- 1-pchisq(deviance(model_a), df = df.residual(model_a))
+cbind(model_a, fitted(model_a))
 ```
-P-wartość `r p_a` jest mniejsza niż założony poziom istotności $\alpha$, więc odrzucamy hipotę zerową. Nasze dane nie pochodzą z modelu $[1\:3]$.
 
-* $[13]$ zmienne ,,S'' i ,,W1'' mają dowolne rozkłady oraz zmienne te nie są niezależne, a zmienna ,,Wyk'' ma rozkład równomierny
+> P-wartość `r p_a` jest mniejsza niż założony poziom istotności $\alpha$, więc odrzucamy hipotę zerową. Nasze dane nie pochodzą z modelu $[1\:3]$.
+
+* $[13]$ zmienne ,,S'' i ,,Wyk'' mają dowolne rozkłady oraz zmienne te nie są niezależne, a zmienna ,,W1'' ma rozkład równomierny
 ```{r}
 model_b <- glm(Freq ~ S + Wyk + S*Wyk, 
                data = df, family = poisson)
 p_b <- 1-pchisq(deviance(model_b), df = df.residual(model_b))
-cbind(model_a$data, fitted(model_b))
+cbind(model_b$data, fitted(model_b))
 ```
-P-wartość `r `p_b` jest mniejsza niż założony poziom istotności $\alpha$, więc odrzucamy hipotę zerową. Nasze dane nie pochodzą z modelu $[13]$.
+> P-wartość `r p_b` jest mniejsza niż założony poziom istotności $\alpha$, więc odrzucamy hipotę zerową. Nasze dane nie pochodzą z modelu $[13]$.
 
-* $[1\:2\:3]$ zmienne ,,S'', ,,W1'', ''Wyk'' są wzajemnie niezależne
+* $[1\:2\:3]$ zmienne ,,S'', ,,W1'' i ''Wyk'' są wzajemnie niezależne
 
 ```{r}
 model_c <- glm(Freq ~ S + Wyk + W1, 
                data = df, family = poisson)
 p_c <- 1-pchisq(deviance(model_c), df = df.residual(model_c))
-cbind(model_a$data, fitted(model_b))
+cbind(model_c$data, fitted(model_c))
 ```
-P-wartość `r p_c` jest mniejsza niż założony poziom istotności $\alpha$, więc odrzucamy hipotę zerową. Nasze dane nie pochodzą z modelu $[1\:2\:3]$.
+> P-wartość `r p_c` jest mniejsza niż założony poziom istotności $\alpha$, więc odrzucamy hipotę zerową. Nasze dane nie pochodzą z modelu $[1\:2\:3]$.
 
+* $[12 \:3]$ zmienna "Wyk" jest niezależna od zmiennych "S" i "W1", ale zmienne "S" i "W1" nie są niezależne
+
+```{r}
+model_d <- glm(Freq ~ S + Wyk + W1 + S*W1, 
+               data = df, family = poisson)
+p_d <- 1-pchisq(deviance(model_d), df = df.residual(model_d))
+cbind(model_d$data, fitted(model_d))
+```
+> P-wartość `r p_d` jest mniejsza niż założony poziom istotności $\alpha$, więc odrzucamy hipotę zerową. Nasze dane nie pochodzą z modelu $[12\:3]$.
+
+* $[12\:13]$ przy ustalonej wartości zmiennej "S", zmienne "W1" i "Wyk" są niezależne
+
+```{r}
+model_e <- glm(Freq ~ S + Wyk + W1 + S*W1 + S*Wyk, 
+               data = df, family = poisson)
+p_e <- 1-pchisq(deviance(model_e), df = df.residual(model_e))
+cbind(model_e$data, fitted(model_e))
+```
+> P-wartość `r p_e` jest większa niż założony poziom istotności $\alpha$, więc nie mamy podstaw do odrzucenia hipotezy zerowej, czyli zakładamy, że nasze dane pochodzą z modelu $[12\:13]$.
+
+* $[1\:23]$ zmienna "S" jest niezależna od zmiennych "Wyk" i "W1", ale zmienne "Wyk" i "W1" nie są niezależne
+
+```{r}
+model_f <- glm(Freq ~ S + Wyk + W1 + W1*Wyk, 
+               data = df, family = poisson)
+p_f <- 1-pchisq(deviance(model_f), df = df.residual(model_f))
+cbind(model_f$data, fitted(model_f))
+```
+> P-wartość `r p_f` jest mniejsza niż założony poziom istotności $\alpha$, więc odrzucamy hipotę zerową. Nasze dane nie pochodzą z modelu $[1\:23]$.
+
+# Zadanie 6
+
+* $[1\:3]$ zmienne ,,S'' i ,,Wyk'' mają dowolne rozkłady oraz zmienne te są niezależne, a zmienna ,,P'' ma rozkład równomierny
+
+```{r, echo=FALSE}
+df <- as.data.frame(ftable(personel$S,personel$P,personel$Wyk))
+names(df) <- c('S', 'P', 'Wyk', 'Freq')
+```
+
+```{r}
+model_a <- glm(Freq ~ S + Wyk, 
+               data = df, family = poisson)
+p_a <- 1-pchisq(deviance(model_a), df = df.residual(model_a))
+cbind(model_a, fitted(model_a))
+```
+
+> P-wartość `r p_a` jest mniejsza niż założony poziom istotności $\alpha$, więc odrzucamy hipotę zerową. Nasze dane nie pochodzą z modelu $[1\:3]$.
+
+* $[13]$ zmienne ,,S'' i ,,Wyk'' mają dowolne rozkłady oraz zmienne te nie są niezależne, a zmienna ,,P'' ma rozkład równomierny
+```{r}
+model_b <- glm(Freq ~ S + Wyk + S*Wyk, 
+               data = df, family = poisson)
+p_b <- 1-pchisq(deviance(model_b), df = df.residual(model_b))
+cbind(model_b$data, fitted(model_b))
+```
+> P-wartość `r p_b` jest mniejsza niż założony poziom istotności $\alpha$, więc odrzucamy hipotę zerową. Nasze dane nie pochodzą z modelu $[13]$.
+
+* $[1\:2\:3]$ zmienne ,,S'', ,,P'' i ''Wyk'' są wzajemnie niezależne
+
+```{r}
+model_c <- glm(Freq ~ S + Wyk + P, 
+               data = df, family = poisson)
+p_c <- 1-pchisq(deviance(model_c), df = df.residual(model_c))
+cbind(model_c$data, fitted(model_c))
+```
+> P-wartość `r p_c` jest mniejsza niż założony poziom istotności $\alpha$, więc odrzucamy hipotę zerową. Nasze dane nie pochodzą z modelu $[1\:2\:3]$.
+
+* $[12 \:3]$ zmienna "Wyk" jest niezależna od zmiennych "S" i "P", ale zmienne "S" i "P" nie są niezależne
+
+```{r}
+model_d <- glm(Freq ~ S + Wyk + P + S*P, 
+               data = df, family = poisson)
+p_d <- 1-pchisq(deviance(model_d), df = df.residual(model_d))
+cbind(model_d$data, fitted(model_d))
+```
+> P-wartość `r p_d` jest mniejsza niż założony poziom istotności $\alpha$, więc odrzucamy hipotę zerową. Nasze dane nie pochodzą z modelu $[12\:3]$.
+
+* $[12\:13]$ przy ustalonej wartości zmiennej "S", zmienne "P" i "Wyk" są niezależne
+
+```{r}
+model_e <- glm(Freq ~ S + Wyk + P + S*P + S*Wyk, 
+               data = df, family = poisson)
+p_e <- 1-pchisq(deviance(model_e), df = df.residual(model_e))
+cbind(model_e$data, fitted(model_e))
+```
+> P-wartość `r p_e` jest mniejsza niż założony poziom istotności $\alpha$, więc odrzucamy hipotezę zerową. Nasze dane nie pochodzą z modelu $[12\:13]$.
+
+* $[1\:23]$ zmienna "S" jest niezależna od zmiennych "Wyk" i "P", ale zmienne "Wyk" i "P" nie są niezależne
+
+```{r}
+model_f <- glm(Freq ~ S + Wyk + P + P*Wyk, 
+               data = df, family = poisson)
+p_f <- 1-pchisq(deviance(model_f), df = df.residual(model_f))
+cbind(model_f$data, fitted(model_f))
+```
+> P-wartość `r p_f` jest mniejsza niż założony poziom istotności $\alpha$, więc odrzucamy hipotę zerową. Nasze dane nie pochodzą z modelu $[1\:23]$.
