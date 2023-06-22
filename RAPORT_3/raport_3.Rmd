@@ -342,3 +342,54 @@ p_f <- 1-pchisq(deviance(model_f), df = df.residual(model_f))
 cbind(model_f$data, fitted(model_f))
 ```
 > P-wartość `r p_f` jest mniejsza niż założony poziom istotności $\alpha$, więc odrzucamy hipotę zerową. Nasze dane nie pochodzą z modelu $[1\:23]$.
+
+# Zadanie 7
+```{r}
+model <- glm(Freq ~ S+W1+Wyk+S*Wyk+W1*Wyk, data = df, family = poisson)
+result <- cbind(model$data, fitted(model))
+result$`fitted(model)` <- result$`fitted(model)`/sum(result$`fitted(model)`)
+result$Freq <- result$Freq/sum(result$Freq)
+
+
+sum(result$`fitted(model)`[result$S == 1 & result$W1 == 2])/(sum(result$`fitted(model)`[result$S == 1]))
+sum(result$Freq[result$S == 1 & result$W1 == 2])/(sum(result$Freq[result$S == 1]))
+```
+
+```{r}
+sum(result$`fitted(model)`[result$Wyk == 1 & result$S == 1])/(sum(result$`fitted(model)`[result$Wyk == 1]))
+sum(result$Freq[result$S == 1 & result$Wyk == 1])/(sum(result$Freq[result$Wyk == 1]))
+```
+
+```{r}
+sum(result$`fitted(model)`[result$Wyk == 3 & result$S == 0])/(sum(result$`fitted(model)`[result$Wyk == 3]))
+sum(result$Freq[result$S == 0 & result$Wyk == 3])/(sum(result$Freq[result$Wyk == 3]))
+```
+
+```{r}
+df <- as.data.frame(ftable(personel$S,personel$P,personel$Wyk))
+names(df) <- c('S', 'P', 'Wyk', 'Freq')
+
+model <- glm(Freq ~ S+P+Wyk+S*Wyk+P*Wyk, data = df, family = poisson)
+result <- cbind(model$data, fitted(model))
+result$`fitted(model)` <- result$`fitted(model)`/sum(result$`fitted(model)`)
+result$Freq <- result$Freq/sum(result$Freq)
+
+
+sum(result$`fitted(model)`[result$S == 1 & result$P == 'K'])/(sum(result$`fitted(model)`[result$S == 1]))
+sum(result$Freq[result$S == 1 & result$P == 'K'])/(sum(result$Freq[result$S == 1]))
+```
+
+```{r}
+sum(result$`fitted(model)`[result$S == 1 & result$Wyk == 1])/(sum(result$`fitted(model)`[result$Wyk == 1]))
+sum(result$Freq[result$S == 1 & result$Wyk == 1])/(sum(result$Freq[result$Wyk == 1]))
+```
+
+```{r}
+sum(result$`fitted(model)`[result$P == 'M' & result$Wyk == 3])/(sum(result$`fitted(model)`[result$Wyk == 3]))
+sum(result$Freq[result$P == 'M' & result$Wyk == 3])/(sum(result$Freq[result$Wyk == 3]))
+```
+
+# Zadanie 9 
+* $H_0$: Dane pochodzą z modelu $[1\:2\:3]$
+
+
