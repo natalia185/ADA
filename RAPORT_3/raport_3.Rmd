@@ -13,6 +13,7 @@ pdf.options(encoding = 'CP1250')
 
 ```{r, include=FALSE, echo=FALSE}
 library("tidyverse")
+library('ascii')
 library("vcd")
 library("ggplot2")
 library("knitr")
@@ -276,6 +277,39 @@ cbind(model_f$data, fitted(model_f))
 ```
 > P-wartość `r p_f` jest mniejsza niż założony poziom istotności $\alpha$, więc odrzucamy hipotę zerową. Nasze dane nie pochodzą z modelu $[1\:23]$.
 
+\begin{table}[h]
+		\begin{center}
+			\begin{tabular}{|c|c|c|c|c|c|c|}
+				\hline
+				& \multicolumn{6}{c|}{Modele}\\\cline{2-7}
+				& $[1\:3]$ & $[13]$ & $[1\:2\:3]$& $[12\:3]$ & $[12\:13]$ & $[1\:23]$ \\\hline
+				P-wartość & `r 1-pchisq(deviance(model_a), df = df.residual(model_a))` & `r 1-pchisq(deviance(model_b), df = df.residual(model_b))` & `r 1-pchisq(deviance(model_c), df = df.residual(model_c))` & `r 1-pchisq(deviance(model_d), df = df.residual(model_d))` & `r 1-pchisq(deviance(model_e), df = df.residual(model_e))` & `r 1-pchisq(deviance(model_f), df = df.residual(model_f))`\\\hline
+			\end{tabular}
+		\end{center}
+		\caption{P-wartości testów statystycznych}
+		\label{tab:tabela4}
+\end{table}
+
+
+\begin{table}[h]
+		\begin{center}
+			\begin{tabular}{|c|c|c|c|c|c|c|}
+				\hline
+				Liczności danych & \multicolumn{6}{c|}{Liczności modeli} \\\cline{2-7}
+				& $[1\:3]$ & $[13]$ & $[1\:2\:3]$ & $[12\:3]$ & $[12\:13]$ & $[1\:23]$ \\\hline
+				`r model_a$data$Freq[1]` & `r fitted(model_a)[1]` & `r fitted(model_b)[1]` & `r fitted(model_c)[1]` & `r fitted(model_d)[1]` & `r fitted(model_e)[1]` & `r fitted(model_f)[1]` \\\hline
+				`r model_a$data$Freq[2]` & `r fitted(model_a)[2]` & `r fitted(model_b)[2]` & `r fitted(model_c)[2]` & `r fitted(model_d)[2]` & `r fitted(model_e)[2]` & `r fitted(model_f)[2]` \\\hline
+				`r model_a$data$Freq[3]` & `r fitted(model_a)[3]` & `r fitted(model_b)[3]` & `r fitted(model_c)[3]` & `r fitted(model_d)[3]` & `r fitted(model_e)[3]` & `r fitted(model_f)[3]` \\\hline
+				`r model_a$data$Freq[4]` & `r fitted(model_a)[4]` & `r fitted(model_b)[4]` & `r fitted(model_c)[4]` & `r fitted(model_d)[4]` & `r fitted(model_e)[4]` & `r fitted(model_f)[4]` \\\hline
+				`r model_a$data$Freq[5]` & `r fitted(model_a)[5]` & `r fitted(model_b)[5]` & `r fitted(model_c)[5]` & `r fitted(model_d)[5]` & `r fitted(model_e)[5]` & `r fitted(model_f)[5]` \\\hline
+				`r model_a$data$Freq[6]` & `r fitted(model_a)[6]` & `r fitted(model_b)[6]` & `r fitted(model_c)[6]` & `r fitted(model_d)[6]` & `r fitted(model_e)[6]` & `r fitted(model_f)[6]` \\\hline
+			\end{tabular}
+		\end{center}
+		\caption{Porównanie wyznaczonych liczności na podstawie modelów z rzeczywistymi licznościami danych}
+		\label{tab:tabela5}
+	\end{table}	
+
+
 # Zadanie 6
 
 * $[1\:3]$ zmienne ,,S'' i ,,Wyk'' mają dowolne rozkłady oraz zmienne te są niezależne, a zmienna ,,P'' ma rozkład równomierny
@@ -343,8 +377,24 @@ cbind(model_f$data, fitted(model_f))
 ```
 > P-wartość `r p_f` jest mniejsza niż założony poziom istotności $\alpha$, więc odrzucamy hipotę zerową. Nasze dane nie pochodzą z modelu $[1\:23]$.
 
+\begin{table}[h!]
+		\begin{center}
+			\begin{tabular}{|c|c|c|c|c|c|c|}
+				\hline
+				& \multicolumn{6}{c|}{Modele}\\\cline{2-7}
+				& $[1\:3]$ & $[13]$ & $[1\:2\:3]$& $[12\:3]$ & $[12\:13]$ & $[1\:23]$ \\\hline
+				P-wartość & `r 1-pchisq(deviance(model_a), df = df.residual(model_a))` & `r 1-pchisq(deviance(model_b), df = df.residual(model_b))` & `r 1-pchisq(deviance(model_c), df = df.residual(model_c))` & `r 1-pchisq(deviance(model_d), df = df.residual(model_d))` & `r 1-pchisq(deviance(model_e), df = df.residual(model_e))` & `r 1-pchisq(deviance(model_f), df = df.residual(model_f))`\\\hline
+			\end{tabular}
+		\end{center}
+		\caption{P-wartości testów statystycznych}
+		\label{tab:tabela4}
+\end{table}
+
 # Zadanie 7
+
 ```{r}
+df <- as.data.frame(ftable(personel$S,personel$W1,personel$Wyk))
+names(df) <- c('S', 'W1', 'Wyk', 'Freq')
 model <- glm(Freq ~ S+W1+Wyk+S*Wyk+W1*Wyk, data = df, family = poisson)
 result <- cbind(model$data, fitted(model))
 result$`fitted(model)` <- result$`fitted(model)`/sum(result$`fitted(model)`)
@@ -365,6 +415,7 @@ sum(result$`fitted(model)`[result$Wyk == 3 & result$S == 0])/(sum(result$`fitted
 sum(result$Freq[result$S == 0 & result$Wyk == 3])/(sum(result$Freq[result$Wyk == 3]))
 ```
 
+# Zadanie 8
 ```{r}
 df <- as.data.frame(ftable(personel$S,personel$P,personel$Wyk))
 names(df) <- c('S', 'P', 'Wyk', 'Freq')
