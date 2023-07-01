@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021/W32TeX) (preloaded format=pdflatex 2022.4.17)  23 JUN 2023 16:43
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021/W32TeX) (preloaded format=pdflatex 2022.4.17)  1 JUL 2023 15:18
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -643,83 +643,80 @@ File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <10> not available
 (Font)              Font shape `T1/lmtt/b/n' tried instead on input line 216.
 LaTeX Font Info:    Trying to load font information for TS1+lmtt on input line 
-288.
+298.
 (c:/texlive/2021/texmf-dist/tex/latex/lm/ts1lmtt.fd
 File: ts1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 ) [2]
-<raport_3_files/figure-latex/unnamed-chunk-11-1.pdf, id=41, 578.16pt x 325.215p
-t>
-File: raport_3_files/figure-latex/unnamed-chunk-11-1.pdf Graphic file (type pdf
-)
-<use raport_3_files/figure-latex/unnamed-chunk-11-1.pdf>
-Package pdftex.def Info: raport_3_files/figure-latex/unnamed-chunk-11-1.pdf  us
-ed on input line 295.
-(pdftex.def)             Requested size: 469.75385pt x 264.23653pt.
-<raport_3_files/figure-latex/unnamed-chunk-12-1.pdf, id=42, 578.16pt x 325.215p
+<raport_3_files/figure-latex/unnamed-chunk-12-1.pdf, id=41, 578.16pt x 325.215p
 t>
 File: raport_3_files/figure-latex/unnamed-chunk-12-1.pdf Graphic file (type pdf
 )
 <use raport_3_files/figure-latex/unnamed-chunk-12-1.pdf>
 Package pdftex.def Info: raport_3_files/figure-latex/unnamed-chunk-12-1.pdf  us
-ed on input line 301.
+ed on input line 305.
 (pdftex.def)             Requested size: 469.75385pt x 264.23653pt.
-<raport_3_files/figure-latex/unnamed-chunk-13-1.pdf, id=43, 578.16pt x 325.215p
+<raport_3_files/figure-latex/unnamed-chunk-13-1.pdf, id=42, 578.16pt x 325.215p
 t>
 File: raport_3_files/figure-latex/unnamed-chunk-13-1.pdf Graphic file (type pdf
 )
 <use raport_3_files/figure-latex/unnamed-chunk-13-1.pdf>
 Package pdftex.def Info: raport_3_files/figure-latex/unnamed-chunk-13-1.pdf  us
-ed on input line 307.
+ed on input line 311.
 (pdftex.def)             Requested size: 469.75385pt x 264.23653pt.
-<raport_3_files/figure-latex/unnamed-chunk-14-1.pdf, id=44, 578.16pt x 325.215p
+<raport_3_files/figure-latex/unnamed-chunk-14-1.pdf, id=43, 578.16pt x 325.215p
 t>
 File: raport_3_files/figure-latex/unnamed-chunk-14-1.pdf Graphic file (type pdf
 )
 <use raport_3_files/figure-latex/unnamed-chunk-14-1.pdf>
 Package pdftex.def Info: raport_3_files/figure-latex/unnamed-chunk-14-1.pdf  us
-ed on input line 311.
+ed on input line 317.
+(pdftex.def)             Requested size: 469.75385pt x 264.23653pt.
+<raport_3_files/figure-latex/unnamed-chunk-15-1.pdf, id=44, 578.16pt x 325.215p
+t>
+File: raport_3_files/figure-latex/unnamed-chunk-15-1.pdf Graphic file (type pdf
+)
+<use raport_3_files/figure-latex/unnamed-chunk-15-1.pdf>
+Package pdftex.def Info: raport_3_files/figure-latex/unnamed-chunk-15-1.pdf  us
+ed on input line 321.
 (pdftex.def)             Requested size: 469.75385pt x 264.23653pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 311--313
+Underfull \hbox (badness 10000) in paragraph at lines 321--323
 [][]
  []
 
-[3 <./raport_3_files/figure-latex/unnamed-chunk-11-1.pdf>] [4 <./raport_3_files
-/figure-latex/unnamed-chunk-12-1.pdf> <./raport_3_files/figure-latex/unnamed-ch
-unk-13-1.pdf>]
+[3 <./raport_3_files/figure-latex/unnamed-chunk-12-1.pdf>] [4 <./raport_3_files
+/figure-latex/unnamed-chunk-13-1.pdf> <./raport_3_files/figure-latex/unnamed-ch
+unk-14-1.pdf>]
 LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 3
-43.
+57.
 (c:/texlive/2021/texmf-dist/tex/latex/lm/ts1lmr.fd
 File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-) [5 <./raport_3_files/figure-latex/unnamed-chunk-14-1.pdf>] [6] [7] [8]
-Overfull \hbox (1.79173pt too wide) in paragraph at lines 660--671
+) [5 <./raport_3_files/figure-latex/unnamed-chunk-15-1.pdf>] [6] [7] [8]
+Overfull \hbox (1.79173pt too wide) in paragraph at lines 674--685
  [] 
  []
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[9] [10] [11]
-Overfull \hbox (131.0822pt too wide) in paragraph at lines 926--932
+[9] [10] [11] [12]
+Overfull \hbox (131.0822pt too wide) in paragraph at lines 944--950
  [] 
  []
 
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-[12] [13] [14] (./raport_3.aux)
+[13] [14] [15] [16] (./raport_3.aux)
 
 LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 14607 strings out of 478994
- 215315 string characters out of 5862207
- 584558 words of memory out of 5000000
- 31662 multiletter control sequences out of 15000+600000
- 451219 words of font info for 115 fonts, out of 8000000 for 9000
+ 14641 strings out of 478994
+ 215621 string characters out of 5862207
+ 582742 words of memory out of 5000000
+ 31671 multiletter control sequences out of 15000+600000
+ 451800 words of font info for 122 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 85i,11n,88p,797b,475s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 85i,11n,88p,797b,471s stack positions out of 5000i,500n,10000p,200000b,80000s
 {c:/texlive/2021/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}{c:/texlive/2021
 /texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}{c:/texlive/2021/texmf-dist/fonts/enc
 /dvips/lm/lm-rm.enc}{c:/texlive/2021/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{c
@@ -733,10 +730,10 @@ type1/public/lm/lmr17.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/lm/lmr
 2021/texmf-dist/fonts/type1/public/lm/lmsy7.pfb><c:/texlive/2021/texmf-dist/fon
 ts/type1/public/lm/lmtk10.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/lm
 /lmtt10.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/lm/lmtti10.pfb>
-Output written on raport_3.pdf (14 pages, 259906 bytes).
+Output written on raport_3.pdf (16 pages, 267699 bytes).
 PDF statistics:
- 231 PDF objects out of 1000 (max. 8388607)
- 193 compressed objects within 2 object streams
- 47 named destinations out of 1000 (max. 500000)
- 26741 words of extra memory for PDF output out of 29859 (max. 10000000)
+ 254 PDF objects out of 1000 (max. 8388607)
+ 213 compressed objects within 3 object streams
+ 58 named destinations out of 1000 (max. 500000)
+ 26749 words of extra memory for PDF output out of 29859 (max. 10000000)
 

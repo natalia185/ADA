@@ -90,16 +90,10 @@ Korzystając z testu bazującego na ilorazie wiarogodności na poziomie istotno�
 
 # Zadanie 3
 ```{r, echo=FALSE}
-personel_n <- read.csv2('personel.csv',header=FALSE)
-names(personel_n) <- c('D','S','A1','A2','W1','W2','P','Wiek','Wyk')
-personel_n$A2[personel_n$A2 == '11'] = '1'
-personel_new <- personel
-personel_new$W1[personel_new$W1 == '-2'] = '-1'
-personel_new$W1[personel_new$W1 == '2'] = '1'
-personel_new$W2[personel_new$W2 == '-2'] = '-1'
-personel_new$W2[personel_new$W2 == '2'] = '1'
-personel_new <- personel_new %>% mutate(across(D:Wyk,as.factor))
-tabela <- ftable(personel_new$W1, personel_new$W2)
+W1 <- ((personel$W1 %>% as.numeric() > 2) %>% as.numeric() * 2 - 1 ) %>% as.factor()
+W2 <- ((personel$W2 %>% as.numeric() > 2) %>% as.numeric() * 2 - 1 ) %>% as.factor()
+tabela <- ftable(W1, W2)
+tabela
 ```
 
 ```{r}
@@ -128,8 +122,8 @@ test_z0 <- function(tabela){
   p <- 2*(1 - pnorm(abs(Z_0)))
   return(p)
 }
-
 ```
+
 
 ```{r, echo=FALSE}
 df <- data.frame('test' = c('Test Z', 'Test Z0', 'McNemar test z poprawką na ciągłość', 
@@ -210,6 +204,7 @@ Na wykresach powyżej przedstawiliśmy moce testów $Z$ i $Z_0$ dla $n\in\{20, 5
 
 
 # Zadanie 5
+Przyjmujemy za zmienną $1$ zmienną $S$ (zajmowane stanowisko), za zmienną $2$ – zmienną $W1$ (zadowolenie z wynagrodzenia w pierwszym badanym okresie) i za zmienną $3$ – zmienną $Wyk$.
 
 
 * $[1\:3]$ zmienne ,,S'' i ,,Wyk'' mają dowolne rozkłady oraz zmienne te są niezależne, a zmienna ,,W1'' ma rozkład równomierny
@@ -312,6 +307,10 @@ cbind(model_f$data, fitted(model_f))
 
 # Zadanie 6
 
+Przyjmujemy za zmienną $1$ zmienną $S$ (zajmowane
+stanowisko), za zmienną $2$ – zmienną $P$ (płeć) i za zmienną $3$ – zmienną $Wyk$
+(wykształcenie).
+
 * $[1\:3]$ zmienne ,,S'' i ,,Wyk'' mają dowolne rozkłady oraz zmienne te są niezależne, a zmienna ,,P'' ma rozkład równomierny
 
 ```{r, echo=FALSE}
@@ -392,31 +391,104 @@ cbind(model_f$data, fitted(model_f))
 
 # Zadanie 7
 
-```{r}
+Do zmiennych $S$, $W1$ i $Wyk$ przyjmiemy model log-liniowy $[13 \: 23]$ oraz $[123]$ i na tej podstawie obliczymy prawdopodobieństwa.
+
+* Prawdopodobieństwo, że osoba pracująca na stanowisku kierowniczym jest zdecydowanie zadowolona ze swojego wynagrodzenia. 
+
+```{r, echo=FALSE}
 df <- as.data.frame(ftable(personel$S,personel$W1,personel$Wyk))
 names(df) <- c('S', 'W1', 'Wyk', 'Freq')
-model <- glm(Freq ~ S+W1+Wyk+S*Wyk+W1*Wyk, data = df, family = poisson)
-result <- cbind(model$data, fitted(model))
-result$`fitted(model)` <- result$`fitted(model)`/sum(result$`fitted(model)`)
-result$Freq <- result$Freq/sum(result$Freq)
 
+model1 <- glm(Freq ~ S+W1+Wyk+S*Wyk+W1*Wyk, data = df, family = poisson)
+result1 <- cbind(model1$data, fitted(model1))
+result1$`fitted(model1)` <- result1$`fitted(model1)`/sum(result1$`fitted(model1)`)
+result1$Freq <- result1$Freq/sum(result1$Freq)
 
-sum(result$`fitted(model)`[result$S == 1 & result$W1 == 2])/(sum(result$`fitted(model)`[result$S == 1]))
-sum(result$Freq[result$S == 1 & result$W1 == 2])/(sum(result$Freq[result$S == 1]))
+model2 <- glm(Freq ~ S+W1+Wyk+S*Wyk+W1*Wyk+S*W1+S*W1*Wyk, data = df, family = poisson)
+result2 <- cbind(model2$data, fitted(model2))
+result2$`fitted(model2)` <- result2$`fitted(model2)`/sum(result2$`fitted(model2)`)
+result2$Freq <- result2$Freq/sum(result2$Freq)
 ```
+
+Przykładowy kod obliczający to prawdopodobieństwo dla modelu $[13 \: 23]$:
 
 ```{r}
-sum(result$`fitted(model)`[result$Wyk == 1 & result$S == 1])/(sum(result$`fitted(model)`[result$Wyk == 1]))
-sum(result$Freq[result$S == 1 & result$Wyk == 1])/(sum(result$Freq[result$Wyk == 1]))
+sum(result1$`fitted(model1)`[result1$S == 1 & result1$W1 == 2])/(sum(result1$`fitted(model1)`[result1$S == 1]))
 ```
 
-```{r}
-sum(result$`fitted(model)`[result$Wyk == 3 & result$S == 0])/(sum(result$`fitted(model)`[result$Wyk == 3]))
-sum(result$Freq[result$S == 0 & result$Wyk == 3])/(sum(result$Freq[result$Wyk == 3]))
+```{r, echo=FALSE}
+m1 <- sum(result1$`fitted(model1)`[result1$S == 1 & result1$W1 == 2])/(sum(result1$`fitted(model1)`[result1$S == 1]))
+
+m2 <-  sum(result2$`fitted(model2)`[result2$S == 1 & result2$W1 == 2])/(sum(result2$`fitted(model2)`[result2$S == 1]))
+
+emp <- sum(result1$Freq[result1$S == 1 & result1$W1 == 2])/(sum(result1$Freq[result1$S == 1]))
 ```
+
+\begin{table}[H]
+\centering
+\begin{tabular}{lc|c|ll}
+\cline{3-3}
+                      &                    & Prawdopodobieństwo &                      &  \\ \cline{2-3}
+\multicolumn{1}{l|}{} & Wartość empiryczna & `r emp`               &                      &  \\ \cline{2-3}
+\multicolumn{1}{l|}{} & Model {[}13 23{]}  & `r m1`                & \multicolumn{1}{c}{} &  \\ \cline{2-3}
+\multicolumn{1}{l|}{} & Model {[}123{]}    & `r m2`                &                      &  \\ \cline{2-3}
+\end{tabular}
+\caption{Oszacowane prawdopodobieństwa }
+\label{tab:5}
+\end{table}
+
+Na podstawie wyników przedstawionych w tabeli możemy zauważyć, że do naszych danych lepiej niż model $[13 \: 23]$ dopasował się model $[123]$ - prawdopodobieństwo obliczone z wykorzystaniem tego modelu jest identyczne jak prawdopodobieństwo empiryczne. 
+
+* Prawdopodobieństwo, że osoba z wykształceniem zawodowym pracuje na stanowisku kierowniczym. 
+
+```{r, echo=FALSE}
+m1_1 <- sum(result1$`fitted(model1)`[result1$Wyk == 1 & result1$S == 1])/(sum(result1$`fitted(model1)`[result1$Wyk == 1]))
+m2 <- sum(result2$`fitted(model2)`[result2$Wyk == 1 & result2$S == 1])/(sum(result2$`fitted(model2)`[result2$Wyk == 1]))
+emp <- sum(result1$Freq[result1$S == 1 & result1$Wyk == 1])/(sum(result1$Freq[result1$Wyk == 1]))
+```
+
+\begin{table}[H]
+\centering
+\begin{tabular}{lc|c|ll}
+\cline{3-3}
+                      &                    & Prawdopodobieństwo &                      &  \\ \cline{2-3}
+\multicolumn{1}{l|}{} & Wartość empiryczna & `r emp`               &                      &  \\ \cline{2-3}
+\multicolumn{1}{l|}{} & Model {[}13 23{]}  & `r m1_1`                & \multicolumn{1}{c}{} &  \\ \cline{2-3}
+\multicolumn{1}{l|}{} & Model {[}123{]}    & `r m2`                &                      &  \\ \cline{2-3}
+\end{tabular}
+\caption{Oszacowane prawdopodobieństwa }
+\label{tab:6}
+\end{table}
+
+Prawdopodobieństwa obliczone z wykorzystaniem obu modeli są identyczne jak prawdopodobieństwo empiryczne. Okazuje się, że prawdopodobieństwo, że osoba z wykształceniem zawodowym pracuje na na stanowisku kierowniczym jest niezwykle małe. 
+
+* Prawdopodobieństwo, że osoba z wykształceniem wyższym nie pracuje na stanowisku kierowniczym. 
+
+```{r, echo=FALSE}
+m1 <- sum(result1$`fitted(model1)`[result1$Wyk == 3 & result1$S == 0])/(sum(result1$`fitted(model1)`[result1$Wyk == 3]))
+m2 <-  sum(result2$`fitted(model2)`[result2$Wyk == 3 & result2$S == 0])/(sum(result2$`fitted(model2)`[result2$Wyk == 3]))
+emp <- sum(result1$Freq[result1$S == 0 & result1$Wyk == 3])/(sum(result1$Freq[result1$Wyk == 3]))
+```
+
+\begin{table}[H]
+\centering
+\begin{tabular}{lc|c|ll}
+\cline{3-3}
+                      &                    & Prawdopodobieństwo &                      &  \\ \cline{2-3}
+\multicolumn{1}{l|}{} & Wartość empiryczna & `r emp`               &                      &  \\ \cline{2-3}
+\multicolumn{1}{l|}{} & Model {[}13 23{]}  & `r m1`                & \multicolumn{1}{c}{} &  \\ \cline{2-3}
+\multicolumn{1}{l|}{} & Model {[}123{]}    & `r m2`                &                      &  \\ \cline{2-3}
+\end{tabular}
+\caption{Oszacowane prawdopodobieństwa}
+\label{tab:7}
+\end{table}
+
+Znów prawdopodobieństwa obliczone z wykorzystaniem modeli są identyczne jak prawdopodobieństwo empiryczne. 
 
 # Zadanie 8
-```{r}
+Do zmiennych $S$, $P$ i $Wyk$ przyjmiemy model log-liniowy $[13 \: 23]$ i na tej podstawie obliczymy prawdopodobieństwo.
+
+```{r, echo=FALSE}
 df <- as.data.frame(ftable(personel$S,personel$P,personel$Wyk))
 names(df) <- c('S', 'P', 'Wyk', 'Freq')
 
@@ -424,23 +496,145 @@ model <- glm(Freq ~ S+P+Wyk+S*Wyk+P*Wyk, data = df, family = poisson)
 result <- cbind(model$data, fitted(model))
 result$`fitted(model)` <- result$`fitted(model)`/sum(result$`fitted(model)`)
 result$Freq <- result$Freq/sum(result$Freq)
-
-
-sum(result$`fitted(model)`[result$S == 1 & result$P == 'K'])/(sum(result$`fitted(model)`[result$S == 1]))
-sum(result$Freq[result$S == 1 & result$P == 'K'])/(sum(result$Freq[result$S == 1]))
 ```
+
+* Prawdopodobieństwo, że osoba pracująca na stanowisku kierowniczym jest kobietą.
+
+Przykładowe wywołanie: 
 
 ```{r}
-sum(result$`fitted(model)`[result$S == 1 & result$Wyk == 1])/(sum(result$`fitted(model)`[result$Wyk == 1]))
-sum(result$Freq[result$S == 1 & result$Wyk == 1])/(sum(result$Freq[result$Wyk == 1]))
+m <- sum(result$`fitted(model)`[result$S == 1 & result$P == 'K'])/(sum(result$`fitted(model)`[result$S == 1]))
+emp <- sum(result$Freq[result$S == 1 & result$P == 'K'])/(sum(result$Freq[result$S == 1]))
 ```
 
-```{r}
-sum(result$`fitted(model)`[result$P == 'M' & result$Wyk == 3])/(sum(result$`fitted(model)`[result$Wyk == 3]))
-sum(result$Freq[result$P == 'M' & result$Wyk == 3])/(sum(result$Freq[result$Wyk == 3]))
+\begin{table}[H]
+\centering
+\begin{tabular}{lccll}
+\cline{3-3}
+                      & \multicolumn{1}{c|}{}                   & \multicolumn{1}{c|}{Prawdopodobieństwo} &                      &  \\ \cline{2-3}
+\multicolumn{1}{l|}{} & \multicolumn{1}{c|}{Wartość empiryczna} & \multicolumn{1}{c|}{`r m`}                &                      &  \\ \cline{2-3}
+\multicolumn{1}{l|}{} & \multicolumn{1}{c|}{Model {[}13 23{]}}  & \multicolumn{1}{c|}{`r emp`}                & \multicolumn{1}{c}{} &  \\ \cline{2-3}
+                      &                                         &                                         &                      & 
+\end{tabular}
+\caption{Oszacowane prawdopodobieństwa}
+\label{tab:8}
+\end{table}
+
+Prawdopodobieństwo uzyskane z wykorzystaniem modelu $[13 \: 23]$ dość mocno odbiegają od otrzymanego wyniku empirycznego. 
+
+* Prawdopodobieństwo, że osoba z wykształceniem zawodowym pracuje na stanowisku kierowniczym. 
+
+```{r, echo=FALSE}
+m <- sum(result$`fitted(model)`[result$S == 1 & result$Wyk == 1])/(sum(result$`fitted(model)`[result$Wyk == 1]))
+emp <- sum(result$Freq[result$S == 1 & result$Wyk == 1])/(sum(result$Freq[result$Wyk == 1]))
 ```
+
+\begin{table}[H]
+\centering
+\begin{tabular}{lccll}
+\cline{3-3}
+                      & \multicolumn{1}{c|}{}                   & \multicolumn{1}{c|}{Prawdopodobieństwo} &                      &  \\ \cline{2-3}
+\multicolumn{1}{l|}{} & \multicolumn{1}{c|}{Wartość empiryczna} & \multicolumn{1}{c|}{`r m`}                &                      &  \\ \cline{2-3}
+\multicolumn{1}{l|}{} & \multicolumn{1}{c|}{Model {[}13 23{]}}  & \multicolumn{1}{c|}{`r emp`}                & \multicolumn{1}{c}{} &  \\ \cline{2-3}
+                      &                                         &                                         &                      & 
+\end{tabular}
+\caption{Oszacowane prawdopodobieństwa}
+\label{tab:9}
+\end{table}
+
+Prawdopodobieństwo otrzymane za pomocą modelu jest identyczne jak to otrzymane z wykorzystaniem modelu. 
+
+
+\begin{table}[H]
+\centering
+\begin{tabular}{lccll}
+\cline{3-3}
+                      & \multicolumn{1}{c|}{}          & \multicolumn{1}{c|}{Prawdopodobieństwo} &                      &  \\ \cline{2-3}
+\multicolumn{1}{l|}{} & \multicolumn{1}{c|}{Zadanie 7} & \multicolumn{1}{c|}{`r m1_1``}                &                      &  \\ \cline{2-3}
+\multicolumn{1}{l|}{} & \multicolumn{1}{c|}{Zadanie 8} & \multicolumn{1}{c|}{`r m`}                & \multicolumn{1}{c}{} &  \\ \cline{2-3}
+                      &                                &                                         &                      & 
+\end{tabular}
+\caption{Porównanie prawdopodobieństw tego samego problemu uzyskanych w zadaniu 7. i 8.}
+\label{tab:10}
+\end{table}
+
+Prawdopodobieństwa tego samego problemu z zadania 7. i 8. otrzymane za pomocą różnych modeli log-liniowych są identyczne. 
+
+* Prawdopodobieństwo, że osoba z wykształceniem wyższym jest mężczyzną.
+
+```{r, echo=FALSE}
+m <- sum(result$`fitted(model)`[result$P == 'M' & result$Wyk == 3])/(sum(result$`fitted(model)`[result$Wyk == 3]))
+emp <- sum(result$Freq[result$P == 'M' & result$Wyk == 3])/(sum(result$Freq[result$Wyk == 3]))
+```
+
+\begin{table}[H]
+\centering
+\begin{tabular}{lccll}
+\cline{3-3}
+                      & \multicolumn{1}{c|}{}                   & \multicolumn{1}{c|}{Prawdopodobieństwo} &                      &  \\ \cline{2-3}
+\multicolumn{1}{l|}{} & \multicolumn{1}{c|}{Wartość empiryczna} & \multicolumn{1}{c|}{`r m`}                &                      &  \\ \cline{2-3}
+\multicolumn{1}{l|}{} & \multicolumn{1}{c|}{Model {[}13 23{]}}  & \multicolumn{1}{c|}{`r emp`}                & \multicolumn{1}{c}{} &  \\ \cline{2-3}
+                      &                                         &                                         &                      & 
+\end{tabular}
+\caption{Oszacowane prawdopodobieństwa}
+\label{tab:11}
+\end{table}
+
+Prawdopodobieństwo otrzymane za pomocą modelu jest identyczne jak to otrzymane z wykorzystaniem modelu. 
 
 # Zadanie 9 
+
+W tym zadaniu będziemy testować hipotezy zerowe przeciwko dwóm pewnym modelom, w których jeden jest pełny (zawieraja wszystkie interakcje) a drugi jest nadmodelem modelu z hipotezy zerowej, ale nie jest modelem pełnym. Hipotezy testujemy na poziomie istotności $\alpha = 0.05$.
+
 * $H_0$: Dane pochodzą z modelu $[1\:2\:3]$
+przeciwko 
+- $H_1$: Dane pochodzą z modelu pełnego $[123]$
+- $H_1$: Dane pochodzą z modelu $[12\: 3]$
+
+```{r, echo=FALSE}
+df_W1 <- as.data.frame(ftable(personel$S,personel$W1,personel$Wyk))
+names(df_W1) <- c('S', 'W1', 'Wyk', 'Freq')
+
+df_P <- as.data.frame(ftable(personel$S,personel$P,personel$Wyk))
+names(df_P) <- c('S', 'P', 'Wyk', 'Freq')
+df_W1
+```
+
+Przykładowy kod, w którym dopasowujemy modele do naszych danych:
+
+```{r}
+m_0 <- glm(Freq ~ S+W1+Wyk, data = df_W1, family = poisson)
+m_1 <- glm(Freq ~ S+W1+Wyk+S*W1+Wyk*W1+S*Wyk+S*W1*Wyk, data = df_W1, family = poisson)
+m_2 <- glm(Freq ~ S+W1+Wyk+S*W1, data = df_W1, family = poisson)
+```
+
+```{r, echo=FALSE}
+test <- anova(m_0, m_1)
+p_1 <- 1-pchisq(test$Deviance[2], df = test$Df[2])
+
+test <- anova(m_0, m_2)
+p_2 <- 1-pchisq(test$Deviance[2], df = test$Df[2])
+```
+
+Prawdopodobieństwo dla pierwszej z hipotez alternatywnych `r p_1` oraz dla drugiej `r p_2` są mniejsze niż założony poziom istotności $\alpha$, więc odrzucamy hipotę zerową.
+
+
+* $H_0$: Dane pochodzą z modelu $[2\:13]$ 
+przeciwko 
+- $H_1$: Dane pochodzą z modelu $[123]$
+- $H_1$: Dane pochodzą z modelu $[12\: 13]$
+
+```{r}
+m_0 <- glm(Freq ~ S+W1+Wyk+ S*Wyk, data = df_W1, family = poisson)
+m_1 <- glm(Freq ~ S+W1+Wyk+S*W1+Wyk*W1+S*Wyk+S*W1*Wyk, data = df_W1, family = poisson)
+m_2 <- glm(Freq ~ S+W1+Wyk+S*W1+S*Wyk, data = df_W1, family = poisson)
+
+test <- anova(m_0, m_1)
+p_1 <- 1-pchisq(test$Deviance[2], df = test$Df[2])
+
+test <- anova(m_0, m_2)
+p_2 <- 1-pchisq(test$Deviance[2], df = test$Df[2])
+```
+Prawdopodobieństwo dla pierwszej z hipotez alternatywnych `r p_1` oraz dla drugiej `r p_2` jest mniejszy niż założony poziom istotności $\alpha$, więc odrzucamy hipotę zerową.
 
 
