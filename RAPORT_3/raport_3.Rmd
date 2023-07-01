@@ -206,7 +206,6 @@ Na wykresach powyżej przedstawiliśmy moce testów $Z$ i $Z_0$ dla $n\in\{20, 5
 # Zadanie 5
 Przyjmujemy za zmienną $1$ zmienną $S$ (zajmowane stanowisko), za zmienną $2$ – zmienną $W1$ (zadowolenie z wynagrodzenia w pierwszym badanym okresie) i za zmienną $3$ – zmienną $Wyk$.
 
-
 * $[1\:3]$ zmienne ,,S'' i ,,Wyk'' mają dowolne rozkłady oraz zmienne te są niezależne, a zmienna ,,W1'' ma rozkład równomierny
 
 ```{r, echo=FALSE}
@@ -218,7 +217,7 @@ names(df) <- c('S', 'W1', 'Wyk', 'Freq')
 model_a <- glm(Freq ~ S + Wyk, 
                data = df, family = poisson)
 p_a <- 1-pchisq(deviance(model_a), df = df.residual(model_a))
-cbind(model_a, fitted(model_a))
+cbind(model_a$data, fitted = fitted(model_a))%>% kable(caption = "Porównanie wyznaczonych liczności na podstawie modelów z rzeczywistymi licznościami danych", label = "Table5")
 ```
 
 > P-wartość `r p_a` jest mniejsza niż założony poziom istotności $\alpha$, więc odrzucamy hipotę zerową. Nasze dane nie pochodzą z modelu $[1\:3]$.
@@ -228,7 +227,7 @@ cbind(model_a, fitted(model_a))
 model_b <- glm(Freq ~ S + Wyk + S*Wyk, 
                data = df, family = poisson)
 p_b <- 1-pchisq(deviance(model_b), df = df.residual(model_b))
-cbind(model_b$data, fitted(model_b))
+cbind(model_b$data, fitted = fitted(model_b))%>% kable(caption = "Porównanie wyznaczonych liczności na podstawie modelów z rzeczywistymi licznościami danych", label = "Table6")
 ```
 > P-wartość `r p_b` jest mniejsza niż założony poziom istotności $\alpha$, więc odrzucamy hipotę zerową. Nasze dane nie pochodzą z modelu $[13]$.
 
@@ -238,7 +237,7 @@ cbind(model_b$data, fitted(model_b))
 model_c <- glm(Freq ~ S + Wyk + W1, 
                data = df, family = poisson)
 p_c <- 1-pchisq(deviance(model_c), df = df.residual(model_c))
-cbind(model_c$data, fitted(model_c))
+cbind(model_c$data, fitted = fitted(model_c))%>% kable(caption = "Porównanie wyznaczonych liczności na podstawie modelów z rzeczywistymi licznościami danych", label = "Table7")
 ```
 > P-wartość `r p_c` jest mniejsza niż założony poziom istotności $\alpha$, więc odrzucamy hipotę zerową. Nasze dane nie pochodzą z modelu $[1\:2\:3]$.
 
@@ -248,7 +247,7 @@ cbind(model_c$data, fitted(model_c))
 model_d <- glm(Freq ~ S + Wyk + W1 + S*W1, 
                data = df, family = poisson)
 p_d <- 1-pchisq(deviance(model_d), df = df.residual(model_d))
-cbind(model_d$data, fitted(model_d))
+cbind(model_d$data, fitted = fitted(model_d))%>% kable(caption = "Porównanie wyznaczonych liczności na podstawie modelów z rzeczywistymi licznościami danych", label = "Table8")
 ```
 > P-wartość `r p_d` jest mniejsza niż założony poziom istotności $\alpha$, więc odrzucamy hipotę zerową. Nasze dane nie pochodzą z modelu $[12\:3]$.
 
@@ -258,7 +257,7 @@ cbind(model_d$data, fitted(model_d))
 model_e <- glm(Freq ~ S + Wyk + W1 + S*W1 + S*Wyk, 
                data = df, family = poisson)
 p_e <- 1-pchisq(deviance(model_e), df = df.residual(model_e))
-cbind(model_e$data, fitted(model_e))
+cbind(model_e$data, fitted = fitted(model_e))%>% kable(caption = "Porównanie wyznaczonych liczności na podstawie modelów z rzeczywistymi licznościami danych", label = "Table9")
 ```
 > P-wartość `r p_e` jest większa niż założony poziom istotności $\alpha$, więc nie mamy podstaw do odrzucenia hipotezy zerowej, czyli zakładamy, że nasze dane pochodzą z modelu $[12\:13]$.
 
@@ -268,7 +267,7 @@ cbind(model_e$data, fitted(model_e))
 model_f <- glm(Freq ~ S + Wyk + W1 + W1*Wyk, 
                data = df, family = poisson)
 p_f <- 1-pchisq(deviance(model_f), df = df.residual(model_f))
-cbind(model_f$data, fitted(model_f))
+cbind(model_f$data, fitted = fitted(model_f))%>% kable(caption = "Porównanie wyznaczonych liczności na podstawie modelów z rzeczywistymi licznościami danych", label = "Table10")
 ```
 > P-wartość `r p_f` jest mniejsza niż założony poziom istotności $\alpha$, więc odrzucamy hipotę zerową. Nasze dane nie pochodzą z modelu $[1\:23]$.
 
@@ -284,26 +283,6 @@ cbind(model_f$data, fitted(model_f))
 		\caption{P-wartości testów statystycznych}
 		\label{tab:tabela4}
 \end{table}
-
-
-\begin{table}[h]
-		\begin{center}
-			\begin{tabular}{|c|c|c|c|c|c|c|}
-				\hline
-				Liczności danych & \multicolumn{6}{c|}{Liczności modeli} \\\cline{2-7}
-				& $[1\:3]$ & $[13]$ & $[1\:2\:3]$ & $[12\:3]$ & $[12\:13]$ & $[1\:23]$ \\\hline
-				`r model_a$data$Freq[1]` & `r fitted(model_a)[1]` & `r fitted(model_b)[1]` & `r fitted(model_c)[1]` & `r fitted(model_d)[1]` & `r fitted(model_e)[1]` & `r fitted(model_f)[1]` \\\hline
-				`r model_a$data$Freq[2]` & `r fitted(model_a)[2]` & `r fitted(model_b)[2]` & `r fitted(model_c)[2]` & `r fitted(model_d)[2]` & `r fitted(model_e)[2]` & `r fitted(model_f)[2]` \\\hline
-				`r model_a$data$Freq[3]` & `r fitted(model_a)[3]` & `r fitted(model_b)[3]` & `r fitted(model_c)[3]` & `r fitted(model_d)[3]` & `r fitted(model_e)[3]` & `r fitted(model_f)[3]` \\\hline
-				`r model_a$data$Freq[4]` & `r fitted(model_a)[4]` & `r fitted(model_b)[4]` & `r fitted(model_c)[4]` & `r fitted(model_d)[4]` & `r fitted(model_e)[4]` & `r fitted(model_f)[4]` \\\hline
-				`r model_a$data$Freq[5]` & `r fitted(model_a)[5]` & `r fitted(model_b)[5]` & `r fitted(model_c)[5]` & `r fitted(model_d)[5]` & `r fitted(model_e)[5]` & `r fitted(model_f)[5]` \\\hline
-				`r model_a$data$Freq[6]` & `r fitted(model_a)[6]` & `r fitted(model_b)[6]` & `r fitted(model_c)[6]` & `r fitted(model_d)[6]` & `r fitted(model_e)[6]` & `r fitted(model_f)[6]` \\\hline
-			\end{tabular}
-		\end{center}
-		\caption{Porównanie wyznaczonych liczności na podstawie modelów z rzeczywistymi licznościami danych}
-		\label{tab:tabela5}
-	\end{table}	
-
 
 # Zadanie 6
 
@@ -322,7 +301,7 @@ names(df) <- c('S', 'P', 'Wyk', 'Freq')
 model_a <- glm(Freq ~ S + Wyk, 
                data = df, family = poisson)
 p_a <- 1-pchisq(deviance(model_a), df = df.residual(model_a))
-cbind(model_a, fitted(model_a))
+cbind(model_a$data, fitted = fitted(model_a))%>% kable(caption = "Porównanie wyznaczonych liczności na podstawie modelów z rzeczywistymi licznościami danych", label = "Table6")
 ```
 
 > P-wartość `r p_a` jest mniejsza niż założony poziom istotności $\alpha$, więc odrzucamy hipotę zerową. Nasze dane nie pochodzą z modelu $[1\:3]$.
@@ -332,7 +311,7 @@ cbind(model_a, fitted(model_a))
 model_b <- glm(Freq ~ S + Wyk + S*Wyk, 
                data = df, family = poisson)
 p_b <- 1-pchisq(deviance(model_b), df = df.residual(model_b))
-cbind(model_b$data, fitted(model_b))
+cbind(model_b$data, fitted = fitted(model_b))%>% kable(caption = "Porównanie wyznaczonych liczności na podstawie modelów z rzeczywistymi licznościami danych", label = "Table12")
 ```
 > P-wartość `r p_b` jest mniejsza niż założony poziom istotności $\alpha$, więc odrzucamy hipotę zerową. Nasze dane nie pochodzą z modelu $[13]$.
 
@@ -342,7 +321,7 @@ cbind(model_b$data, fitted(model_b))
 model_c <- glm(Freq ~ S + Wyk + P, 
                data = df, family = poisson)
 p_c <- 1-pchisq(deviance(model_c), df = df.residual(model_c))
-cbind(model_c$data, fitted(model_c))
+cbind(model_c$data, fitted = fitted(model_c))%>% kable(caption = "Porównanie wyznaczonych liczności na podstawie modelów z rzeczywistymi licznościami danych", label = "Table13")
 ```
 > P-wartość `r p_c` jest mniejsza niż założony poziom istotności $\alpha$, więc odrzucamy hipotę zerową. Nasze dane nie pochodzą z modelu $[1\:2\:3]$.
 
@@ -352,7 +331,7 @@ cbind(model_c$data, fitted(model_c))
 model_d <- glm(Freq ~ S + Wyk + P + S*P, 
                data = df, family = poisson)
 p_d <- 1-pchisq(deviance(model_d), df = df.residual(model_d))
-cbind(model_d$data, fitted(model_d))
+cbind(model_d$data, fitted = fitted(model_d))%>% kable(caption = "Porównanie wyznaczonych liczności na podstawie modelów z rzeczywistymi licznościami danych", label = "Table14")
 ```
 > P-wartość `r p_d` jest mniejsza niż założony poziom istotności $\alpha$, więc odrzucamy hipotę zerową. Nasze dane nie pochodzą z modelu $[12\:3]$.
 
@@ -362,7 +341,7 @@ cbind(model_d$data, fitted(model_d))
 model_e <- glm(Freq ~ S + Wyk + P + S*P + S*Wyk, 
                data = df, family = poisson)
 p_e <- 1-pchisq(deviance(model_e), df = df.residual(model_e))
-cbind(model_e$data, fitted(model_e))
+cbind(model_e$data, fitted = fitted(model_e))%>% kable(caption = "Porównanie wyznaczonych liczności na podstawie modelów z rzeczywistymi licznościami danych", label = "Table16")
 ```
 > P-wartość `r p_e` jest mniejsza niż założony poziom istotności $\alpha$, więc odrzucamy hipotezę zerową. Nasze dane nie pochodzą z modelu $[12\:13]$.
 
@@ -372,7 +351,7 @@ cbind(model_e$data, fitted(model_e))
 model_f <- glm(Freq ~ S + Wyk + P + P*Wyk, 
                data = df, family = poisson)
 p_f <- 1-pchisq(deviance(model_f), df = df.residual(model_f))
-cbind(model_f$data, fitted(model_f))
+cbind(model_f$data, fitted = fitted(model_f))%>% kable(caption = "Porównanie wyznaczonych liczności na podstawie modelów z rzeczywistymi licznościami danych", label = "Table17")
 ```
 > P-wartość `r p_f` jest mniejsza niż założony poziom istotności $\alpha$, więc odrzucamy hipotę zerową. Nasze dane nie pochodzą z modelu $[1\:23]$.
 
@@ -597,7 +576,6 @@ names(df_W1) <- c('S', 'W1', 'Wyk', 'Freq')
 
 df_P <- as.data.frame(ftable(personel$S,personel$P,personel$Wyk))
 names(df_P) <- c('S', 'P', 'Wyk', 'Freq')
-df_W1
 ```
 
 Przykładowy kod, w którym dopasowujemy modele do naszych danych:
@@ -622,12 +600,12 @@ Prawdopodobieństwo dla pierwszej z hipotez alternatywnych `r p_1` oraz dla drug
 * $H_0$: Dane pochodzą z modelu $[2\:13]$ 
 przeciwko 
 - $H_1$: Dane pochodzą z modelu $[123]$
-- $H_1$: Dane pochodzą z modelu $[12\: 13]$
+- $H_1$: Dane pochodzą z modelu $[13\: 23]$
 
 ```{r}
 m_0 <- glm(Freq ~ S+W1+Wyk+ S*Wyk, data = df_W1, family = poisson)
 m_1 <- glm(Freq ~ S+W1+Wyk+S*W1+Wyk*W1+S*Wyk+S*W1*Wyk, data = df_W1, family = poisson)
-m_2 <- glm(Freq ~ S+W1+Wyk+S*W1+S*Wyk, data = df_W1, family = poisson)
+m_2 <- glm(Freq ~ S+W1+Wyk+Wyk*W1+S*Wyk, data = df_W1, family = poisson)
 
 test <- anova(m_0, m_1)
 p_1 <- 1-pchisq(test$Deviance[2], df = test$Df[2])
@@ -635,6 +613,432 @@ p_1 <- 1-pchisq(test$Deviance[2], df = test$Df[2])
 test <- anova(m_0, m_2)
 p_2 <- 1-pchisq(test$Deviance[2], df = test$Df[2])
 ```
-Prawdopodobieństwo dla pierwszej z hipotez alternatywnych `r p_1` oraz dla drugiej `r p_2` jest mniejszy niż założony poziom istotności $\alpha$, więc odrzucamy hipotę zerową.
+Prawdopodobieństwo dla pierwszej z hipotez alternatywnych `r p_1` jest większe niż założony poziom istotności, więc nie odrzucamy hipotezy zerowej. Natomiast dla drugiej `r p_2` jest mniejszy niż założony poziom istotności $\alpha$, więc odrzucamy hipotę zerową.
+
+* $H_0$: Dane pochodzą z modelu $[13\:23]$ 
+przeciwko 
+- $H_1$: Dane pochodzą z modelu $[123]$
+- $H_1$: Dane pochodzą z modelu $[12\: 13\: 23]$
+
+```{r}
+m_0 <- glm(Freq ~ S+W1+Wyk+ S*Wyk+W1*Wyk, data = df_W1, family = poisson)
+m_1 <- glm(Freq ~ S+W1+Wyk+S*W1+Wyk*W1+S*Wyk+S*W1*Wyk, data = df_W1, family = poisson)
+m_2 <- glm(Freq ~ S+W1+Wyk+S*W1+Wyk*W1+S*Wyk+S*W1, data = df_W1, family = poisson)
+
+test <- anova(m_0, m_1)
+p_1 <- 1-pchisq(test$Deviance[2], df = test$Df[2])
+
+test <- anova(m_0, m_2)
+p_2 <- 1-pchisq(test$Deviance[2], df = test$Df[2])
+```
+
+Prawdopodobieństwo dla pierwszej z hipotez alternatywnych `r p_1` oraz dla drugiej `r p_2` jest większe niż założony poziom istotności, więc nie mamy podstaw do odrzucenia hipotezy zerowej. 
+
+* $H_0$: Dane pochodzą z modelu $[13\:23]$ 
+przeciwko 
+- $H_1$: Dane pochodzą z modelu $[123]$
+- $H_1$: Dane pochodzą z modelu $[12\: 13\: 23]$
+
+```{r}
+m_0 <- glm(Freq ~ S+P+Wyk+S*Wyk+P*Wyk, data = df_P, family = poisson)
+m_1 <- glm(Freq ~ S+P+Wyk+S*P+Wyk*P+S*Wyk+S*P*Wyk, data = df_P, family = poisson)
+m_2 <- glm(Freq ~ S+P+Wyk+S*P+Wyk*P+S*Wyk+S*P, data = df_P, family = poisson)
+
+test <- anova(m_0, m_1)
+p_1 <- 1-pchisq(test$Deviance[2], df = test$Df[2])
+
+test <- anova(m_0, m_2)
+p_2 <- 1-pchisq(test$Deviance[2], df = test$Df[2])
+```
+
+Prawdopodobieństwo dla drugiej z hipotez alternatywnych `r p_2` jest mniejszy niż założony poziom istotności $\alpha$, więc odrzucamy hipotę zerową. Natomiast dla pierwszej `r p_1`
+jest mniejszy, zatem nie mamy podstaw do odrzucenia hipotezy zerowej. 
+
+# Zadanie 10
+
+## Testy 
+Wybór modelu w oparciu o testy  został wykonany w ten sposób, że najpierw wzięliśmy model, w którym nie występują żadne interakcje  $[1\;2\;3]$, wykonaliśmy test ilorazu wiarygodności, gdzie hipotezą alternatywną $H_1$ był nadmodel modelu z hipotezy alternatywnej. Jeśli uzyskana p-wartość była większa niż założony poziom istotności $\alpha=0.05$, to przyjmowaliśmy że model z hipotezy zerowej $H_0$ lepiej opisuje nasze dane, w przeciwnym wypadku, dla następnych testów, model z hipotezy alternatywnej stawał się modelem hipotezy zerowej.
+Postępując w ten sposób doszliśmy do modelu, który według testów najlepiej opisuje dane.
+
+* Model $[1\;2\;3]$ przeciwko $[12\;3]$
+```{r}
+df <- as.data.frame(ftable(personel$A1,personel$W1,personel$P))
+names(df) <- c('A1', 'W1', 'P', 'Freq')
+
+m_0 <- glm(Freq ~ A1+W1+P, data = df, family = poisson)
+m_1 <- glm(Freq ~ A1+W1+W1+A1*W1, data = df, family = poisson)
+test <- anova(m_0, m_1)
+p_2 <- 1-pchisq(test$Deviance[2], df = test$Df[2])
+```
+Otrzymana p-wartośc `r p_2` jest mniejsza niż założony poziom istotności, więc odrzucamy hipotezę zerową. Model $[12\;3]$ staje się modelem wyjściowym.
+
+* Model $[12\;3]$ przeciwko $[12\;13]$
+```{r}
+m_0 <- glm(Freq ~ A1+W1+P+A1*W1, data = df, family = poisson)
+m_1 <- glm(Freq ~ A1+W1+P+A1*W1+A1*P, data = df, family = poisson)
+test <- anova(m_0, m_1)
+p_2 <- 1-pchisq(test$Deviance[2], df = test$Df[2])
+```
+Otrzymana p-wartośc `r p_2` jest większa niż założony poziom istotności, więc nie mamy podstaw do odrzucenia hipotezy zerowej. 
+
+* Model $[12\;3]$ przeciwko $[12\;23]$
+```{r}
+m_0 <- glm(Freq ~ A1+W1+P+A1*W1, data = df, family = poisson)
+m_1 <- glm(Freq ~ A1+W1+P+A1*W1+W1*P, data = df, family = poisson)
+test <- anova(m_0, m_1)
+p_2 <- 1-pchisq(test$Deviance[2], df = test$Df[2])
+```
+Otrzymana p-wartośc `r p_2` jest większa niż założony poziom istotności, więc nie mamy podstaw do odrzucenia hipotezy zerowej. 
 
 
+* Model $[12\;3]$ przeciwko $[12\;13\;23]$
+```{r}
+m_0 <- glm(Freq ~ A1+W1+P+A1*W1, data = df, family = poisson)
+m_1 <- glm(Freq ~ A1+W1+P+A1*W1+W1*P+P*A1, data = df, family = poisson)
+test <- anova(m_0, m_1)
+p_2 <- 1-pchisq(test$Deviance[2], df = test$Df[2])
+```
+
+Otrzymana p-wartośc `r p_2` jest większa niż założony poziom istotności, więc nie mamy podstaw do odrzucenia hipotezy zerowej. 
+
+
+* Model $[12\;3]$ przeciwko $[123]$
+
+```{r}
+m_0 <- glm(Freq ~ A1+W1+P+A1*W1, data = df, family = poisson)
+m_1 <- glm(Freq ~ A1+W1+P+A1*W1+W1*P+P*A1+A1*W1*P, data = df, family = poisson)
+test <- anova(m_0, m_1)
+p_2 <- 1-pchisq(test$Deviance[2], df = test$Df[2])
+```
+Otrzymana p-wartośc `r p_2` jest większa niż założony poziom istotności, więc nie mamy podstaw do odrzucenia hipotezy zerowej. 
+
+
+Z przeprowadzonych testów wynika, że model $[12\;3]$ najepiej opisuje nasze dane. 
+
+## Kryterium AIC
+```{r, echo=FALSE}
+model_ <- glm(Freq ~ 1, data = df, family = poisson)
+	model_1 <- glm(Freq ~ A1, data = df, family = poisson)
+	model_2 <- glm(Freq ~ W1, data = df, family = poisson)
+	model_3 <- glm(Freq ~ P, data = df, family = poisson)
+	model_1_2 <- glm(Freq ~ A1 + W1, data = df, family = poisson)
+	model_1_3 <- glm(Freq ~ A1 + P, data = df, family = poisson)
+	model_2_3 <- glm(Freq ~ W1 + P, data = df, family = poisson)
+	model_12 <- glm(Freq ~ A1+W1+A1*W1, data = df, family = poisson)
+	model_13 <- glm(Freq ~ A1+P+A1*P, data = df, family = poisson)
+	model_23 <- glm(Freq ~ W1+P+W1*P,
+		data = df, family = poisson)
+	model_1_2_3 <- glm(Freq ~ A1+W1+P,
+		data = df, family = poisson)
+	model_12_3 <- glm(Freq ~ A1+W1+P+A1*W1,
+		data = df, family = poisson)
+	model_13_2 <- glm(Freq ~ A1+W1+P+A1*P,
+		data = df, family = poisson)
+	model_1_23 <- glm(Freq ~ A1+W1+P+W1*P,
+		data = df, family = poisson)
+	model_12_23 <- glm(Freq ~ A1+W1+P+A1*W1+W1*P,
+		data = df, family = poisson)
+	model_13_23 <- glm(Freq ~ A1+W1+P+A1*P+W1*P,
+		data = df, family = poisson)
+	model_12_13 <- glm(Freq ~ A1+W1+P+A1*W1+A1*P,
+		data = df, family = poisson)
+	model_12_23_13 <- glm(Freq ~ A1+W1+P+A1*W1+W1*P+A1*P, data = df, family = poisson)
+	model_123 <- glm(Freq ~ A1+W1+P+A1*W1+A1*P+W1*P+A1*W1*P,
+		data = df, family = poisson)
+```
+
+
+```{r}
+	models_AIC <- c(AIC(model_), AIC(model_1), AIC(model_2), AIC(model_3),
+	AIC(model_1_2), AIC(model_1_3), AIC(model_2_3), AIC(model_12),
+	AIC(model_13), AIC(model_23), AIC(model_1_2_3), AIC(model_12_3),
+	AIC(model_13_2), AIC(model_1_23), AIC(model_12_23), AIC(model_13_23),
+	AIC(model_12_13), AIC(model_12_23_13), AIC(model_123))
+```
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|}
+\hline
+Model & Wartość kryterium \\ \hline
+$[]$     & `r models_AIC[1]` \\ \hline
+$[1]$     & `r models_AIC[2]` \\ \hline
+$[2]$     & `r models_AIC[3]` \\ \hline
+$[3]$     & `r models_AIC[4]` \\ \hline
+$[1\;2]$     & `r models_AIC[5]` \\ \hline
+$[1\;3]$      &  `r models_AIC[6]`\\ \hline
+$[2\;3]$      &  `r models_AIC[7]`\\ \hline
+$[12]$      & `r models_AIC[8]`\\ \hline
+$[13]$      & `r models_AIC[9]`\\ \hline
+$[23]$      & `r models_AIC[10]`\\ \hline
+$[1\;2\;3]$      &  `r models_AIC[11]`\\ \hline
+$[12\;3]$      & `r models_AIC[12]`\\ \hline
+$[13\;2]$      & `r models_AIC[13]`\\ \hline
+$[1\;23]$      & `r models_AIC[14]`\\ \hline
+$[12\;23]$      & `r models_AIC[15]` \\ \hline
+$[13\;23]$      &  `r models_AIC[16]`\\ \hline
+$[12\;13]$      &  `r models_AIC[17]`\\ \hline
+$[12\;13\;23]$  & `r models_AIC[18]`\\ \hline
+$[123]$      & `r models_AIC[19]`\\ \hline
+\end{tabular}
+\caption{Wartości obliczonych kryteriów AIC dla poszczególnych modeli}
+\label{tab:12}
+\end{table}
+Najmniejsza wartość kryterium informacyjnego wynosi `r min(models_AIC)`, a otrzymano ją dla modelu $[12\;3]$, czyli tego samego który otrzymaliśmy z wykorzystaniem testów. 
+
+## Kryterium BIC 
+
+```{r}
+	models_BIC <- c(BIC(model_), BIC(model_1), BIC(model_2), BIC(model_3),
+	BIC(model_1_2), BIC(model_1_3), BIC(model_2_3), BIC(model_12),
+	BIC(model_13), BIC(model_23), BIC(model_1_2_3), BIC(model_12_3),
+	BIC(model_13_2), BIC(model_1_23), BIC(model_12_23), BIC(model_13_23),
+	BIC(model_12_13), BIC(model_12_23_13), BIC(model_123))
+```
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|}
+\hline
+Model & Wartość kryterium \\ \hline
+$[]$     & `r models_BIC[1]` \\ \hline
+$[1]$     & `r models_BIC[2]` \\ \hline
+$[2]$     & `r models_BIC[3]` \\ \hline
+$[3]$     & `r models_BIC[4]` \\ \hline
+$[1\;2]$     & `r models_BIC[5]` \\ \hline
+$[1\;3]$      &  `r models_BIC[6]`\\ \hline
+$[2\;3]$      &  `r models_BIC[7]`\\ \hline
+$[12]$      & `r models_BIC[8]`\\ \hline
+$[13]$      & `r models_BIC[9]`\\ \hline
+$[23]$      & `r models_BIC[10]`\\ \hline
+$[1\;2\;3]$      &  `r models_BIC[11]`\\ \hline
+$[12\;3]$      & `r models_BIC[12]`\\ \hline
+$[13\;2]$      & `r models_BIC[13]`\\ \hline
+$[1\;23]$      & `r models_BIC[14]`\\ \hline
+$[12\;23]$      & `r models_BIC[15]` \\ \hline
+$[13\;23]$      &  `r models_BIC[16]`\\ \hline
+$[12\;13]$      &  `r models_BIC[17]`\\ \hline
+$[12\;13\;23]$  & `r models_BIC[18]`\\ \hline
+$[123]$      & `r models_BIC[19]`\\ \hline
+\end{tabular}
+\caption{Wartości obliczonych kryteriów BIC dla poszczególnych modeli}
+\label{tab:13}
+\end{table}
+
+Najmniejsza wartość kryterium informacyjnego wynosi `r min(models_BIC)`, a otrzymano ją dla modelu $[12\;3]$, czyli tego samego który otrzymaliśmy z wykorzystaniem testów i kryterium AIC. 
+
+## Metoda krokowa 
+
+```{r}
+step(model_123)
+```
+Z wykorzystaniem metody krokowej otrzymaliśmy ten sam model, co wyżej. 
+
+
+# Zadanie 11
+
+```{r, echo=FALSE}
+df <- as.data.frame(ftable(personel$D,personel$A1,personel$P))
+names(df) <- c('D', 'A1', 'P', 'Freq')
+model_ <- glm(Freq ~ 1, data = df, family = poisson)
+	model_1 <- glm(Freq ~ D, data = df, family = poisson)
+	model_2 <- glm(Freq ~ A1, data = df, family = poisson)
+	model_3 <- glm(Freq ~ P, data = df, family = poisson)
+	model_1_2 <- glm(Freq ~ D + A1, data = df, family = poisson)
+	model_1_3 <- glm(Freq ~ D + P, data = df, family = poisson)
+	model_2_3 <- glm(Freq ~ A1 + P, data = df, family = poisson)
+	model_12 <- glm(Freq ~ D+A1+D*A1, data = df, family = poisson)
+	model_13 <- glm(Freq ~ D+P+D*P, data = df, family = poisson)
+	model_23 <- glm(Freq ~ A1+P+A1*P,
+		data = df, family = poisson)
+	model_1_2_3 <- glm(Freq ~ D+A1+P,
+		data = df, family = poisson)
+	model_12_3 <- glm(Freq ~ D+A1+P+D*A1,
+		data = df, family = poisson)
+	model_13_2 <- glm(Freq ~ D+A1+P+D*P,
+		data = df, family = poisson)
+	model_1_23 <- glm(Freq ~ D+A1+P+A1*P,
+		data = df, family = poisson)
+	model_12_23 <- glm(Freq ~ D+A1+P+D*A1+A1*P,
+		data = df, family = poisson)
+	model_13_23 <- glm(Freq ~ D+A1+P+D*P+A1*P,
+		data = df, family = poisson)
+	model_12_13 <- glm(Freq ~ D+A1+P+D*A1+D*P,
+		data = df, family = poisson)
+	model_12_23_13 <- glm(Freq ~ D+A1+P+D*A1+A1*P+D*P, data = df, family = poisson)
+	model_123 <- glm(Freq ~ D+A1+P+D*A1+D*P+A1*P+D*A1*P,
+		data = df, family = poisson)  
+```
+
+## Testy 
+
+Analogicznie jak w zadaniu 10. 
+
+* Model $[1\;2\;3]$ przeciwko $[12\;3]$
+```{r}
+m_0 <- glm(Freq ~ D+A1+P, data = df, family = poisson)
+m_1 <- glm(Freq ~ D+A1+P+D*A1, data = df, family = poisson)
+test <- anova(m_0, m_1)
+p_2 <- 1-pchisq(test$Deviance[2], df = test$Df[2])
+```
+Otrzymana p-wartośc `r p_2` jest większa niż założony poziom istotności, więc nie mamy podstaw do odrzucenia hipotezy zerowej. 
+
+* Model $[1\;2\;3]$ przeciwko $[1\;23]$
+```{r}
+m_0 <- glm(Freq ~ D+A1+P, data = df, family = poisson)
+m_1 <- glm(Freq ~ D+A1+P+P*A1, data = df, family = poisson)
+test <- anova(m_0, m_1)
+p_2 <- 1-pchisq(test$Deviance[2], df = test$Df[2])
+```
+
+Otrzymana p-wartośc `r p_2` jest większa niż założony poziom istotności, więc nie mamy podstaw do odrzucenia hipotezy zerowej.
+
+* Model $[1\;2\;3]$ przeciwko $[13\;2]$
+```{r}
+m_0 <- glm(Freq ~ D+A1+P, data = df, family = poisson)
+m_1 <- glm(Freq ~ D+A1+P+D*P, data = df, family = poisson)
+test <- anova(m_0, m_1)
+p_2 <- 1-pchisq(test$Deviance[2], df = test$Df[2])
+```
+
+Otrzymana p-wartośc `r p_2` jest mniejsza niż założony poziom istotności, więc odrzucamy hipotezę zerową. Model $[13\;2]$ staje się modelem wyjściowym.
+
+* Model $[13\;2]$ przeciwko $[12\;13]$
+```{r}
+m_0 <- glm(Freq ~ D+A1+P+D*P, data = df, family = poisson)
+m_1 <- glm(Freq ~ D+A1+P+D*A1+D*P, data = df, family = poisson)
+test <- anova(m_0, m_1)
+p_2 <- 1-pchisq(test$Deviance[2], df = test$Df[2])
+```
+
+Otrzymana p-wartośc `r p_2` jest większa niż założony poziom istotności, więc nie mamy podstaw do odrzucenia hipotezy zerowej.
+
+* Model $[13\;2]$ przeciwko $[13\;23]$
+```{r}
+m_0 <- glm(Freq ~ D+A1+P+D*P, data = df, family = poisson)
+m_1 <- glm(Freq ~ D+A1+P+D*P+A1*P, data = df, family = poisson)
+test <- anova(m_0, m_1)
+p_2 <- 1-pchisq(test$Deviance[2], df = test$Df[2])
+```
+
+Otrzymana p-wartośc `r p_2` jest większa niż założony poziom istotności, więc nie mamy podstaw do odrzucenia hipotezy zerowej.
+
+* Model $[13\;2]$ przeciwko $[12\;23]$
+```{r}
+m_0 <- glm(Freq ~ D+A1+P+D*P, data = df, family = poisson)
+m_1 <- glm(Freq ~ D+A1+P+D*A1+A1*P, data = df, family = poisson)
+test <- anova(m_0, m_1)
+p_2 <- 1-pchisq(test$Deviance[2], df = test$Df[2])
+```
+
+Otrzymana p-wartośc `r p_2` jest większa niż założony poziom istotności, więc nie mamy podstaw do odrzucenia hipotezy zerowej.
+
+* Model $[13\;2]$ przeciwko $[12\;13\;23]$
+```{r}
+m_0 <- glm(Freq ~ D+A1+P+D*P, data = df, family = poisson)
+m_1 <- glm(Freq ~ D+A1+P+D*A1+A1*P+D*P, data = df, family = poisson)
+test <- anova(m_0, m_1)
+p_2 <- 1-pchisq(test$Deviance[2], df = test$Df[2])
+```
+
+Otrzymana p-wartośc `r p_2` jest większa niż założony poziom istotności, więc nie mamy podstaw do odrzucenia hipotezy zerowej.
+
+* Model $[13\;2]$ przeciwko $[123]$
+```{r}
+m_0 <- glm(Freq ~ D+A1+P+D*P, data = df, family = poisson)
+m_1 <- glm(Freq ~ D+A1+P+D*A1+A1*P+D*P+A1*P*D, data = df, family = poisson)
+test <- anova(m_0, m_1)
+p_2 <- 1-pchisq(test$Deviance[2], df = test$Df[2])
+```
+
+Otrzymana p-wartośc `r p_2` jest większa niż założony poziom istotności, więc nie mamy podstaw do odrzucenia hipotezy zerowej.
+
+Z przeprowadzonych testów wynika, że model $[13\;2]$ najepiej opisuje nasze dane. 
+
+## Kryterium AIC 
+
+```{r}
+models_AIC <- c(AIC(model_), AIC(model_1), AIC(model_2), AIC(model_3),
+	AIC(model_1_2), AIC(model_1_3), AIC(model_2_3), AIC(model_12),
+	AIC(model_13), AIC(model_23), AIC(model_1_2_3), AIC(model_12_3),
+	AIC(model_13_2), AIC(model_1_23), AIC(model_12_23), AIC(model_13_23),
+	AIC(model_12_13), AIC(model_12_23_13), AIC(model_123))
+```
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|}
+\hline
+Model & Wartość kryterium \\ \hline
+$[]$     & `r models_AIC[1]` \\ \hline
+$[1]$     & `r models_AIC[2]` \\ \hline
+$[2]$     & `r models_AIC[3]` \\ \hline
+$[3]$     & `r models_AIC[4]` \\ \hline
+$[1\;2]$     & `r models_AIC[5]` \\ \hline
+$[1\;3]$      &  `r models_AIC[6]`\\ \hline
+$[2\;3]$      &  `r models_AIC[7]`\\ \hline
+$[12]$      & `r models_AIC[8]`\\ \hline
+$[13]$      & `r models_AIC[9]`\\ \hline
+$[23]$      & `r models_AIC[10]`\\ \hline
+$[1\;2\;3]$      &  `r models_AIC[11]`\\ \hline
+$[12\;3]$      & `r models_AIC[12]`\\ \hline
+$[13\;2]$      & `r models_AIC[13]`\\ \hline
+$[1\;23]$      & `r models_AIC[14]`\\ \hline
+$[12\;23]$      & `r models_AIC[15]` \\ \hline
+$[13\;23]$      &  `r models_AIC[16]`\\ \hline
+$[12\;13]$      &  `r models_AIC[17]`\\ \hline
+$[12\;13\;23]$  & `r models_AIC[18]`\\ \hline
+$[123]$      & `r models_AIC[19]`\\ \hline
+\end{tabular}
+\caption{Wartości obliczonych kryteriów AIC dla poszczególnych modeli}
+\label{tab:14}
+\end{table}
+
+Najmniejsza wartość kryterium informacyjnego wynosi `r min(models_AIC)`, a otrzymano ją dla modelu $[13\;2]$, czyli tego samego który otrzymaliśmy z wykorzystaniem testów. 
+
+## Kryterium BIC
+
+```{r}
+	models_BIC <- c(BIC(model_), BIC(model_1), BIC(model_2), BIC(model_3),
+	BIC(model_1_2), BIC(model_1_3), BIC(model_2_3), BIC(model_12),
+	BIC(model_13), BIC(model_23), BIC(model_1_2_3), BIC(model_12_3),
+	BIC(model_13_2), BIC(model_1_23), BIC(model_12_23), BIC(model_13_23),
+	BIC(model_12_13), BIC(model_12_23_13), BIC(model_123))
+```
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|}
+\hline
+Model & Wartość kryterium \\ \hline
+$[]$     & `r models_BIC[1]` \\ \hline
+$[1]$     & `r models_BIC[2]` \\ \hline
+$[2]$     & `r models_BIC[3]` \\ \hline
+$[3]$     & `r models_BIC[4]` \\ \hline
+$[1\;2]$     & `r models_BIC[5]` \\ \hline
+$[1\;3]$      &  `r models_BIC[6]`\\ \hline
+$[2\;3]$      &  `r models_BIC[7]`\\ \hline
+$[12]$      & `r models_BIC[8]`\\ \hline
+$[13]$      & `r models_BIC[9]`\\ \hline
+$[23]$      & `r models_BIC[10]`\\ \hline
+$[1\;2\;3]$      &  `r models_BIC[11]`\\ \hline
+$[12\;3]$      & `r models_BIC[12]`\\ \hline
+$[13\;2]$      & `r models_BIC[13]`\\ \hline
+$[1\;23]$      & `r models_BIC[14]`\\ \hline
+$[12\;23]$      & `r models_BIC[15]` \\ \hline
+$[13\;23]$      &  `r models_BIC[16]`\\ \hline
+$[12\;13]$      &  `r models_BIC[17]`\\ \hline
+$[12\;13\;23]$  & `r models_BIC[18]`\\ \hline
+$[123]$      & `r models_BIC[19]`\\ \hline
+\end{tabular}
+\caption{Wartości obliczonych kryteriów BIC dla poszczególnych modeli}
+\label{tab:15}
+\end{table}
+
+Najmniejsza wartość kryterium informacyjnego wynosi `r min(models_BIC)`, a otrzymano ją dla modelu $[13\;2]$, czyli tego samego który otrzymaliśmy z wykorzystaniem testów i kryterium AIC.
+
+## Metoda krokowa 
+```{r}
+step(model_123)
+```
+Z wykorzystaniem metody krokowej otrzymaliśmy ten sam model, co z wykorzystaniem metod wyżej. 

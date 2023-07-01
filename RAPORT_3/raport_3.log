@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021/W32TeX) (preloaded format=pdflatex 2022.4.17)  1 JUL 2023 15:18
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021/W32TeX) (preloaded format=pdflatex 2022.4.17)  2 JUL 2023 00:42
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -481,6 +481,9 @@ File: l3backend-pdftex.def 2021-03-18 L3 backend support: PDF output (pdfTeX)
 \l__pdf_internal_box=\box68
 ) (./raport_3.aux
 
+LaTeX Warning: Label `tab:Table6' multiply defined.
+
+
 LaTeX Warning: Label `tab:tabela4' multiply defined.
 
 )
@@ -636,85 +639,81 @@ LaTeX Font Info:    External font `lmex10' loaded for size
 
 {c:/texlive/2021/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
 LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 2
-14.
+13.
 (c:/texlive/2021/texmf-dist/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <10> not available
-(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 216.
+(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 223.
 LaTeX Font Info:    Trying to load font information for TS1+lmtt on input line 
-298.
+295.
 (c:/texlive/2021/texmf-dist/tex/latex/lm/ts1lmtt.fd
 File: ts1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 ) [2]
-<raport_3_files/figure-latex/unnamed-chunk-12-1.pdf, id=41, 578.16pt x 325.215p
+<raport_3_files/figure-latex/unnamed-chunk-11-1.pdf, id=41, 578.16pt x 325.215p
+t>
+File: raport_3_files/figure-latex/unnamed-chunk-11-1.pdf Graphic file (type pdf
+)
+<use raport_3_files/figure-latex/unnamed-chunk-11-1.pdf>
+Package pdftex.def Info: raport_3_files/figure-latex/unnamed-chunk-11-1.pdf  us
+ed on input line 302.
+(pdftex.def)             Requested size: 469.75385pt x 264.23653pt.
+<raport_3_files/figure-latex/unnamed-chunk-12-1.pdf, id=42, 578.16pt x 325.215p
 t>
 File: raport_3_files/figure-latex/unnamed-chunk-12-1.pdf Graphic file (type pdf
 )
 <use raport_3_files/figure-latex/unnamed-chunk-12-1.pdf>
 Package pdftex.def Info: raport_3_files/figure-latex/unnamed-chunk-12-1.pdf  us
-ed on input line 305.
+ed on input line 308.
 (pdftex.def)             Requested size: 469.75385pt x 264.23653pt.
-<raport_3_files/figure-latex/unnamed-chunk-13-1.pdf, id=42, 578.16pt x 325.215p
+<raport_3_files/figure-latex/unnamed-chunk-13-1.pdf, id=43, 578.16pt x 325.215p
 t>
 File: raport_3_files/figure-latex/unnamed-chunk-13-1.pdf Graphic file (type pdf
 )
 <use raport_3_files/figure-latex/unnamed-chunk-13-1.pdf>
 Package pdftex.def Info: raport_3_files/figure-latex/unnamed-chunk-13-1.pdf  us
-ed on input line 311.
+ed on input line 314.
 (pdftex.def)             Requested size: 469.75385pt x 264.23653pt.
-<raport_3_files/figure-latex/unnamed-chunk-14-1.pdf, id=43, 578.16pt x 325.215p
+<raport_3_files/figure-latex/unnamed-chunk-14-1.pdf, id=44, 578.16pt x 325.215p
 t>
 File: raport_3_files/figure-latex/unnamed-chunk-14-1.pdf Graphic file (type pdf
 )
 <use raport_3_files/figure-latex/unnamed-chunk-14-1.pdf>
 Package pdftex.def Info: raport_3_files/figure-latex/unnamed-chunk-14-1.pdf  us
-ed on input line 317.
-(pdftex.def)             Requested size: 469.75385pt x 264.23653pt.
-<raport_3_files/figure-latex/unnamed-chunk-15-1.pdf, id=44, 578.16pt x 325.215p
-t>
-File: raport_3_files/figure-latex/unnamed-chunk-15-1.pdf Graphic file (type pdf
-)
-<use raport_3_files/figure-latex/unnamed-chunk-15-1.pdf>
-Package pdftex.def Info: raport_3_files/figure-latex/unnamed-chunk-15-1.pdf  us
-ed on input line 321.
+ed on input line 318.
 (pdftex.def)             Requested size: 469.75385pt x 264.23653pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 321--323
+Underfull \hbox (badness 10000) in paragraph at lines 318--320
 [][]
  []
 
-[3 <./raport_3_files/figure-latex/unnamed-chunk-12-1.pdf>] [4 <./raport_3_files
-/figure-latex/unnamed-chunk-13-1.pdf> <./raport_3_files/figure-latex/unnamed-ch
-unk-14-1.pdf>]
+[3 <./raport_3_files/figure-latex/unnamed-chunk-11-1.pdf>] [4 <./raport_3_files
+/figure-latex/unnamed-chunk-12-1.pdf> <./raport_3_files/figure-latex/unnamed-ch
+unk-13-1.pdf>]
 LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 3
-57.
+54.
 (c:/texlive/2021/texmf-dist/tex/latex/lm/ts1lmr.fd
 File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-) [5 <./raport_3_files/figure-latex/unnamed-chunk-15-1.pdf>] [6] [7] [8]
-Overfull \hbox (1.79173pt too wide) in paragraph at lines 674--685
- [] 
- []
-
+) [5 <./raport_3_files/figure-latex/unnamed-chunk-14-1.pdf>] [6] [7] [8] [9]
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[9] [10] [11] [12]
-Overfull \hbox (131.0822pt too wide) in paragraph at lines 944--950
+[10] [11] [12] [13] [14]
+Overfull \hbox (131.0822pt too wide) in paragraph at lines 1199--1205
  [] 
  []
 
-[13] [14] [15] [16] (./raport_3.aux)
+[15] [16] [17] [18] [19] [20] [21] [22] [23] [24] [25] [26] (./raport_3.aux)
 
 LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 14641 strings out of 478994
- 215621 string characters out of 5862207
- 582742 words of memory out of 5000000
- 31671 multiletter control sequences out of 15000+600000
- 451800 words of font info for 122 fonts, out of 8000000 for 9000
+ 14724 strings out of 478994
+ 216434 string characters out of 5862207
+ 594630 words of memory out of 5000000
+ 31705 multiletter control sequences out of 15000+600000
+ 451966 words of font info for 124 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  85i,11n,88p,797b,471s stack positions out of 5000i,500n,10000p,200000b,80000s
 {c:/texlive/2021/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}{c:/texlive/2021
@@ -730,10 +729,10 @@ type1/public/lm/lmr17.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/lm/lmr
 2021/texmf-dist/fonts/type1/public/lm/lmsy7.pfb><c:/texlive/2021/texmf-dist/fon
 ts/type1/public/lm/lmtk10.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/lm
 /lmtt10.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/lm/lmtti10.pfb>
-Output written on raport_3.pdf (16 pages, 267699 bytes).
+Output written on raport_3.pdf (26 pages, 295276 bytes).
 PDF statistics:
- 254 PDF objects out of 1000 (max. 8388607)
- 213 compressed objects within 3 object streams
- 58 named destinations out of 1000 (max. 500000)
- 26749 words of extra memory for PDF output out of 29859 (max. 10000000)
+ 371 PDF objects out of 1000 (max. 8388607)
+ 319 compressed objects within 4 object streams
+ 103 named destinations out of 1000 (max. 500000)
+ 26829 words of extra memory for PDF output out of 29859 (max. 10000000)
 
