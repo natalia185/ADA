@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021/W32TeX) (preloaded format=pdflatex 2022.4.17)  2 JUL 2023 00:42
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021/W32TeX) (preloaded format=pdflatex 2022.4.17)  2 JUL 2023 11:31
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -699,7 +699,7 @@ File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 [10] [11] [12] [13] [14]
-Overfull \hbox (131.0822pt too wide) in paragraph at lines 1199--1205
+Overfull \hbox (131.0822pt too wide) in paragraph at lines 1200--1206
  [] 
  []
 
@@ -710,7 +710,7 @@ LaTeX Warning: There were multiply-defined labels.
  ) 
 Here is how much of TeX's memory you used:
  14724 strings out of 478994
- 216434 string characters out of 5862207
+ 216432 string characters out of 5862207
  594630 words of memory out of 5000000
  31705 multiletter control sequences out of 15000+600000
  451966 words of font info for 124 fonts, out of 8000000 for 9000
@@ -729,7 +729,7 @@ type1/public/lm/lmr17.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/lm/lmr
 2021/texmf-dist/fonts/type1/public/lm/lmsy7.pfb><c:/texlive/2021/texmf-dist/fon
 ts/type1/public/lm/lmtk10.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/lm
 /lmtt10.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/lm/lmtti10.pfb>
-Output written on raport_3.pdf (26 pages, 295276 bytes).
+Output written on raport_3.pdf (26 pages, 295304 bytes).
 PDF statistics:
  371 PDF objects out of 1000 (max. 8388607)
  319 compressed objects within 4 object streams

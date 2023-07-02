@@ -73,7 +73,7 @@ tab2 %>% addmargins() %>%
   kable_styling(latex_options = "HOLD_position")
 ```
 ## Test McNemary
-Podobnie jak w poprzednim zadaniu nie możemy skorzystać z testu McNemary, ponieważ w tablicy na odpowiadjących sobie miejscach ($Y_{ij}$ i $Y_{ji}$) występują zera, co "psuje" nam statystykę testową (wynika to wprost z jej definicji).
+Podobnie jak w poprzednim zadaniu nie możemy skorzystać z testu McNemary, ponieważ w tablicy na odpowiadających sobie miejscach ($Y_{ij}$ i $Y_{ji}$) występują zera, co "psuje" nam statystykę testową (wynika to wprost z jej definicji).
 
 ## Test bazujący na ilorazie wiarogodności
 
@@ -198,7 +198,7 @@ ggplot() + geom_line(data=moc_1000,aes(x=prob, y=results, colour = 'Z')) + geom_
 ```
 * Wnioski 
 
-Na wykresach powyżej przedstawiliśmy moce testów $Z$ i $Z_0$ dla $n\in\{20, 50, 100, 1000\}$, na podstawie symulacji Monte Carlo. Szarą linią na wykresach oznaczono poziom istotności $\alpha = 0.05$. Funkcja mocy testu powinna przechodzić przez wartość poziomu istotności w puncie $p_2=0.5$, ponieważ jest to miejsce, w którym oba prawdopodobieństwa są takie same, a wtedy hipoteza zerowa powinna być przyjmowana z prawdopodobieństwem $1-\alpha$. Dla $n=20$ funkcja mocy dla testu $Z$ jest lekko powyżej oczekiwanej wartości, ale wraz ze zwiększaniem się $n$, funkcja coraz bardziej zbliża się do pożądanej wartości. Można na tej podstawie wyciągnąć wniosek, że test $Z$ jest testem asymptotycznie nieobciążonym. Dla testu $Z_0$ sytuacja jest podobna, jednak wartość funkcji mocy dla najmniejszego rozważanego $n$, dla $p_2=0.5$ jest trochę mniejsza niż założony poziom istotności $\alpha$, ale znów, ze wzrostem wartości $n$, zbliża się ona do poziomu istotności, więc podobnie jak przy teście $Z$, można wyciągnąć wniosek, że test $Z_0$ jest testem asymptotycznie nieobciążonym. Natomiast obciążoność obydwu testów dla małych $n$ nie jest duża. Dla zwiększających się wartości $n$ widzimy, że wartości funkcji mocy są większe, dla $p_2\neq0.5$. Było to do przewidzenia, ponieważ wraz ze wzrastającą liczbą prób (ankietowanych), test powinien być częściej odrzucany dla $p_1\neq p_2$, bo moc testu rośnie.
+Na wykresach powyżej przedstawiliśmy moce testów $Z$ i $Z_0$ dla $n\in\{20, 50, 100, 1000\}$, na podstawie symulacji Monte Carlo. Szarą linią na wykresach oznaczono poziom istotności $\alpha = 0.05$. Funkcja mocy testu powinna przechodzić przez wartość poziomu istotności w puncie $p_2=0.5$, ponieważ jest to miejsce, w którym oba prawdopodobieństwa są takie same, a wtedy hipoteza zerowa powinna być przyjmowana z prawdopodobieństwem $1-\alpha$. Dla $n=20$ funkcja mocy dla testu $Z$ jest lekko powyżej oczekiwanej wartości, ale wraz ze zwiększaniem się $n$, funkcja coraz bardziej zbliża się do pożądanej wartości. Można na tej podstawie wyciągnąć wniosek, że test $Z$ jest testem asymptotycznie nieobciążonym. Dla testu $Z_0$ sytuacja jest podobna, jednak wartość funkcji mocy dla najmniejszego rozważanego $n$, dla $p_2=0.5$ jest trochę mniejsza niż założony poziom istotności $\alpha$, ale znów, ze wzrostem wartości $n$, zbliża się ona do poziomu istotności, więc podobnie jak przy teście $Z$, można wyciągnąć wniosek, że test $Z_0$ jest testem asymptotycznie nieobciążonym. Natomiast obciążenie obydwu testów dla małych $n$ nie jest duża. Dla zwiększających się wartości $n$ widzimy, że wartości funkcji mocy są większe, dla $p_2\neq0.5$. Było to do przewidzenia, ponieważ wraz ze wzrastającą liczbą prób (ankietowanych), test powinien być częściej odrzucany dla $p_1\neq p_2$, bo moc testu rośnie.
 
 
 
@@ -220,7 +220,7 @@ p_a <- 1-pchisq(deviance(model_a), df = df.residual(model_a))
 cbind(model_a$data, fitted = fitted(model_a))%>% kable(caption = "Porównanie wyznaczonych liczności na podstawie modelów z rzeczywistymi licznościami danych", label = "Table5")
 ```
 
-> P-wartość `r p_a` jest mniejsza niż założony poziom istotności $\alpha$, więc odrzucamy hipotę zerową. Nasze dane nie pochodzą z modelu $[1\:3]$.
+> P-wartość `r p_a` jest mniejsza niż założony poziom istotności $\alpha$, więc odrzucamy hipotezę zerową. Nasze dane nie pochodzą z modelu $[1\:3]$.
 
 * $[13]$ zmienne ,,S'' i ,,Wyk'' mają dowolne rozkłady oraz zmienne te nie są niezależne, a zmienna ,,W1'' ma rozkład równomierny
 ```{r}
@@ -229,7 +229,7 @@ model_b <- glm(Freq ~ S + Wyk + S*Wyk,
 p_b <- 1-pchisq(deviance(model_b), df = df.residual(model_b))
 cbind(model_b$data, fitted = fitted(model_b))%>% kable(caption = "Porównanie wyznaczonych liczności na podstawie modelów z rzeczywistymi licznościami danych", label = "Table6")
 ```
-> P-wartość `r p_b` jest mniejsza niż założony poziom istotności $\alpha$, więc odrzucamy hipotę zerową. Nasze dane nie pochodzą z modelu $[13]$.
+> P-wartość `r p_b` jest mniejsza niż założony poziom istotności $\alpha$, więc odrzucamy hipotezę zerową. Nasze dane nie pochodzą z modelu $[13]$.
 
 * $[1\:2\:3]$ zmienne ,,S'', ,,W1'' i ''Wyk'' są wzajemnie niezależne
 
@@ -239,7 +239,7 @@ model_c <- glm(Freq ~ S + Wyk + W1,
 p_c <- 1-pchisq(deviance(model_c), df = df.residual(model_c))
 cbind(model_c$data, fitted = fitted(model_c))%>% kable(caption = "Porównanie wyznaczonych liczności na podstawie modelów z rzeczywistymi licznościami danych", label = "Table7")
 ```
-> P-wartość `r p_c` jest mniejsza niż założony poziom istotności $\alpha$, więc odrzucamy hipotę zerową. Nasze dane nie pochodzą z modelu $[1\:2\:3]$.
+> P-wartość `r p_c` jest mniejsza niż założony poziom istotności $\alpha$, więc odrzucamy hipotezę zerową. Nasze dane nie pochodzą z modelu $[1\:2\:3]$.
 
 * $[12 \:3]$ zmienna "Wyk" jest niezależna od zmiennych "S" i "W1", ale zmienne "S" i "W1" nie są niezależne
 
@@ -249,7 +249,7 @@ model_d <- glm(Freq ~ S + Wyk + W1 + S*W1,
 p_d <- 1-pchisq(deviance(model_d), df = df.residual(model_d))
 cbind(model_d$data, fitted = fitted(model_d))%>% kable(caption = "Porównanie wyznaczonych liczności na podstawie modelów z rzeczywistymi licznościami danych", label = "Table8")
 ```
-> P-wartość `r p_d` jest mniejsza niż założony poziom istotności $\alpha$, więc odrzucamy hipotę zerową. Nasze dane nie pochodzą z modelu $[12\:3]$.
+> P-wartość `r p_d` jest mniejsza niż założony poziom istotności $\alpha$, więc odrzucamy hipotezę zerową. Nasze dane nie pochodzą z modelu $[12\:3]$.
 
 * $[12\:13]$ przy ustalonej wartości zmiennej "S", zmienne "W1" i "Wyk" są niezależne
 
@@ -269,7 +269,7 @@ model_f <- glm(Freq ~ S + Wyk + W1 + W1*Wyk,
 p_f <- 1-pchisq(deviance(model_f), df = df.residual(model_f))
 cbind(model_f$data, fitted = fitted(model_f))%>% kable(caption = "Porównanie wyznaczonych liczności na podstawie modelów z rzeczywistymi licznościami danych", label = "Table10")
 ```
-> P-wartość `r p_f` jest mniejsza niż założony poziom istotności $\alpha$, więc odrzucamy hipotę zerową. Nasze dane nie pochodzą z modelu $[1\:23]$.
+> P-wartość `r p_f` jest mniejsza niż założony poziom istotności $\alpha$, więc odrzucamy hipotezę zerową. Nasze dane nie pochodzą z modelu $[1\:23]$.
 
 \begin{table}[h]
 		\begin{center}
@@ -304,7 +304,7 @@ p_a <- 1-pchisq(deviance(model_a), df = df.residual(model_a))
 cbind(model_a$data, fitted = fitted(model_a))%>% kable(caption = "Porównanie wyznaczonych liczności na podstawie modelów z rzeczywistymi licznościami danych", label = "Table6")
 ```
 
-> P-wartość `r p_a` jest mniejsza niż założony poziom istotności $\alpha$, więc odrzucamy hipotę zerową. Nasze dane nie pochodzą z modelu $[1\:3]$.
+> P-wartość `r p_a` jest mniejsza niż założony poziom istotności $\alpha$, więc odrzucamy hipotezę zerową. Nasze dane nie pochodzą z modelu $[1\:3]$.
 
 * $[13]$ zmienne ,,S'' i ,,Wyk'' mają dowolne rozkłady oraz zmienne te nie są niezależne, a zmienna ,,P'' ma rozkład równomierny
 ```{r}
@@ -313,7 +313,7 @@ model_b <- glm(Freq ~ S + Wyk + S*Wyk,
 p_b <- 1-pchisq(deviance(model_b), df = df.residual(model_b))
 cbind(model_b$data, fitted = fitted(model_b))%>% kable(caption = "Porównanie wyznaczonych liczności na podstawie modelów z rzeczywistymi licznościami danych", label = "Table12")
 ```
-> P-wartość `r p_b` jest mniejsza niż założony poziom istotności $\alpha$, więc odrzucamy hipotę zerową. Nasze dane nie pochodzą z modelu $[13]$.
+> P-wartość `r p_b` jest mniejsza niż założony poziom istotności $\alpha$, więc odrzucamy hipotezę zerową. Nasze dane nie pochodzą z modelu $[13]$.
 
 * $[1\:2\:3]$ zmienne ,,S'', ,,P'' i ''Wyk'' są wzajemnie niezależne
 
@@ -323,7 +323,7 @@ model_c <- glm(Freq ~ S + Wyk + P,
 p_c <- 1-pchisq(deviance(model_c), df = df.residual(model_c))
 cbind(model_c$data, fitted = fitted(model_c))%>% kable(caption = "Porównanie wyznaczonych liczności na podstawie modelów z rzeczywistymi licznościami danych", label = "Table13")
 ```
-> P-wartość `r p_c` jest mniejsza niż założony poziom istotności $\alpha$, więc odrzucamy hipotę zerową. Nasze dane nie pochodzą z modelu $[1\:2\:3]$.
+> P-wartość `r p_c` jest mniejsza niż założony poziom istotności $\alpha$, więc odrzucamy hipotezę zerową. Nasze dane nie pochodzą z modelu $[1\:2\:3]$.
 
 * $[12 \:3]$ zmienna "Wyk" jest niezależna od zmiennych "S" i "P", ale zmienne "S" i "P" nie są niezależne
 
@@ -333,7 +333,7 @@ model_d <- glm(Freq ~ S + Wyk + P + S*P,
 p_d <- 1-pchisq(deviance(model_d), df = df.residual(model_d))
 cbind(model_d$data, fitted = fitted(model_d))%>% kable(caption = "Porównanie wyznaczonych liczności na podstawie modelów z rzeczywistymi licznościami danych", label = "Table14")
 ```
-> P-wartość `r p_d` jest mniejsza niż założony poziom istotności $\alpha$, więc odrzucamy hipotę zerową. Nasze dane nie pochodzą z modelu $[12\:3]$.
+> P-wartość `r p_d` jest mniejsza niż założony poziom istotności $\alpha$, więc odrzucamy hipotezę zerową. Nasze dane nie pochodzą z modelu $[12\:3]$.
 
 * $[12\:13]$ przy ustalonej wartości zmiennej "S", zmienne "P" i "Wyk" są niezależne
 
@@ -353,7 +353,7 @@ model_f <- glm(Freq ~ S + Wyk + P + P*Wyk,
 p_f <- 1-pchisq(deviance(model_f), df = df.residual(model_f))
 cbind(model_f$data, fitted = fitted(model_f))%>% kable(caption = "Porównanie wyznaczonych liczności na podstawie modelów z rzeczywistymi licznościami danych", label = "Table17")
 ```
-> P-wartość `r p_f` jest mniejsza niż założony poziom istotności $\alpha$, więc odrzucamy hipotę zerową. Nasze dane nie pochodzą z modelu $[1\:23]$.
+> P-wartość `r p_f` jest mniejsza niż założony poziom istotności $\alpha$, więc odrzucamy hipotezę zerową. Nasze dane nie pochodzą z modelu $[1\:23]$.
 
 \begin{table}[h!]
 		\begin{center}
@@ -563,7 +563,7 @@ Prawdopodobieństwo otrzymane za pomocą modelu jest identyczne jak to otrzymane
 
 # Zadanie 9 
 
-W tym zadaniu będziemy testować hipotezy zerowe przeciwko dwóm pewnym modelom, w których jeden jest pełny (zawieraja wszystkie interakcje) a drugi jest nadmodelem modelu z hipotezy zerowej, ale nie jest modelem pełnym. Hipotezy testujemy na poziomie istotności $\alpha = 0.05$.
+W tym zadaniu będziemy testować hipotezy zerowe przeciwko dwóm pewnym modelom, w których jeden jest pełny (zawierają wszystkie interakcje) a drugi jest nadmodelem modelu z hipotezy zerowej, ale nie jest modelem pełnym. Hipotezy testujemy na poziomie istotności $\alpha = 0.05$.
 
 * $H_0$: Dane pochodzą z modelu $[1\:2\:3]$
 przeciwko 
@@ -594,7 +594,7 @@ test <- anova(m_0, m_2)
 p_2 <- 1-pchisq(test$Deviance[2], df = test$Df[2])
 ```
 
-Prawdopodobieństwo dla pierwszej z hipotez alternatywnych `r p_1` oraz dla drugiej `r p_2` są mniejsze niż założony poziom istotności $\alpha$, więc odrzucamy hipotę zerową.
+Prawdopodobieństwo dla pierwszej z hipotez alternatywnych `r p_1` oraz dla drugiej `r p_2` są mniejsze niż założony poziom istotności $\alpha$, więc odrzucamy hipotezę zerową.
 
 
 * $H_0$: Dane pochodzą z modelu $[2\:13]$ 
@@ -613,7 +613,7 @@ p_1 <- 1-pchisq(test$Deviance[2], df = test$Df[2])
 test <- anova(m_0, m_2)
 p_2 <- 1-pchisq(test$Deviance[2], df = test$Df[2])
 ```
-Prawdopodobieństwo dla pierwszej z hipotez alternatywnych `r p_1` jest większe niż założony poziom istotności, więc nie odrzucamy hipotezy zerowej. Natomiast dla drugiej `r p_2` jest mniejszy niż założony poziom istotności $\alpha$, więc odrzucamy hipotę zerową.
+Prawdopodobieństwo dla pierwszej z hipotez alternatywnych `r p_1` jest większe niż założony poziom istotności, więc nie odrzucamy hipotezy zerowej. Natomiast dla drugiej `r p_2` jest mniejszy niż założony poziom istotności $\alpha$, więc odrzucamy hipotezę zerową.
 
 * $H_0$: Dane pochodzą z modelu $[13\:23]$ 
 przeciwko 
@@ -651,7 +651,7 @@ test <- anova(m_0, m_2)
 p_2 <- 1-pchisq(test$Deviance[2], df = test$Df[2])
 ```
 
-Prawdopodobieństwo dla drugiej z hipotez alternatywnych `r p_2` jest mniejszy niż założony poziom istotności $\alpha$, więc odrzucamy hipotę zerową. Natomiast dla pierwszej `r p_1`
+Prawdopodobieństwo dla drugiej z hipotez alternatywnych `r p_2` jest mniejszy niż założony poziom istotności $\alpha$, więc odrzucamy hipotezę zerową. Natomiast dla pierwszej `r p_1`
 jest mniejszy, zatem nie mamy podstaw do odrzucenia hipotezy zerowej. 
 
 # Zadanie 10
@@ -670,7 +670,7 @@ m_1 <- glm(Freq ~ A1+W1+W1+A1*W1, data = df, family = poisson)
 test <- anova(m_0, m_1)
 p_2 <- 1-pchisq(test$Deviance[2], df = test$Df[2])
 ```
-Otrzymana p-wartośc `r p_2` jest mniejsza niż założony poziom istotności, więc odrzucamy hipotezę zerową. Model $[12\;3]$ staje się modelem wyjściowym.
+Otrzymana p-wartość `r p_2` jest mniejsza niż założony poziom istotności, więc odrzucamy hipotezę zerową. Model $[12\;3]$ staje się modelem wyjściowym.
 
 * Model $[12\;3]$ przeciwko $[12\;13]$
 ```{r}
@@ -679,7 +679,7 @@ m_1 <- glm(Freq ~ A1+W1+P+A1*W1+A1*P, data = df, family = poisson)
 test <- anova(m_0, m_1)
 p_2 <- 1-pchisq(test$Deviance[2], df = test$Df[2])
 ```
-Otrzymana p-wartośc `r p_2` jest większa niż założony poziom istotności, więc nie mamy podstaw do odrzucenia hipotezy zerowej. 
+Otrzymana p-wartość `r p_2` jest większa niż założony poziom istotności, więc nie mamy podstaw do odrzucenia hipotezy zerowej. 
 
 * Model $[12\;3]$ przeciwko $[12\;23]$
 ```{r}
@@ -688,7 +688,7 @@ m_1 <- glm(Freq ~ A1+W1+P+A1*W1+W1*P, data = df, family = poisson)
 test <- anova(m_0, m_1)
 p_2 <- 1-pchisq(test$Deviance[2], df = test$Df[2])
 ```
-Otrzymana p-wartośc `r p_2` jest większa niż założony poziom istotności, więc nie mamy podstaw do odrzucenia hipotezy zerowej. 
+Otrzymana p-wartość `r p_2` jest większa niż założony poziom istotności, więc nie mamy podstaw do odrzucenia hipotezy zerowej. 
 
 
 * Model $[12\;3]$ przeciwko $[12\;13\;23]$
@@ -699,7 +699,7 @@ test <- anova(m_0, m_1)
 p_2 <- 1-pchisq(test$Deviance[2], df = test$Df[2])
 ```
 
-Otrzymana p-wartośc `r p_2` jest większa niż założony poziom istotności, więc nie mamy podstaw do odrzucenia hipotezy zerowej. 
+Otrzymana p-wartość `r p_2` jest większa niż założony poziom istotności, więc nie mamy podstaw do odrzucenia hipotezy zerowej. 
 
 
 * Model $[12\;3]$ przeciwko $[123]$
@@ -710,10 +710,10 @@ m_1 <- glm(Freq ~ A1+W1+P+A1*W1+W1*P+P*A1+A1*W1*P, data = df, family = poisson)
 test <- anova(m_0, m_1)
 p_2 <- 1-pchisq(test$Deviance[2], df = test$Df[2])
 ```
-Otrzymana p-wartośc `r p_2` jest większa niż założony poziom istotności, więc nie mamy podstaw do odrzucenia hipotezy zerowej. 
+Otrzymana p-wartość `r p_2` jest większa niż założony poziom istotności, więc nie mamy podstaw do odrzucenia hipotezy zerowej. 
 
 
-Z przeprowadzonych testów wynika, że model $[12\;3]$ najepiej opisuje nasze dane. 
+Z przeprowadzonych testów wynika, że model $[12\;3]$ najlepiej opisuje nasze dane. 
 
 ## Kryterium AIC
 ```{r, echo=FALSE}
@@ -881,7 +881,7 @@ m_1 <- glm(Freq ~ D+A1+P+D*A1, data = df, family = poisson)
 test <- anova(m_0, m_1)
 p_2 <- 1-pchisq(test$Deviance[2], df = test$Df[2])
 ```
-Otrzymana p-wartośc `r p_2` jest większa niż założony poziom istotności, więc nie mamy podstaw do odrzucenia hipotezy zerowej. 
+Otrzymana p-wartość `r p_2` jest większa niż założony poziom istotności, więc nie mamy podstaw do odrzucenia hipotezy zerowej. 
 
 * Model $[1\;2\;3]$ przeciwko $[1\;23]$
 ```{r}
@@ -891,7 +891,7 @@ test <- anova(m_0, m_1)
 p_2 <- 1-pchisq(test$Deviance[2], df = test$Df[2])
 ```
 
-Otrzymana p-wartośc `r p_2` jest większa niż założony poziom istotności, więc nie mamy podstaw do odrzucenia hipotezy zerowej.
+Otrzymana p-wartość `r p_2` jest większa niż założony poziom istotności, więc nie mamy podstaw do odrzucenia hipotezy zerowej.
 
 * Model $[1\;2\;3]$ przeciwko $[13\;2]$
 ```{r}
@@ -901,7 +901,7 @@ test <- anova(m_0, m_1)
 p_2 <- 1-pchisq(test$Deviance[2], df = test$Df[2])
 ```
 
-Otrzymana p-wartośc `r p_2` jest mniejsza niż założony poziom istotności, więc odrzucamy hipotezę zerową. Model $[13\;2]$ staje się modelem wyjściowym.
+Otrzymana p-wartość `r p_2` jest mniejsza niż założony poziom istotności, więc odrzucamy hipotezę zerową. Model $[13\;2]$ staje się modelem wyjściowym.
 
 * Model $[13\;2]$ przeciwko $[12\;13]$
 ```{r}
@@ -911,7 +911,7 @@ test <- anova(m_0, m_1)
 p_2 <- 1-pchisq(test$Deviance[2], df = test$Df[2])
 ```
 
-Otrzymana p-wartośc `r p_2` jest większa niż założony poziom istotności, więc nie mamy podstaw do odrzucenia hipotezy zerowej.
+Otrzymana p-wartość `r p_2` jest większa niż założony poziom istotności, więc nie mamy podstaw do odrzucenia hipotezy zerowej.
 
 * Model $[13\;2]$ przeciwko $[13\;23]$
 ```{r}
@@ -921,7 +921,7 @@ test <- anova(m_0, m_1)
 p_2 <- 1-pchisq(test$Deviance[2], df = test$Df[2])
 ```
 
-Otrzymana p-wartośc `r p_2` jest większa niż założony poziom istotności, więc nie mamy podstaw do odrzucenia hipotezy zerowej.
+Otrzymana p-wartość `r p_2` jest większa niż założony poziom istotności, więc nie mamy podstaw do odrzucenia hipotezy zerowej.
 
 * Model $[13\;2]$ przeciwko $[12\;23]$
 ```{r}
@@ -931,7 +931,7 @@ test <- anova(m_0, m_1)
 p_2 <- 1-pchisq(test$Deviance[2], df = test$Df[2])
 ```
 
-Otrzymana p-wartośc `r p_2` jest większa niż założony poziom istotności, więc nie mamy podstaw do odrzucenia hipotezy zerowej.
+Otrzymana p-wartość `r p_2` jest większa niż założony poziom istotności, więc nie mamy podstaw do odrzucenia hipotezy zerowej.
 
 * Model $[13\;2]$ przeciwko $[12\;13\;23]$
 ```{r}
@@ -941,7 +941,7 @@ test <- anova(m_0, m_1)
 p_2 <- 1-pchisq(test$Deviance[2], df = test$Df[2])
 ```
 
-Otrzymana p-wartośc `r p_2` jest większa niż założony poziom istotności, więc nie mamy podstaw do odrzucenia hipotezy zerowej.
+Otrzymana p-wartość `r p_2` jest większa niż założony poziom istotności, więc nie mamy podstaw do odrzucenia hipotezy zerowej.
 
 * Model $[13\;2]$ przeciwko $[123]$
 ```{r}
@@ -951,9 +951,9 @@ test <- anova(m_0, m_1)
 p_2 <- 1-pchisq(test$Deviance[2], df = test$Df[2])
 ```
 
-Otrzymana p-wartośc `r p_2` jest większa niż założony poziom istotności, więc nie mamy podstaw do odrzucenia hipotezy zerowej.
+Otrzymana p-wartość `r p_2` jest większa niż założony poziom istotności, więc nie mamy podstaw do odrzucenia hipotezy zerowej.
 
-Z przeprowadzonych testów wynika, że model $[13\;2]$ najepiej opisuje nasze dane. 
+Z przeprowadzonych testów wynika, że model $[13\;2]$ najlepiej opisuje nasze dane. 
 
 ## Kryterium AIC 
 
