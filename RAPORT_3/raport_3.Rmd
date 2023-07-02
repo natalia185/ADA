@@ -2,7 +2,17 @@
 title: "Raport nr 3"
 author: "Natalia Iwańska 262270, Klaudia Janicka 262268"
 date: "`r Sys.Date()`"
-output: pdf_document
+output: 
+  pdf_document
+header-includes:
+  \usepackage{booktabs}
+  \usepackage{float}
+  \usepackage{caption}
+  \renewcommand{\tablename}{Tab.}
+  \renewcommand{\figurename}{Wykres}
+  \floatplacement{figure}{H}
+  \floatplacement{table}{H}
+  \captionsetup[table]{skip=10pt}
 ---
 
 ```{r setup, include=FALSE}
@@ -59,7 +69,7 @@ df <- symetry$df.residual
 p_val <- 1- pchisq(stat, df)
 ```
 
-Korzystając z testu bazującego na ilorazie wiarogodności na poziomie istotności $\alpha=0.05$ otrzymana p-wartość wyniosła `r p_val`. Zatem weryfikowaną hipotezę o symetrii, która jest równoważna hipotezie o brzegowej jednorodności należy odrzucić.
+Korzystając z testu bazującego na ilorazie wiarogodności na poziomie istotności $\alpha=0.05$ otrzymana p-wartość wyniosła `r p_val`. Zatem nie mamy podstaw do oducenia hipotezy o symetrii, która jest równoważna hipotezie o brzegowej jednorodności.
 
 
 # Zadanie 2
@@ -93,7 +103,11 @@ Korzystając z testu bazującego na ilorazie wiarogodności na poziomie istotno�
 W1 <- ((personel$W1 %>% as.numeric() > 2) %>% as.numeric() * 2 - 1 ) %>% as.factor()
 W2 <- ((personel$W2 %>% as.numeric() > 2) %>% as.numeric() * 2 - 1 ) %>% as.factor()
 tabela <- ftable(W1, W2)
-tabela
+tabela2 <- table(W1, W2) 
+tabela2 %>% kable(caption='Tablica dwudzielcza dla nowych zmniennych W1 i W2.') %>% 
+  column_spec(1, border_left = TRUE) %>%
+  column_spec(3, border_right = TRUE) %>%
+  kable_styling(latex_options = "HOLD_position")
 ```
 
 ```{r}
@@ -161,7 +175,7 @@ return(data.frame( 'prob' = p2, 'results' = res))
 ```
 
 
-```{r, echo=FALSE, fig.cap='Wykres funkcji mocy testu $Z$ i $Z_0$ dla $n=20$'}
+```{r, echo=FALSE, fig.cap='Wykres funkcji mocy testu $Z$ i $Z_0$ dla $n=20$.'}
 moc_20 <- as.data.frame(read.csv('moc_20.csv'))
 moc0_20 <- as.data.frame(read.csv('moc0_20.csv'))
 
@@ -170,7 +184,7 @@ ggplot() + geom_line(data=moc_20,aes(x=prob, y=results, colour = 'Z')) + geom_li
                       values = c("black", "red")) + geom_hline(yintercept=0.05, color='grey50')+ labs(x='Wartość p2', y='Moc testu')
 ```
 
-```{r, echo=FALSE, fig.cap='Wykres funkcji mocy testu $Z$ i $Z_0$ dla $n=50$'}
+```{r, echo=FALSE, fig.cap='Wykres funkcji mocy testu $Z$ i $Z_0$ dla $n=50$.'}
 moc_50 <- as.data.frame(read.csv('moc_50.csv'))
 moc0_50 <- as.data.frame(read.csv('moc0_50.csv'))
 
@@ -179,7 +193,7 @@ ggplot() + geom_line(data=moc_50,aes(x=prob, y=results, colour = 'Z')) + geom_li
                       values = c("black", "red"))+ geom_hline(yintercept=0.05, color='grey50') + labs(x='Wartość p2', y='Moc testu')
 ```
 
-```{r, echo=FALSE, fig.cap='Wykres funkcji mocy testu $Z$ i $Z_0$ dla $n=100$'}
+```{r, echo=FALSE, fig.cap='Wykres funkcji mocy testu $Z$ i $Z_0$ dla $n=100$.'}
 moc_100 <- as.data.frame(read.csv('moc_100.csv'))
 moc0_100 <- as.data.frame(read.csv('moc0_100.csv'))
 
@@ -188,7 +202,7 @@ ggplot() + geom_line(data=moc_100,aes(x=prob, y=results, colour = 'Z')) + geom_l
                       values = c("black", "red"))+ geom_hline(yintercept=0.05, color='grey50')+ labs(x='Wartość p2', y='Moc testu')
 ```
 
-```{r, echo=FALSE, fig.cap='Wykres funkcji mocy testu $Z$ i $Z_0$ dla $n=1000$'}
+```{r, echo=FALSE, fig.cap='Wykres funkcji mocy testu $Z$ i $Z_0$ dla $n=1000$.'}
 moc_1000 <- as.data.frame(read.csv('moc_1000.csv'))
 moc0_1000 <- as.data.frame(read.csv('moc0_1000.csv'))
 
@@ -196,7 +210,8 @@ ggplot() + geom_line(data=moc_1000,aes(x=prob, y=results, colour = 'Z')) + geom_
                       breaks = c("Z", "Z0"),
                       values = c("black", "red"))+ geom_hline(yintercept=0.05, color='grey50')+ labs(x='Wartość p2', y='Moc testu')
 ```
-* Wnioski 
+
+**Wnioski**
 
 Na wykresach powyżej przedstawiliśmy moce testów $Z$ i $Z_0$ dla $n\in\{20, 50, 100, 1000\}$, na podstawie symulacji Monte Carlo. Szarą linią na wykresach oznaczono poziom istotności $\alpha = 0.05$. Funkcja mocy testu powinna przechodzić przez wartość poziomu istotności w puncie $p_2=0.5$, ponieważ jest to miejsce, w którym oba prawdopodobieństwa są takie same, a wtedy hipoteza zerowa powinna być przyjmowana z prawdopodobieństwem $1-\alpha$. Dla $n=20$ funkcja mocy dla testu $Z$ jest lekko powyżej oczekiwanej wartości, ale wraz ze zwiększaniem się $n$, funkcja coraz bardziej zbliża się do pożądanej wartości. Można na tej podstawie wyciągnąć wniosek, że test $Z$ jest testem asymptotycznie nieobciążonym. Dla testu $Z_0$ sytuacja jest podobna, jednak wartość funkcji mocy dla najmniejszego rozważanego $n$, dla $p_2=0.5$ jest trochę mniejsza niż założony poziom istotności $\alpha$, ale znów, ze wzrostem wartości $n$, zbliża się ona do poziomu istotności, więc podobnie jak przy teście $Z$, można wyciągnąć wniosek, że test $Z_0$ jest testem asymptotycznie nieobciążonym. Natomiast obciążenie obydwu testów dla małych $n$ nie jest duża. Dla zwiększających się wartości $n$ widzimy, że wartości funkcji mocy są większe, dla $p_2\neq0.5$. Było to do przewidzenia, ponieważ wraz ze wzrastającą liczbą prób (ankietowanych), test powinien być częściej odrzucany dla $p_1\neq p_2$, bo moc testu rośnie.
 
@@ -217,7 +232,11 @@ names(df) <- c('S', 'W1', 'Wyk', 'Freq')
 model_a <- glm(Freq ~ S + Wyk, 
                data = df, family = poisson)
 p_a <- 1-pchisq(deviance(model_a), df = df.residual(model_a))
-cbind(model_a$data, fitted = fitted(model_a))%>% kable(caption = "Porównanie wyznaczonych liczności na podstawie modelów z rzeczywistymi licznościami danych", label = "Table5")
+cbind(model_a$data, fitted = fitted(model_a)) %>%
+  kable(caption = "Porównanie wyznaczonych liczności na podstawie modelów z rzeczywistymi licznościami danych", label = "Table5") %>% 
+  column_spec(1, border_left = TRUE) %>%
+  column_spec(5, border_right = TRUE) %>%
+  kable_styling(latex_options = "HOLD_position")
 ```
 
 > P-wartość `r p_a` jest mniejsza niż założony poziom istotności $\alpha$, więc odrzucamy hipotezę zerową. Nasze dane nie pochodzą z modelu $[1\:3]$.
@@ -227,7 +246,11 @@ cbind(model_a$data, fitted = fitted(model_a))%>% kable(caption = "Porównanie wy
 model_b <- glm(Freq ~ S + Wyk + S*Wyk, 
                data = df, family = poisson)
 p_b <- 1-pchisq(deviance(model_b), df = df.residual(model_b))
-cbind(model_b$data, fitted = fitted(model_b))%>% kable(caption = "Porównanie wyznaczonych liczności na podstawie modelów z rzeczywistymi licznościami danych", label = "Table6")
+cbind(model_b$data, fitted = fitted(model_b)) %>%
+  kable(caption = "Porównanie wyznaczonych liczności na podstawie modelów z rzeczywistymi licznościami danych", label = "Table6") %>% 
+  column_spec(1, border_left = TRUE) %>%
+  column_spec(5, border_right = TRUE) %>%
+  kable_styling(latex_options = "HOLD_position")
 ```
 > P-wartość `r p_b` jest mniejsza niż założony poziom istotności $\alpha$, więc odrzucamy hipotezę zerową. Nasze dane nie pochodzą z modelu $[13]$.
 
@@ -237,7 +260,11 @@ cbind(model_b$data, fitted = fitted(model_b))%>% kable(caption = "Porównanie wy
 model_c <- glm(Freq ~ S + Wyk + W1, 
                data = df, family = poisson)
 p_c <- 1-pchisq(deviance(model_c), df = df.residual(model_c))
-cbind(model_c$data, fitted = fitted(model_c))%>% kable(caption = "Porównanie wyznaczonych liczności na podstawie modelów z rzeczywistymi licznościami danych", label = "Table7")
+cbind(model_c$data, fitted = fitted(model_c)) %>% 
+  kable(caption = "Porównanie wyznaczonych liczności na podstawie modelów z rzeczywistymi licznościami danych", label = "Table7") %>% 
+  column_spec(1, border_left = TRUE) %>%
+  column_spec(5, border_right = TRUE) %>%
+  kable_styling(latex_options = "HOLD_position")
 ```
 > P-wartość `r p_c` jest mniejsza niż założony poziom istotności $\alpha$, więc odrzucamy hipotezę zerową. Nasze dane nie pochodzą z modelu $[1\:2\:3]$.
 
@@ -247,7 +274,11 @@ cbind(model_c$data, fitted = fitted(model_c))%>% kable(caption = "Porównanie wy
 model_d <- glm(Freq ~ S + Wyk + W1 + S*W1, 
                data = df, family = poisson)
 p_d <- 1-pchisq(deviance(model_d), df = df.residual(model_d))
-cbind(model_d$data, fitted = fitted(model_d))%>% kable(caption = "Porównanie wyznaczonych liczności na podstawie modelów z rzeczywistymi licznościami danych", label = "Table8")
+cbind(model_d$data, fitted = fitted(model_d)) %>% 
+  kable(caption = "Porównanie wyznaczonych liczności na podstawie modelów z rzeczywistymi licznościami danych", label = "Table8") %>% 
+  column_spec(1, border_left = TRUE) %>%
+  column_spec(5, border_right = TRUE) %>%
+  kable_styling(latex_options = "HOLD_position")
 ```
 > P-wartość `r p_d` jest mniejsza niż założony poziom istotności $\alpha$, więc odrzucamy hipotezę zerową. Nasze dane nie pochodzą z modelu $[12\:3]$.
 
@@ -257,7 +288,11 @@ cbind(model_d$data, fitted = fitted(model_d))%>% kable(caption = "Porównanie wy
 model_e <- glm(Freq ~ S + Wyk + W1 + S*W1 + S*Wyk, 
                data = df, family = poisson)
 p_e <- 1-pchisq(deviance(model_e), df = df.residual(model_e))
-cbind(model_e$data, fitted = fitted(model_e))%>% kable(caption = "Porównanie wyznaczonych liczności na podstawie modelów z rzeczywistymi licznościami danych", label = "Table9")
+cbind(model_e$data, fitted = fitted(model_e)) %>% 
+  kable(caption = "Porównanie wyznaczonych liczności na podstawie modelów z rzeczywistymi licznościami danych", label = "Table9") %>% 
+  column_spec(1, border_left = TRUE) %>%
+  column_spec(5, border_right = TRUE) %>%
+  kable_styling(latex_options = "HOLD_position")
 ```
 > P-wartość `r p_e` jest większa niż założony poziom istotności $\alpha$, więc nie mamy podstaw do odrzucenia hipotezy zerowej, czyli zakładamy, że nasze dane pochodzą z modelu $[12\:13]$.
 
@@ -267,12 +302,17 @@ cbind(model_e$data, fitted = fitted(model_e))%>% kable(caption = "Porównanie wy
 model_f <- glm(Freq ~ S + Wyk + W1 + W1*Wyk, 
                data = df, family = poisson)
 p_f <- 1-pchisq(deviance(model_f), df = df.residual(model_f))
-cbind(model_f$data, fitted = fitted(model_f))%>% kable(caption = "Porównanie wyznaczonych liczności na podstawie modelów z rzeczywistymi licznościami danych", label = "Table10")
+cbind(model_f$data, fitted = fitted(model_f)) %>% 
+  kable(caption = "Porównanie wyznaczonych liczności na podstawie modelów z rzeczywistymi licznościami danych", label = "Table10") %>% 
+  column_spec(1, border_left = TRUE) %>%
+  column_spec(5, border_right = TRUE) %>%
+  kable_styling(latex_options = "HOLD_position")
 ```
 > P-wartość `r p_f` jest mniejsza niż założony poziom istotności $\alpha$, więc odrzucamy hipotezę zerową. Nasze dane nie pochodzą z modelu $[1\:23]$.
 
-\begin{table}[h]
+\begin{table}[H]
 		\begin{center}
+		\caption{P-wartości testów statystycznych}
 			\begin{tabular}{|c|c|c|c|c|c|c|}
 				\hline
 				& \multicolumn{6}{c|}{Modele}\\\cline{2-7}
@@ -280,7 +320,7 @@ cbind(model_f$data, fitted = fitted(model_f))%>% kable(caption = "Porównanie wy
 				P-wartość & `r 1-pchisq(deviance(model_a), df = df.residual(model_a))` & `r 1-pchisq(deviance(model_b), df = df.residual(model_b))` & `r 1-pchisq(deviance(model_c), df = df.residual(model_c))` & `r 1-pchisq(deviance(model_d), df = df.residual(model_d))` & `r 1-pchisq(deviance(model_e), df = df.residual(model_e))` & `r 1-pchisq(deviance(model_f), df = df.residual(model_f))`\\\hline
 			\end{tabular}
 		\end{center}
-		\caption{P-wartości testów statystycznych}
+		
 		\label{tab:tabela4}
 \end{table}
 
@@ -290,7 +330,7 @@ Przyjmujemy za zmienną $1$ zmienną $S$ (zajmowane
 stanowisko), za zmienną $2$ – zmienną $P$ (płeć) i za zmienną $3$ – zmienną $Wyk$
 (wykształcenie).
 
-* $[1\:3]$ zmienne ,,S'' i ,,Wyk'' mają dowolne rozkłady oraz zmienne te są niezależne, a zmienna ,,P'' ma rozkład równomierny
+* $[1\:3]$ zmienne "S" i "Wyk" mają dowolne rozkłady oraz zmienne te są niezależne, a zmienna "P" ma rozkład równomierny
 
 ```{r, echo=FALSE}
 df <- as.data.frame(ftable(personel$S,personel$P,personel$Wyk))
@@ -301,27 +341,39 @@ names(df) <- c('S', 'P', 'Wyk', 'Freq')
 model_a <- glm(Freq ~ S + Wyk, 
                data = df, family = poisson)
 p_a <- 1-pchisq(deviance(model_a), df = df.residual(model_a))
-cbind(model_a$data, fitted = fitted(model_a))%>% kable(caption = "Porównanie wyznaczonych liczności na podstawie modelów z rzeczywistymi licznościami danych", label = "Table6")
+cbind(model_a$data, fitted = fitted(model_a)) %>% 
+  kable(caption = "Porównanie wyznaczonych liczności na podstawie modelów z rzeczywistymi licznościami danych", label = "Table6") %>% 
+  column_spec(1, border_left = TRUE) %>%
+  column_spec(5, border_right = TRUE) %>%
+  kable_styling(latex_options = "HOLD_position")
 ```
 
 > P-wartość `r p_a` jest mniejsza niż założony poziom istotności $\alpha$, więc odrzucamy hipotezę zerową. Nasze dane nie pochodzą z modelu $[1\:3]$.
 
-* $[13]$ zmienne ,,S'' i ,,Wyk'' mają dowolne rozkłady oraz zmienne te nie są niezależne, a zmienna ,,P'' ma rozkład równomierny
+* $[13]$ zmienne "S" i "Wyk" mają dowolne rozkłady oraz zmienne te nie są niezależne, a zmienna "P" ma rozkład równomierny
 ```{r}
 model_b <- glm(Freq ~ S + Wyk + S*Wyk, 
                data = df, family = poisson)
 p_b <- 1-pchisq(deviance(model_b), df = df.residual(model_b))
-cbind(model_b$data, fitted = fitted(model_b))%>% kable(caption = "Porównanie wyznaczonych liczności na podstawie modelów z rzeczywistymi licznościami danych", label = "Table12")
+cbind(model_b$data, fitted = fitted(model_b)) %>% 
+  kable(caption = "Porównanie wyznaczonych liczności na podstawie modelów z rzeczywistymi licznościami danych", label = "Table12") %>% 
+  column_spec(1, border_left = TRUE) %>%
+  column_spec(5, border_right = TRUE) %>%
+  kable_styling(latex_options = "HOLD_position")
 ```
 > P-wartość `r p_b` jest mniejsza niż założony poziom istotności $\alpha$, więc odrzucamy hipotezę zerową. Nasze dane nie pochodzą z modelu $[13]$.
 
-* $[1\:2\:3]$ zmienne ,,S'', ,,P'' i ''Wyk'' są wzajemnie niezależne
+* $[1\:2\:3]$ zmienne "S", "P" i "Wyk" są wzajemnie niezależne
 
 ```{r}
 model_c <- glm(Freq ~ S + Wyk + P, 
                data = df, family = poisson)
 p_c <- 1-pchisq(deviance(model_c), df = df.residual(model_c))
-cbind(model_c$data, fitted = fitted(model_c))%>% kable(caption = "Porównanie wyznaczonych liczności na podstawie modelów z rzeczywistymi licznościami danych", label = "Table13")
+cbind(model_c$data, fitted = fitted(model_c)) %>% 
+  kable(caption = "Porównanie wyznaczonych liczności na podstawie modelów z rzeczywistymi licznościami danych", label = "Table13") %>% 
+  column_spec(1, border_left = TRUE) %>%
+  column_spec(5, border_right = TRUE) %>%
+  kable_styling(latex_options = "HOLD_position")
 ```
 > P-wartość `r p_c` jest mniejsza niż założony poziom istotności $\alpha$, więc odrzucamy hipotezę zerową. Nasze dane nie pochodzą z modelu $[1\:2\:3]$.
 
@@ -331,7 +383,11 @@ cbind(model_c$data, fitted = fitted(model_c))%>% kable(caption = "Porównanie wy
 model_d <- glm(Freq ~ S + Wyk + P + S*P, 
                data = df, family = poisson)
 p_d <- 1-pchisq(deviance(model_d), df = df.residual(model_d))
-cbind(model_d$data, fitted = fitted(model_d))%>% kable(caption = "Porównanie wyznaczonych liczności na podstawie modelów z rzeczywistymi licznościami danych", label = "Table14")
+cbind(model_d$data, fitted = fitted(model_d)) %>% 
+  kable(caption = "Porównanie wyznaczonych liczności na podstawie modelów z rzeczywistymi licznościami danych", label = "Table14") %>% 
+  column_spec(1, border_left = TRUE) %>%
+  column_spec(5, border_right = TRUE) %>%
+  kable_styling(latex_options = "HOLD_position")
 ```
 > P-wartość `r p_d` jest mniejsza niż założony poziom istotności $\alpha$, więc odrzucamy hipotezę zerową. Nasze dane nie pochodzą z modelu $[12\:3]$.
 
@@ -341,7 +397,11 @@ cbind(model_d$data, fitted = fitted(model_d))%>% kable(caption = "Porównanie wy
 model_e <- glm(Freq ~ S + Wyk + P + S*P + S*Wyk, 
                data = df, family = poisson)
 p_e <- 1-pchisq(deviance(model_e), df = df.residual(model_e))
-cbind(model_e$data, fitted = fitted(model_e))%>% kable(caption = "Porównanie wyznaczonych liczności na podstawie modelów z rzeczywistymi licznościami danych", label = "Table16")
+cbind(model_e$data, fitted = fitted(model_e)) %>% 
+  kable(caption = "Porównanie wyznaczonych liczności na podstawie modelów z rzeczywistymi licznościami danych", label = "Table16") %>% 
+  column_spec(1, border_left = TRUE) %>%
+  column_spec(5, border_right = TRUE) %>%
+  kable_styling(latex_options = "HOLD_position")
 ```
 > P-wartość `r p_e` jest mniejsza niż założony poziom istotności $\alpha$, więc odrzucamy hipotezę zerową. Nasze dane nie pochodzą z modelu $[12\:13]$.
 
@@ -351,22 +411,31 @@ cbind(model_e$data, fitted = fitted(model_e))%>% kable(caption = "Porównanie wy
 model_f <- glm(Freq ~ S + Wyk + P + P*Wyk, 
                data = df, family = poisson)
 p_f <- 1-pchisq(deviance(model_f), df = df.residual(model_f))
-cbind(model_f$data, fitted = fitted(model_f))%>% kable(caption = "Porównanie wyznaczonych liczności na podstawie modelów z rzeczywistymi licznościami danych", label = "Table17")
+cbind(model_f$data, fitted = fitted(model_f)) %>% 
+  kable(caption = "Porównanie wyznaczonych liczności na podstawie modelów z rzeczywistymi licznościami danych", label = "Table17") %>% 
+  column_spec(1, border_left = TRUE) %>%
+  column_spec(5, border_right = TRUE) %>%
+  kable_styling(latex_options = "HOLD_position")
 ```
 > P-wartość `r p_f` jest mniejsza niż założony poziom istotności $\alpha$, więc odrzucamy hipotezę zerową. Nasze dane nie pochodzą z modelu $[1\:23]$.
 
 \begin{table}[h!]
 		\begin{center}
-			\begin{tabular}{|c|c|c|c|c|c|c|}
+		\caption{P-wartości testów statystycznych}
+			\begin{tabular}{|c|c|}
 				\hline
-				& \multicolumn{6}{c|}{Modele}\\\cline{2-7}
-				& $[1\:3]$ & $[13]$ & $[1\:2\:3]$& $[12\:3]$ & $[12\:13]$ & $[1\:23]$ \\\hline
-				P-wartość & `r 1-pchisq(deviance(model_a), df = df.residual(model_a))` & `r 1-pchisq(deviance(model_b), df = df.residual(model_b))` & `r 1-pchisq(deviance(model_c), df = df.residual(model_c))` & `r 1-pchisq(deviance(model_d), df = df.residual(model_d))` & `r 1-pchisq(deviance(model_e), df = df.residual(model_e))` & `r 1-pchisq(deviance(model_f), df = df.residual(model_f))`\\\hline
+				Model & p-wartość \\ \hline
+				$[1\:3]$ & `r 1-pchisq(deviance(model_a), df = df.residual(model_a))` \\\hline
+				$[13]$ & `r 1-pchisq(deviance(model_b), df = df.residual(model_b))`  \\\hline
+				$[1\:2\:3]$ & `r 1-pchisq(deviance(model_c), df = df.residual(model_c))` \\\hline
+				$[12\:3]$ & `r 1-pchisq(deviance(model_d), df = df.residual(model_d))` \\\hline
+				$[12\:13]$ & `r 1-pchisq(deviance(model_e), df = df.residual(model_e))` \\\hline
+				$[1\:23]$ & `r 1-pchisq(deviance(model_f), df = df.residual(model_f))`\\\hline
 			\end{tabular}
 		\end{center}
-		\caption{P-wartości testów statystycznych}
 		\label{tab:tabela4}
 \end{table}
+
 
 # Zadanie 7
 
@@ -392,7 +461,8 @@ result2$Freq <- result2$Freq/sum(result2$Freq)
 Przykładowy kod obliczający to prawdopodobieństwo dla modelu $[13 \: 23]$:
 
 ```{r}
-sum(result1$`fitted(model1)`[result1$S == 1 & result1$W1 == 2])/(sum(result1$`fitted(model1)`[result1$S == 1]))
+sum(result1$`fitted(model1)`[result1$S == 1 & result1$W1 == 2])/
+  (sum(result1$`fitted(model1)`[result1$S == 1]))
 ```
 
 ```{r, echo=FALSE}
@@ -405,6 +475,7 @@ emp <- sum(result1$Freq[result1$S == 1 & result1$W1 == 2])/(sum(result1$Freq[res
 
 \begin{table}[H]
 \centering
+\caption{Oszacowane prawdopodobieństwa}
 \begin{tabular}{lc|c|ll}
 \cline{3-3}
                       &                    & Prawdopodobieństwo &                      &  \\ \cline{2-3}
@@ -412,7 +483,6 @@ emp <- sum(result1$Freq[result1$S == 1 & result1$W1 == 2])/(sum(result1$Freq[res
 \multicolumn{1}{l|}{} & Model {[}13 23{]}  & `r m1`                & \multicolumn{1}{c}{} &  \\ \cline{2-3}
 \multicolumn{1}{l|}{} & Model {[}123{]}    & `r m2`                &                      &  \\ \cline{2-3}
 \end{tabular}
-\caption{Oszacowane prawdopodobieństwa }
 \label{tab:5}
 \end{table}
 
@@ -421,13 +491,17 @@ Na podstawie wyników przedstawionych w tabeli możemy zauważyć, że do naszyc
 * Prawdopodobieństwo, że osoba z wykształceniem zawodowym pracuje na stanowisku kierowniczym. 
 
 ```{r, echo=FALSE}
-m1_1 <- sum(result1$`fitted(model1)`[result1$Wyk == 1 & result1$S == 1])/(sum(result1$`fitted(model1)`[result1$Wyk == 1]))
-m2 <- sum(result2$`fitted(model2)`[result2$Wyk == 1 & result2$S == 1])/(sum(result2$`fitted(model2)`[result2$Wyk == 1]))
-emp <- sum(result1$Freq[result1$S == 1 & result1$Wyk == 1])/(sum(result1$Freq[result1$Wyk == 1]))
+m1_1 <- sum(result1$`fitted(model1)`[result1$Wyk == 1 & result1$S == 1])/
+  (sum(result1$`fitted(model1)`[result1$Wyk == 1]))
+m2 <- sum(result2$`fitted(model2)`[result2$Wyk == 1 & result2$S == 1])/
+  (sum(result2$`fitted(model2)`[result2$Wyk == 1]))
+emp <- sum(result1$Freq[result1$S == 1 & result1$Wyk == 1])/
+  (sum(result1$Freq[result1$Wyk == 1]))
 ```
 
 \begin{table}[H]
 \centering
+\caption{Oszacowane prawdopodobieństwa }
 \begin{tabular}{lc|c|ll}
 \cline{3-3}
                       &                    & Prawdopodobieństwo &                      &  \\ \cline{2-3}
@@ -435,7 +509,6 @@ emp <- sum(result1$Freq[result1$S == 1 & result1$Wyk == 1])/(sum(result1$Freq[re
 \multicolumn{1}{l|}{} & Model {[}13 23{]}  & `r m1_1`                & \multicolumn{1}{c}{} &  \\ \cline{2-3}
 \multicolumn{1}{l|}{} & Model {[}123{]}    & `r m2`                &                      &  \\ \cline{2-3}
 \end{tabular}
-\caption{Oszacowane prawdopodobieństwa }
 \label{tab:6}
 \end{table}
 
@@ -451,6 +524,7 @@ emp <- sum(result1$Freq[result1$S == 0 & result1$Wyk == 3])/(sum(result1$Freq[re
 
 \begin{table}[H]
 \centering
+\caption{Oszacowane prawdopodobieństwa}
 \begin{tabular}{lc|c|ll}
 \cline{3-3}
                       &                    & Prawdopodobieństwo &                      &  \\ \cline{2-3}
@@ -458,7 +532,6 @@ emp <- sum(result1$Freq[result1$S == 0 & result1$Wyk == 3])/(sum(result1$Freq[re
 \multicolumn{1}{l|}{} & Model {[}13 23{]}  & `r m1`                & \multicolumn{1}{c}{} &  \\ \cline{2-3}
 \multicolumn{1}{l|}{} & Model {[}123{]}    & `r m2`                &                      &  \\ \cline{2-3}
 \end{tabular}
-\caption{Oszacowane prawdopodobieństwa}
 \label{tab:7}
 \end{table}
 
@@ -482,20 +555,22 @@ result$Freq <- result$Freq/sum(result$Freq)
 Przykładowe wywołanie: 
 
 ```{r}
-m <- sum(result$`fitted(model)`[result$S == 1 & result$P == 'K'])/(sum(result$`fitted(model)`[result$S == 1]))
-emp <- sum(result$Freq[result$S == 1 & result$P == 'K'])/(sum(result$Freq[result$S == 1]))
+m <- sum(result$`fitted(model)`[result$S == 1 & result$P == 'K'])/
+  (sum(result$`fitted(model)`[result$S == 1]))
+emp <- sum(result$Freq[result$S == 1 & result$P == 'K'])/
+  (sum(result$Freq[result$S == 1]))
 ```
 
 \begin{table}[H]
 \centering
+\caption{Oszacowane prawdopodobieństwa}
 \begin{tabular}{lccll}
 \cline{3-3}
                       & \multicolumn{1}{c|}{}                   & \multicolumn{1}{c|}{Prawdopodobieństwo} &                      &  \\ \cline{2-3}
-\multicolumn{1}{l|}{} & \multicolumn{1}{c|}{Wartość empiryczna} & \multicolumn{1}{c|}{`r m`}                &                      &  \\ \cline{2-3}
-\multicolumn{1}{l|}{} & \multicolumn{1}{c|}{Model {[}13 23{]}}  & \multicolumn{1}{c|}{`r emp`}                & \multicolumn{1}{c}{} &  \\ \cline{2-3}
+\multicolumn{1}{l|}{} & \multicolumn{1}{c|}{Wartość empiryczna} & \multicolumn{1}{c|}{`r emp`}                &                      &  \\ \cline{2-3}
+\multicolumn{1}{l|}{} & \multicolumn{1}{c|}{Model {[}13 23{]}}  & \multicolumn{1}{c|}{`r m`}                & \multicolumn{1}{c}{} &  \\ \cline{2-3}
                       &                                         &                                         &                      & 
 \end{tabular}
-\caption{Oszacowane prawdopodobieństwa}
 \label{tab:8}
 \end{table}
 
@@ -510,14 +585,14 @@ emp <- sum(result$Freq[result$S == 1 & result$Wyk == 1])/(sum(result$Freq[result
 
 \begin{table}[H]
 \centering
+\caption{Oszacowane prawdopodobieństwa}
 \begin{tabular}{lccll}
 \cline{3-3}
                       & \multicolumn{1}{c|}{}                   & \multicolumn{1}{c|}{Prawdopodobieństwo} &                      &  \\ \cline{2-3}
-\multicolumn{1}{l|}{} & \multicolumn{1}{c|}{Wartość empiryczna} & \multicolumn{1}{c|}{`r m`}                &                      &  \\ \cline{2-3}
-\multicolumn{1}{l|}{} & \multicolumn{1}{c|}{Model {[}13 23{]}}  & \multicolumn{1}{c|}{`r emp`}                & \multicolumn{1}{c}{} &  \\ \cline{2-3}
+\multicolumn{1}{l|}{} & \multicolumn{1}{c|}{Wartość empiryczna} & \multicolumn{1}{c|}{`r emp`}                &                      &  \\ \cline{2-3}
+\multicolumn{1}{l|}{} & \multicolumn{1}{c|}{Model {[}13 23{]}}  & \multicolumn{1}{c|}{`r m`}                & \multicolumn{1}{c}{} &  \\ \cline{2-3}
                       &                                         &                                         &                      & 
 \end{tabular}
-\caption{Oszacowane prawdopodobieństwa}
 \label{tab:9}
 \end{table}
 
@@ -526,14 +601,14 @@ Prawdopodobieństwo otrzymane za pomocą modelu jest identyczne jak to otrzymane
 
 \begin{table}[H]
 \centering
+\caption{Porównanie prawdopodobieństw tego samego problemu uzyskanych w zadaniu 7. i 8.}
 \begin{tabular}{lccll}
 \cline{3-3}
                       & \multicolumn{1}{c|}{}          & \multicolumn{1}{c|}{Prawdopodobieństwo} &                      &  \\ \cline{2-3}
-\multicolumn{1}{l|}{} & \multicolumn{1}{c|}{Zadanie 7} & \multicolumn{1}{c|}{`r m1_1``}                &                      &  \\ \cline{2-3}
+\multicolumn{1}{l|}{} & \multicolumn{1}{c|}{Zadanie 7} & \multicolumn{1}{c|}{`r m1_1`}                &                      &  \\ \cline{2-3}
 \multicolumn{1}{l|}{} & \multicolumn{1}{c|}{Zadanie 8} & \multicolumn{1}{c|}{`r m`}                & \multicolumn{1}{c}{} &  \\ \cline{2-3}
                       &                                &                                         &                      & 
 \end{tabular}
-\caption{Porównanie prawdopodobieństw tego samego problemu uzyskanych w zadaniu 7. i 8.}
 \label{tab:10}
 \end{table}
 
@@ -548,14 +623,14 @@ emp <- sum(result$Freq[result$P == 'M' & result$Wyk == 3])/(sum(result$Freq[resu
 
 \begin{table}[H]
 \centering
+\caption{Oszacowane prawdopodobieństwa}
 \begin{tabular}{lccll}
 \cline{3-3}
                       & \multicolumn{1}{c|}{}                   & \multicolumn{1}{c|}{Prawdopodobieństwo} &                      &  \\ \cline{2-3}
-\multicolumn{1}{l|}{} & \multicolumn{1}{c|}{Wartość empiryczna} & \multicolumn{1}{c|}{`r m`}                &                      &  \\ \cline{2-3}
-\multicolumn{1}{l|}{} & \multicolumn{1}{c|}{Model {[}13 23{]}}  & \multicolumn{1}{c|}{`r emp`}                & \multicolumn{1}{c}{} &  \\ \cline{2-3}
+\multicolumn{1}{l|}{} & \multicolumn{1}{c|}{Wartość empiryczna} & \multicolumn{1}{c|}{`r emp`}                &                      &  \\ \cline{2-3}
+\multicolumn{1}{l|}{} & \multicolumn{1}{c|}{Model {[}13 23{]}}  & \multicolumn{1}{c|}{`r m`}                & \multicolumn{1}{c}{} &  \\ \cline{2-3}
                       &                                         &                                         &                      & 
 \end{tabular}
-\caption{Oszacowane prawdopodobieństwa}
 \label{tab:11}
 \end{table}
 
@@ -613,7 +688,7 @@ p_1 <- 1-pchisq(test$Deviance[2], df = test$Df[2])
 test <- anova(m_0, m_2)
 p_2 <- 1-pchisq(test$Deviance[2], df = test$Df[2])
 ```
-Prawdopodobieństwo dla pierwszej z hipotez alternatywnych `r p_1` jest większe niż założony poziom istotności, więc nie odrzucamy hipotezy zerowej. Natomiast dla drugiej `r p_2` jest mniejszy niż założony poziom istotności $\alpha$, więc odrzucamy hipotezę zerową.
+Prawdopodobieństwo dla pierwszej z hipotez alternatywnych `r p_1` jest większe niż założony poziom istotności, więc nie mamy podstaw do odrzucenia hipotezy zerowej. Natomiast dla drugiej `r p_2` jest mniejszy niż założony poziom istotności $\alpha$, więc odrzucamy hipotezę zerową.
 
 * $H_0$: Dane pochodzą z modelu $[13\:23]$ 
 przeciwko 
@@ -758,6 +833,7 @@ model_ <- glm(Freq ~ 1, data = df, family = poisson)
 
 \begin{table}[H]
 \centering
+\caption{Wartości obliczonych kryteriów AIC dla poszczególnych modeli}
 \begin{tabular}{|c|c|}
 \hline
 Model & Wartość kryterium \\ \hline
@@ -781,7 +857,6 @@ $[12\;13]$      &  `r models_AIC[17]`\\ \hline
 $[12\;13\;23]$  & `r models_AIC[18]`\\ \hline
 $[123]$      & `r models_AIC[19]`\\ \hline
 \end{tabular}
-\caption{Wartości obliczonych kryteriów AIC dla poszczególnych modeli}
 \label{tab:12}
 \end{table}
 Najmniejsza wartość kryterium informacyjnego wynosi `r min(models_AIC)`, a otrzymano ją dla modelu $[12\;3]$, czyli tego samego który otrzymaliśmy z wykorzystaniem testów. 
@@ -798,6 +873,7 @@ Najmniejsza wartość kryterium informacyjnego wynosi `r min(models_AIC)`, a otr
 
 \begin{table}[H]
 \centering
+\caption{Wartości obliczonych kryteriów BIC dla poszczególnych modeli}
 \begin{tabular}{|c|c|}
 \hline
 Model & Wartość kryterium \\ \hline
@@ -821,7 +897,6 @@ $[12\;13]$      &  `r models_BIC[17]`\\ \hline
 $[12\;13\;23]$  & `r models_BIC[18]`\\ \hline
 $[123]$      & `r models_BIC[19]`\\ \hline
 \end{tabular}
-\caption{Wartości obliczonych kryteriów BIC dla poszczególnych modeli}
 \label{tab:13}
 \end{table}
 
@@ -967,6 +1042,7 @@ models_AIC <- c(AIC(model_), AIC(model_1), AIC(model_2), AIC(model_3),
 
 \begin{table}[H]
 \centering
+\caption{Wartości obliczonych kryteriów AIC dla poszczególnych modeli}
 \begin{tabular}{|c|c|}
 \hline
 Model & Wartość kryterium \\ \hline
@@ -990,7 +1066,6 @@ $[12\;13]$      &  `r models_AIC[17]`\\ \hline
 $[12\;13\;23]$  & `r models_AIC[18]`\\ \hline
 $[123]$      & `r models_AIC[19]`\\ \hline
 \end{tabular}
-\caption{Wartości obliczonych kryteriów AIC dla poszczególnych modeli}
 \label{tab:14}
 \end{table}
 
@@ -1008,6 +1083,7 @@ Najmniejsza wartość kryterium informacyjnego wynosi `r min(models_AIC)`, a otr
 
 \begin{table}[H]
 \centering
+\caption{Wartości obliczonych kryteriów BIC dla poszczególnych modeli}
 \begin{tabular}{|c|c|}
 \hline
 Model & Wartość kryterium \\ \hline
@@ -1031,7 +1107,6 @@ $[12\;13]$      &  `r models_BIC[17]`\\ \hline
 $[12\;13\;23]$  & `r models_BIC[18]`\\ \hline
 $[123]$      & `r models_BIC[19]`\\ \hline
 \end{tabular}
-\caption{Wartości obliczonych kryteriów BIC dla poszczególnych modeli}
 \label{tab:15}
 \end{table}
 
@@ -1039,6 +1114,6 @@ Najmniejsza wartość kryterium informacyjnego wynosi `r min(models_BIC)`, a otr
 
 ## Metoda krokowa 
 ```{r}
-step(model_123)
+step(model_123) 
 ```
 Z wykorzystaniem metody krokowej otrzymaliśmy ten sam model, co z wykorzystaniem metod wyżej. 
