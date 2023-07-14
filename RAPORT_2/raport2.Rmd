@@ -36,7 +36,7 @@ library(psych)
 ```
 
 ```{r, include=FALSE, echo=FALSE}
-personel <- read.csv2('personel.csv',header=FALSE)
+personel <- read.csv2('data//personel.csv',header=FALSE)
 names(personel) <- c('D','S','A1','A2','W1','W2','P','Wiek','Wyk')
 personel$A2[personel$A2 == '11'] = '1'
 personel <- personel %>% mutate(across(D:Wyk,as.factor))
@@ -382,7 +382,7 @@ p <- c(1/20, 9/20, 1/20, 9/20)
 
 
 ```{r, echo = FALSE}
-read.csv('size.csv') %>% kable(col.names = c('n', 'test Fishera', 'test chi-kwadrat Pearsona', 'test ilorazu wiarogodności'), caption = 'Prawdopodobieństwo popełnienie błędu I rodzaju w zależności od rozmiaru próby.') %>%
+read.csv('data//size.csv') %>% kable(col.names = c('n', 'test Fishera', 'test chi-kwadrat Pearsona', 'test ilorazu wiarogodności'), caption = 'Prawdopodobieństwo popełnienie błędu I rodzaju w zależności od rozmiaru próby.') %>%
   column_spec(1, border_left = TRUE) %>%
   column_spec(4, border_right = TRUE) %>%
   kable_styling(latex_options = "HOLD_position")
@@ -418,7 +418,7 @@ p2 <- c(1/40, 19/40, 3/40, 17/40)
 
 
 ```{r, echo = FALSE}
-read.csv('power.csv') %>% kable(col.names = c('n', 'test Fishera', 'test chi-kwadrat Pearsona', 'test ilorazu wiarogodności'), caption = 'Moc testu w zależności od wielkości próby.') %>%
+read.csv('data//power.csv') %>% kable(col.names = c('n', 'test Fishera', 'test chi-kwadrat Pearsona', 'test ilorazu wiarogodności'), caption = 'Moc testu w zależności od wielkości próby.') %>%
   column_spec(1, border_left = TRUE) %>%
   column_spec(4, border_right = TRUE) %>%
   kable_styling(latex_options = "HOLD_position")

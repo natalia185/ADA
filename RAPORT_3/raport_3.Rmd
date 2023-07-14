@@ -36,7 +36,7 @@ library("gnm")
 
 
 ```{r, include=FALSE, echo=FALSE}
-personel <- read.csv2('personel.csv',header=FALSE)
+personel <- read.csv2('data//personel.csv',header=FALSE)
 names(personel) <- c('D','S','A1','A2','W1','W2','P','Wiek','Wyk')
 personel$A2[personel$A2 == '11'] = '1'
 personel <- personel %>% mutate(across(D:Wyk,as.factor))
@@ -176,8 +176,8 @@ return(data.frame( 'prob' = p2, 'results' = res))
 
 
 ```{r, echo=FALSE, fig.cap='Wykres funkcji mocy testu $Z$ i $Z_0$ dla $n=20$.'}
-moc_20 <- as.data.frame(read.csv('moc_20.csv'))
-moc0_20 <- as.data.frame(read.csv('moc0_20.csv'))
+moc_20 <- as.data.frame(read.csv('data//moc_20.csv'))
+moc0_20 <- as.data.frame(read.csv('data//moc0_20.csv'))
 
 ggplot() + geom_line(data=moc_20,aes(x=prob, y=results, colour = 'Z')) + geom_line(data=moc0_20,aes(x=prob, y=results, color='Z0')) + scale_colour_manual("Test", 
                       breaks = c("Z", "Z0"),
@@ -185,8 +185,8 @@ ggplot() + geom_line(data=moc_20,aes(x=prob, y=results, colour = 'Z')) + geom_li
 ```
 
 ```{r, echo=FALSE, fig.cap='Wykres funkcji mocy testu $Z$ i $Z_0$ dla $n=50$.'}
-moc_50 <- as.data.frame(read.csv('moc_50.csv'))
-moc0_50 <- as.data.frame(read.csv('moc0_50.csv'))
+moc_50 <- as.data.frame(read.csv('data//moc_50.csv'))
+moc0_50 <- as.data.frame(read.csv('data//moc0_50.csv'))
 
 ggplot() + geom_line(data=moc_50,aes(x=prob, y=results, colour = 'Z')) + geom_line(data=moc0_50,aes(x=prob, y=results, color='Z0')) + scale_colour_manual("Test", 
                       breaks = c("Z", "Z0"),
@@ -194,8 +194,8 @@ ggplot() + geom_line(data=moc_50,aes(x=prob, y=results, colour = 'Z')) + geom_li
 ```
 
 ```{r, echo=FALSE, fig.cap='Wykres funkcji mocy testu $Z$ i $Z_0$ dla $n=100$.'}
-moc_100 <- as.data.frame(read.csv('moc_100.csv'))
-moc0_100 <- as.data.frame(read.csv('moc0_100.csv'))
+moc_100 <- as.data.frame(read.csv('data//moc_100.csv'))
+moc0_100 <- as.data.frame(read.csv('data//moc0_100.csv'))
 
 ggplot() + geom_line(data=moc_100,aes(x=prob, y=results, colour = 'Z')) + geom_line(data=moc0_100,aes(x=prob, y=results, color='Z0')) + scale_colour_manual("Test", 
                       breaks = c("Z", "Z0"),
@@ -203,8 +203,8 @@ ggplot() + geom_line(data=moc_100,aes(x=prob, y=results, colour = 'Z')) + geom_l
 ```
 
 ```{r, echo=FALSE, fig.cap='Wykres funkcji mocy testu $Z$ i $Z_0$ dla $n=1000$.'}
-moc_1000 <- as.data.frame(read.csv('moc_1000.csv'))
-moc0_1000 <- as.data.frame(read.csv('moc0_1000.csv'))
+moc_1000 <- as.data.frame(read.csv('data//moc_1000.csv'))
+moc0_1000 <- as.data.frame(read.csv('data//moc0_1000.csv'))
 
 ggplot() + geom_line(data=moc_1000,aes(x=prob, y=results, colour = 'Z')) + geom_line(data=moc0_1000,aes(x=prob, y=results, color='Z0')) + scale_colour_manual("Test", 
                       breaks = c("Z", "Z0"),

@@ -37,7 +37,7 @@ library('stats')
 ### Tablice liczności dla zmiennej A1
 
 ```{r}
-personel <- read.csv2(file = "personel.csv", header=FALSE)
+personel <- read.csv2(file = "data//personel.csv", header=FALSE)
 names(personel) <- c("D", "S", "A1", "A2", "W1", "W2", "P", "Wiek", "Wyk")
 personel$A2[personel$A2 == '11'] = '1'
 personel <- personel %>% mutate(across(D:Wyk, as.factor))
@@ -367,7 +367,7 @@ kable(structable(A1~D, personel) %>% addmargins(), caption="Tabela wielodzielcza
 ### Wykres słupkowy
 
 ```{r,echo=FALSE}
-personel <- read.csv2('personel.csv',header=FALSE)
+personel <- read.csv2('data//personel.csv',header=FALSE)
 names(personel) <- c('D','S','A1','A2','W1','W2','P','Wiek','Wyk')
 personel$A2[personel$A2 == '11'] = '1'
 personel$D[personel$D == 'O'] = 'Obsługa kadrowo-płacowa'
@@ -454,7 +454,7 @@ Porównując oba wykresy kołowe (\ref{koloW1}, \ref{koloW2}) i słupkowe (\ref{
 ### Wykresy mozaikowe
 
 ```{r, echo=FALSE}
-personel <- read.csv2(file = "personel.csv", header=FALSE)
+personel <- read.csv2(file = "data//personel.csv", header=FALSE)
 names(personel) <- c("D", "S", "A1", "A2", "W1", "W2", "P", "Wiek", "Wyk")
 personel$A2[personel$A2 == '11'] = '1'
 personel <- personel %>% mutate(across(D:Wyk, as.factor))
@@ -519,7 +519,7 @@ f() %>% kable(caption='Losowanie bez zwracania') %>%
 ### Funkcja likert
 
 ```{r,echo=FALSE}
-personel <- read.csv2('personel.csv',header=FALSE)
+personel <- read.csv2('data//personel.csv',header=FALSE)
 names(personel) <- c('D','S','A1','A2','W1','W2','P','Wiek','Wyk')
 personel$A2[personel$A2 == '11'] = '1'
 personel$D[personel$D == 'O'] = 'Obsługa kadrowo-płacowa'
@@ -629,7 +629,7 @@ Przy podziale ze względu na płeć mamy dość podobne wyniki. Obie płcie są 
 ## Zadanie 7
 ### Przedział ufności Cloppera-Pearsona
 ```{r}
-personel <- read.csv2('personel.csv',header=FALSE)
+personel <- read.csv2('data//personel.csv',header=FALSE)
 names(personel) <- c('D','S','A1','A2','W1','W2','P','Wiek','Wyk')
 personel$A2[personel$A2 == '11'] = '1'
 personel$D[personel$D == 'O'] = 'Obsługa kadrowo-płacowa'
@@ -970,17 +970,17 @@ simulation <- function(n, method, name){
 
 
 ```{r}
-cp30 <- read.csv('cpn30.csv', col.names = c('p', 'pokrycie', 'len'))
-w30 <- read.csv('wald_n30.csv', col.names = c('p', 'pokrycie', 'len'))
-b30 <- read.csv('bayes_n30.csv', col.names = c('p', 'pokrycie', 'len'))
+cp30 <- read.csv('data//cpn30.csv', col.names = c('p', 'pokrycie', 'len'))
+w30 <- read.csv('data//wald_n30.csv', col.names = c('p', 'pokrycie', 'len'))
+b30 <- read.csv('data//bayes_n30.csv', col.names = c('p', 'pokrycie', 'len'))
 
-cp100 <- read.csv('cpn100.csv', col.names = c('p', 'pokrycie', 'len'))
-w100 <- read.csv('wald_n100.csv', col.names = c('p', 'pokrycie', 'len'))
-b100 <- read.csv('bayes_n100.csv', col.names = c('p', 'pokrycie', 'len'))
+cp100 <- read.csv('data//cpn100.csv', col.names = c('p', 'pokrycie', 'len'))
+w100 <- read.csv('data//wald_n100.csv', col.names = c('p', 'pokrycie', 'len'))
+b100 <- read.csv('data//bayes_n100.csv', col.names = c('p', 'pokrycie', 'len'))
 
-cp1000 <- read.csv('cpn1000.csv', col.names = c('p', 'pokrycie', 'len'))
-w1000 <- read.csv('wald_n1000.csv', col.names = c('p', 'pokrycie', 'len'))
-b1000 <- read.csv('bayes_n1000.csv', col.names = c('p', 'pokrycie', 'len'))
+cp1000 <- read.csv('data//cpn1000.csv', col.names = c('p', 'pokrycie', 'len'))
+w1000 <- read.csv('data//wald_n1000.csv', col.names = c('p', 'pokrycie', 'len'))
+b1000 <- read.csv('data//bayes_n1000.csv', col.names = c('p', 'pokrycie', 'len'))
 
 ```
 
